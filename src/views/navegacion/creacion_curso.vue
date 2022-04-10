@@ -1,0 +1,240 @@
+<template>
+<vx-card>
+
+    <vs-popup fullscreen title="Sección" :active.sync="popupSeccion">
+        <div class="py-8 pt-3">
+
+            <vs-input label="Titulo de la sección" v-model="seccion.titulo" class="w-full mb-6" />
+            <quill-editor v-model="seccion.contenido" class="mb-4"></quill-editor>
+
+            <vs-button type="gradient" color="primary" style="float: right;"  @click="popupSeccion=false; guardarCurso(0)">Guardar sección</vs-button>
+        </div>
+    </vs-popup>
+
+    <form-wizard color="rgba(var(--vs-primary), 1)" :title="null" :subtitle="null" finishButtonText="Finalizar"  @on-complete="guardarCurso(1)">
+
+      <tab-content title="Paso 1" class="mb-5">
+          <!-- tab 1 content -->
+          <div class="vx-row">
+              <div class="vx-col md:w-1/2 w-full mt-5">
+                  <vs-input label="Titulo" v-model="curso.titulo" class="w-full" />
+              </div>
+              <div class="vx-col md:w-1/2 w-full mt-5">
+                  <vs-input label="Subtitulo"  v-model="curso.subtitulo" class="w-full" />
+              </div>
+              <div class="vx-col md:w-1/2 w-full mt-5">
+                  <vs-input label="Capacitador"  v-model="curso.capacitador" class="w-full" />
+              </div>
+              <div class="vx-col md:w-1/4 w-full mt-5">
+                    <vs-input label="Duración (horas)" type="number" v-model="curso.cant_horas" class="w-full" />
+                  <!-- <vs-select v-model="city" class="w-full select-large" label="City">
+                      <vs-select-item :key="index" :value="item.value" :text="item.text" v-for="(item,index) in cityOptions" class="w-full" />
+                  </vs-select> -->
+              </div>
+              <div class="vx-col md:w-1/4 w-full mt-5">
+                  <vs-input label="Precio" type="number" v-model="curso.precio" class="w-full" />
+              </div>
+              <div class="vx-col md:w-1/4 w-full mt-5">
+                  <vs-input label="% Descuento" type="number" v-model="curso.descuento" class="w-full" />
+              </div>
+              <div class="vx-col md:w-1/2 w-full mt-5">
+                  <div style="font-size: 12px; color: gray;" class="mb-1">Imagen de portada</div>
+                  <input type="file" name="file1" id="file1" class="inputfile">
+              </div>
+              <div class="vx-col md:w-1/4 w-full mt-5 pt-8" align="center">
+                    <vs-switch color="dark" icon-pack="feather" vs-icon-on="icon-check-circle" vs-icon-off="icon-slash" v-model="curso.certificado">
+                        <span slot="on">Se entrega certificado</span>
+                        <span slot="off">No se entrega certificado</span>
+                    </vs-switch>
+              </div>
+          </div>
+      </tab-content>
+
+      <!-- tab 2 content -->
+      <tab-content title="Paso 2" class="mb-5">
+          <div class="vx-row mb-4">
+              <vs-textarea label="Lo que aprenderá el estudiante" placeholder="Ejemplo: crear variables, modificar cadenas, etc..." v-model="curso.aprender" />
+          </div>
+          <div class="vx-row mb-4">
+              <vs-textarea label="Requisitos" v-model="curso.requisitos" />
+          </div>
+          <div class="vx-row mb-4">
+              <vs-textarea label="Descripción" v-model="curso.descripcion" />
+          </div>
+      </tab-content>
+
+      <!-- tab 3 content -->
+      <tab-content title="Paso 3" class="mb-5">
+            <vs-table search max-items="10" pagination :data="secciones">
+                <template slot="header">
+                    <vs-button type="gradient" color="primary" @click="seccion={}; popupSeccion=true">Agregar sección</vs-button>
+                </template>
+                <template slot="thead">
+                    <vs-th>#</vs-th>
+                    <vs-th>Título</vs-th>
+                    <vs-th style="width: 100px;">Acciones</vs-th>
+                </template>
+                <template slot-scope="{data}">
+                    <vs-tr :key="indextr" v-for="(tr, indextr) in data">
+                        <vs-td>
+                            {{indextr+1}}
+                        </vs-td>
+                        <vs-td>
+                            {{tr.titulo}}
+                        </vs-td>
+                        <vs-td>
+                            <div class="flex">
+                                 <vx-tooltip text="Editar sección">
+                                    <vs-button radius type="line" size="large" icon-pack="feather" icon="icon-edit" class="m-1" color="primary" @click="seccion = tr; popupSeccion=true"></vs-button>
+                                </vx-tooltip>
+                            </div>
+                        </vs-td>
+                    </vs-tr>
+                </template>
+            </vs-table>
+
+
+      </tab-content>
+
+  </form-wizard>
+</vx-card>
+</template>
+
+<script>
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css';
+import Vue from 'vue'
+import axios from 'axios'
+import {FormWizard, TabContent} from 'vue-form-wizard'
+import 'vue-form-wizard/dist/vue-form-wizard.min.css'
+
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+import { quillEditor } from 'vue-quill-editor'
+import Prism from 'vue-prism-component'
+
+Vue.use(axios)
+export default {
+    components: {
+        'v-select': vSelect,
+        FormWizard,
+        TabContent,
+        quillEditor,
+        Prism
+    },
+    data() {
+        return {
+            usuario: [],
+            curso: { titulo: '', subtitulo: '', capacitador: '', cant_horas: '', precio: '', descuento: '', duracion_descuento: '', certificado: '', requisitos: '', descripcion: '', contenido: '<br><br><br><br><br><br><br><br><br>', aprender: ''},
+            secciones: [],
+            seccion: {},
+            popupSeccion: false,
+            id_curso: '',
+            img_old: '',
+        }
+    },
+    created() {
+        this.usuario = JSON.parse(localStorage.getItem('usuario'));
+        if( !this.usuario ){
+          this.usuario = []
+        }
+    },
+    mounted() {
+        this.id_curso = this.$route.params.id_curso
+        if( this.id_curso != 0 ){
+         this.getCurso()
+        }
+    },
+    methods: {
+        getCurso(){
+            let me = this
+
+            me.$vs.loading()
+            axios.get('http://localhost:8000/api/cursos/'+me.id_curso)
+            .then(function (response) {
+                me.secciones = response.data.items.secciones
+                me.curso = response.data.items.curso[0]
+                me.img_old = response.data.items.curso[0].img_portada
+                me.$vs.loading.close()
+            })
+            .catch(function (error) { me.$vs.loading.close() })
+
+        },
+        guardarCurso(finaliza){
+            let me = this
+            me.$vs.loading()
+            let fileImgPreg
+            fileImgPreg = document.getElementById("file1").files[0];
+
+            let formData = new FormData();
+            formData.append('titulo', me.curso.titulo);
+            formData.append('subtitulo', me.curso.subtitulo);
+            formData.append('capacitador', me.curso.capacitador);
+            formData.append('cant_horas', me.curso.cant_horas);
+            formData.append('precio', me.curso.precio);
+            formData.append('descuento', me.curso.descuento);
+            formData.append('certificado', me.curso.certificado);
+            formData.append('requisitos', me.curso.requisitos);
+            formData.append('descripcion', me.curso.descripcion);
+            formData.append('aprender', me.curso.aprender);
+            formData.append('img_portada', fileImgPreg);
+            formData.append('idusuario', me.usuario[0].idusuario);
+            formData.append('img_old', me.img_old);
+
+            formData.append('id_curso', me.id_curso);
+
+            axios.post('http://localhost:8000/api/cursos', formData)
+            .then(function (response) {
+                me.id_curso = response.data.id_curso
+                me.$vs.loading.close()
+                if( finaliza == 1 ){
+                  me.$router.go(-1)
+                }else{
+                  me.agregarSeccion()
+                  me.$vs.notify({
+                  text:'Curso guardado correctamente.', color:'success', iconPack: 'feather', icon:'icon-check'})
+                }
+            })
+            .catch(function (error) { me.$vs.loading.close() })
+        },
+        agregarSeccion(){
+            let me = this
+
+            if( me.seccion.id_seccion === undefined ){ me.seccion.id_seccion = 0 }
+
+            let formData = new FormData();
+            formData.append('titulo', me.seccion.titulo);
+            formData.append('contenido', me.seccion.contenido);
+            formData.append('id_seccion', me.seccion.id_seccion);
+            formData.append('id_curso', me.id_curso);
+
+            axios.post('http://localhost:8000/api/guardar_seccion', formData)
+            .then(function (response) {
+                me.getCurso()
+                me.popupSeccion = false
+                me.$vs.loading.close()
+                me.$vs.notify({
+                text:'Sección guardada correctamente', color:'success', iconPack: 'feather', icon:'icon-check'})
+            })
+            .catch(function (error) { me.$vs.loading.close() })
+
+        }
+    },
+}
+</script>
+
+<style>
+.uploading-image {
+    display: flex;
+}
+
+.inputfile{
+    border: 1px solid rgb(190, 190, 190);
+    width: 100%;
+    border-radius: 5px;
+    padding: 5px;
+    height: 37px;
+}
+</style>
