@@ -44,8 +44,8 @@
                 <vs-collapse-item :key="index" v-for="(item, index) in secciones">
                     <div slot="header">
                       <b>{{item.titulo}}</b> &nbsp;&nbsp;
-                      <vs-button type="flat" color="primary" @click="irTareas(item)">Ver Tareas</vs-button>
-                        <vs-button type="flat" color="primary" @click="irEvaluaciones(item)">Ver Evaluaciones</vs-button>
+                      <vs-button class="float-right" v-if="curso_habilitado!=0" type="line" size="small" color="success" @click="irTareas(item)">Ver Tareas</vs-button>
+                      <vs-button class="float-right" v-if="curso_habilitado!=0" type="line" size="small" color="dark" @click="irEvaluaciones(item)">Ver Evaluaciones</vs-button>
                     </div>
                     <div v-if="curso_habilitado==1" v-html="item.contenido"></div>
                 </vs-collapse-item>
@@ -163,7 +163,7 @@ export default {
           }else{
                me.$router.push('/tareas')
           }
-         
+
         },
         irEvaluaciones(item){
              let me = this

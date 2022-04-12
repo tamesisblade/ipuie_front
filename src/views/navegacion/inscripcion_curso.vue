@@ -75,8 +75,7 @@ export default {
         guardar(item) {
             let me = this
 
-            let fileImgPreg
-            fileImgPreg = document.getElementById("file1").files[0];
+            let fileImgPreg = document.getElementById("file1").files[0];
 
             let formData = new FormData();
             formData.append('id_curso', me.id_curso)

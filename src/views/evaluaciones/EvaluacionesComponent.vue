@@ -1,13 +1,13 @@
 <template>
 
-<div>
+<div class="py-3 px-5">
     <vs-popup fullscreen title="Crear preguntas" :active.sync="popupCrearPreguntas">
         <vs-row>
             <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
                   <vs-input label="Escriba la pregunta" class="w-full" placeholder="Pregunta" v-model="datosPreguntas.txtpregunta"/>
             </vs-col>
-            <vs-divider color="warning">Escribas las posibles respuestas</vs-divider>
-            
+            <vs-divider color="warning">Escribe las posibles respuestas</vs-divider>
+
         </vs-row>
 
         <vs-row>
@@ -51,27 +51,27 @@
                           <vs-radio v-model="datosPreguntas.respuesta" class="ml-3" vs-name="radios1" vs-value="4">Respuesta 4</vs-radio>
                         </li>
                     </div>
-                 
+
                 </ul>
             </div>
-    
+
 
         <vs-row class="mt-5">
             <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
               <vs-button type="relief" @click="generarPregunta()">Generar Pregunta</vs-button>
             </vs-col>
         </vs-row>
-        
+
     </vs-popup>
 
     <vs-popup title="Evaluación Aleatoria" :active.sync="popupEvalAleatoria">
         <div align="center" style="padding: 5px; border-radius: 5px; background-color: #FFDCD1; color: #D6623A;" class="mb-2">
             Si modificó las unidades, guarde la evaluación antes de continuar.
-        </div> 
+        </div>
 
         <div align="center" style="padding: 5px; border-radius: 5px; background-color: #C8E1FF; color: #1360BA;" class="mb-2">
             Las preguntas aleatorias serán obtenidas únicamente del banco de preguntas de Prolipa
-        </div> 
+        </div>
 
         <table style="width: 100%;">
             <tr style="background-color: #e5e5e5;">
@@ -82,12 +82,8 @@
             </tr>
             <tbody>
                 <tr v-for="(itemop, indexch) in tipospreguntas" :key="indexch">
-                    <td>
-                        {{ itemop.label }}
-                    </td>
-                    <td align="center">
-                        {{itemop.puntaje}} pts.
-                    </td>
+                    <td> {{ itemop.label }} </td>
+                    <td align="center"> {{itemop.puntaje}} pts. </td>
                     <td align="center">{{itemop.cantidad}}</td>
                     <td align="center">
                         <vs-input type="number" v-model="cantidadesField[indexch]" @input="contarPuntosIngresados()" class="mb-4" style="width: 80px; text-align: center;" />
@@ -108,7 +104,7 @@
                 </tr>
             </tbody>
         </table>
-        
+
         <vs-button class="w-full mt-3 mb-2" color="success" type="gradient" @click="cargarPreguntasAleatorias()">Generar preguntas</vs-button>
     </vs-popup>
 
@@ -125,12 +121,11 @@
       </div>
     </vs-prompt>
 
-    
-  
+
+
 <vx-card>
-    
-    <h2 style="color:#7F7E7E" class="mb-4" v-if="evaluaciones[0]!=null">Curso: {{evaluaciones[0].nombre_curso}} &nbsp;-&nbsp;
-    Aula: {{evaluaciones[0].aula}}</h2>
+
+    <h2 style="color:#7F7E7E" class="mb-4" v-if="evaluaciones[0]!=null">Sección: {{evaluaciones[0].nombre_curso}}</h2>
 
     <vs-tabs alignment="fixed">
         <vs-tab label="Evaluaciones" @click="getEvalDoc()">
@@ -155,7 +150,7 @@
 
                         <vs-td :data="data[indextr].tipo_nombre">
                             <b>Asignatura:</b> {{ data[indextr].nombreasignatura }}<br>
-                            <b>Puntos:</b> {{ data[indextr].puntos }} &nbsp;&nbsp;-&nbsp;&nbsp; 
+                            <b>Puntos:</b> {{ data[indextr].puntos }} &nbsp;&nbsp;-&nbsp;&nbsp;
                             <b>Duración:</b> {{ data[indextr].duracion }} min<br>
                             <b>Tipo:</b> {{ data[indextr].tipo_nombre }}
                         </vs-td>
@@ -178,19 +173,10 @@
                                 <vs-button size="large" radius icon-pack="feather" icon="icon-eye" @click="irRevision(data[indextr], 1);" color="dark" type="line"></vs-button>
                             </vx-tooltip>
 
-                            <vx-tooltip style="display: inline-block;" text="Revisar evaluación" position="top" color="primary">
-                                <vs-button size="large" radius icon-pack="feather" icon="icon-check-circle" @click="irRevision(data[indextr], 0);" color="primary" type="line"></vs-button>
-                            </vx-tooltip>
-
                             <vx-tooltip style="display: inline-block;" text="Eliminar evaluación" position="top" color="danger">
                                 <vs-button size="large" radius icon-pack="feather" icon="icon-trash" @click="openConfirmEliminar(data[indextr]);" color="danger" type="line"></vs-button>
                             </vx-tooltip>
-                            
-                            <vx-tooltip style="display: inline-block;" text="Copiar link de evaluación" position="top" color="warning">
-                                <vs-button size="large" radius icon-pack="feather" icon="icon-link" @click="copiarLink(data[indextr]);" color="warning" type="line"></vs-button>
-                            </vx-tooltip>
-                            
-                            
+
                         </vs-td>
                     </vs-tr>
                     </template>
@@ -235,12 +221,12 @@
     <!-- Modal Editar Evaluaciones-->
     <div class="demo-alignment">
         <vs-popup fullscreen classContent="popup-example" v-bind:title="'Evaluación - GRUPO '+radios1" :active.sync="popupEditEval">
-            
+
         <vs-tabs alignment="fixed">
         <vs-tab label="Evaluación">
-            <div class="vx-row mt-4">
+            <div class="vx-row mt-4 pt-8">
 
-            
+
             <div class="vx-col sm:w-1/2 w-full">
                 <vs-input type="text" class="inputx w-full mb-4" label="Nombre Evaluacion" v-model="evaluacion.nombre"/>
             </div>
@@ -262,11 +248,11 @@
             <div class="vx-col sm:w-1/2 w-full">
                 <vs-input type="number" class="inputx w-full mb-6" label="Puntos" v-model="evaluacion.puntos"/>
             </div>
-            
+
             <div class="vx-col sm:w-1/2 w-full">
                 <vs-textarea class="inputx w-full mb-6" label="Descripción" v-model="evaluacion.descripcion" />
             </div>
-        
+
             <div class="vx-col sm:w-1/2 w-full mt-4" align="center">
                 <vs-switch vs-icon-on="check" color="success" v-model="evaluacion.estado" style="width: 120px;" class="mt-6 mb-4">
                     <span slot="on">Activa</span>
@@ -274,47 +260,27 @@
                 </vs-switch>
             </div>
 
-            <vs-divider/>
-
-
-            <div class="vx-col sm:w-1/2 w-full mt-4" align="center">
-                <vs-button class="mt-2 mb-2 w-full" v-if="agregarActivo===false" color="warning" type="border" @click="verPreguntasxEval(evaluacion.id); puntajeTotalGrupo=0; popupEvalAleatoria=true">Cargar preguntas aleatorias</vs-button>
-            </div>
-
             <div class="vx-col sm:w-1/2 w-full mt-4" align="center">
                 <vs-button class="mt-2 mb-2 w-full" v-if="agregarActivo===false" color="primary" type="gradient" @click="editarEvaluacion(evaluacion)">Guardar</vs-button>
                 <div v-else>
                 <vs-button class="mt-2 mb-2 w-full" v-if="guardadoActivo===false" color="success" type="gradient" @click="agregar()">Guardar</vs-button>
-                </div>
+              </div>
             </div>
 
+
             </div>
-            
         </vs-tab>
 
-        <vs-tab label="Preguntas">
-        <!------lista preguntas por evaluacion----->
-        <div v-if="evaluacion.id===undefined || evaluacion.id===''"></div>
-        <ul align="center" v-else class="mt-6 mb-2" style="border: 1px solid #D5D5D5; border-radius: 5px;">
-            <!--<vs-radio v-for="(item, index) in grupo_selected.id" :key="index" v-model="radios1" v-bind:vs-value="index+1" class="m-3" @input="verPreguntasxEval(evaluacion.id)">
-                Grupo {{index+1}}
-            </vs-radio>-->
-
-            <vs-radio v-for="(itemp, indexp) in cant_gruposSelec" :key="indexp" v-model="radios1" v-bind:vs-value="indexp+1" class="m-3" @input="verPreguntasxEval(evaluacion.id)">
-                Grupo {{indexp+1}}
-            </vs-radio>
-        </ul>
+        <vs-tab label="Preguntas" @click="verPreguntasxEval(evaluacion.id);">
 
             <vs-table stripe v-if="preguntasEvaluaciones!=0" v-model="pregSelected" pagination max-items="25" search :data="preguntasEvaluaciones.items">
+
                 <template slot="header">
-                 
-                    <vs-button @click="irPreguntas(id_evaluacion)" size="small" style="font-size: 14px;" color="primary" type="filled" class="mr-3">Crear mis preguntas</vs-button>                    
-                    
+                    <vs-button @click="irPreguntas" color="primary" type="line" class="ml-3">Crear pregunta</vs-button>
                 </template>
 
                 <template slot="thead">
-                    <vs-th sort-key="descripcion" style="font-size: 15px; color: #18DE8A;">Preguntas de mi evaluación - Cantidad: {{preguntasEvaluaciones.items.length}}  - Puntaje: {{puntajeTotalGrupo}}
-                        </vs-th>
+                    <vs-th sort-key="descripcion" style="font-size: 15px; color: #18DE8A;">Preguntas de mi evaluación</vs-th>
                     <vs-th sort-key="nombre_tipo">Detalle</vs-th>
                     <vs-th>Acciones</vs-th>
                 </template>
@@ -357,14 +323,13 @@
                     Debe crear una evaluación antes de cargar preguntas.
                 </div>
                 <div v-else class="mt-6">
-                    <vs-button color="primary" type="line" class="ml-4" @click="popupEditEval=false; popupSelecPreg=true; verPreguntas(evaluacion.id);">Cargar preguntas</vs-button>
-                    <vs-button @click="irPreguntas" color="primary" type="line" class="ml-3">Crear mis preguntas</vs-button>
+                    <vs-button @click="irPreguntas" color="primary" type="line" class="ml-3">Crear pregunta</vs-button>
                 </div>
             </div>
             </vs-tab>
 
-       
-                <!-----------fin lista preguntas por evaluacion------------->                            
+
+                <!-----------fin lista preguntas por evaluacion------------->
         </vs-tabs>
 
         </vs-popup>
@@ -400,7 +365,7 @@
                     Tema: {{ data[indextr].nombre_tema }} <br>
                     {{ data[indextr].descripcion }}
                     <img v-if="data[indextr].img_pregunta!='' && data[indextr].img_pregunta!='null' && data[indextr].img_pregunta!=null" v-bind:src="$data_url+'archivos/img/img_preguntas/'+data[indextr].img_pregunta" class="img-responsive" width="100px" style="border-radius: 5px;">
-                    
+
                     <vs-collapse>
                     <vs-collapse-item>
                         <div slot="header">
@@ -452,7 +417,7 @@
     </div>
     <!----fin modal preguntas--->
 
-    
+
 </vx-card>
 </div>
 </template>
@@ -478,8 +443,8 @@ export default {
                 ocpion3:'',
                 ocpion4:'',
             },
-         
-         
+
+
 
             evaluaciones: [],
             evaluacion: {
@@ -528,7 +493,7 @@ export default {
             editarActivo: false,
             date: new Date().toJSON(),
             datetime: null,
-            
+
             agregarActivo: false,
             popupEditEval: false,
             popupSelecPreg: false,
@@ -572,9 +537,9 @@ export default {
             ],
             tipoSelected: '',
             tipos: [
-                { id: "1", label: "Opción múltiple", }, { id: "2", label: "Respuesta cerrada", }, { id: "3", label: "Verdadero/Falso", }, { id: "5", label: "Selección simple"}, { id: "6", label: "Respuesta abierta" } 
+                { id: "1", label: "Opción múltiple", }, { id: "2", label: "Respuesta cerrada", }, { id: "3", label: "Verdadero/Falso", }, { id: "5", label: "Selección simple"}, { id: "6", label: "Respuesta abierta" }
             ],
-          
+
             tipoevaluacionselect:'',
             grupo_selected:'',
             grupo_opciones:[
@@ -594,7 +559,7 @@ export default {
                 {id:'4',label:'Grupo 4'},
                 {id:'5',label:'Grupo 5'}
             ],
-           
+
             activePromptGrupo: false,
             textoConfirmgrup: '',
             puntajeTotalGrupo: 0,
@@ -620,6 +585,7 @@ export default {
             tiposPregAl: [1,2,3,5,6],
             puntajetipo: [1,2,0.5,1,2],
             cantidadesField: [0,0,0,0,0],
+
             indexCantField: 0,
             evalElimin: [],
             activePromptEliminar: false,
@@ -642,17 +608,17 @@ export default {
         var urlBack = window.location.href
         var urlV = urlBack.split('/')
         me.urlOrigen = urlV[0]+'/'+urlV[1]+'/'+urlV[2]
-        
+
         me.local_idasignatura = localStorage.idasignatura
         me.local_nombreasignatura = localStorage.nombreasignatura
         console.log(me.local_idasignatura+'--'+me.local_nombreasignatura);
 
         me.getEvalDoc();
-        
+
 
     },
     methods: {
-        
+
         formatJson(filterVal, jsonData) {
             return jsonData.map(v => filterVal.map(j => {
                 return v[j]
@@ -730,7 +696,7 @@ export default {
         agregar() {
             let me = this;
             if (me.evaluacion.fecha_inicio.trim() === '' || me.evaluacion.fecha_fin.trim() === '' || me.evaluacion.puntos === '' || me.evaluacion.duracion === '' || me.tipoevaluacionselect.id === '' || me.grupo_selected.id === '' || me.unidadSelected.id === '' ){
-                
+
                 me.$vs.notify({
                     text:'Debe completar todos los campos antes de guardar',
                     color:'warning',
@@ -738,12 +704,12 @@ export default {
                     icon:'icon-alert-triangle'})
                 return;
             }
-            
+
             var idunidades = [];
             for( var i=0; i<this.unidadSelected.length; i++ ){
                 idunidades.push(this.unidadSelected[i].id);
             }
-            
+
             me.$vs.loading()
             let estado;
             if( me.evaluacion.estado == true ){
@@ -756,7 +722,7 @@ export default {
             if( me.evaluacion.descripcion === '' || me.evaluacion.descripcion === null || me.evaluacion.descripcion === 'null' ){
                 descripVal = ' '
             }
-            
+
             let formData = new FormData();
                 formData.append('nombre', me.evaluacion.nombre);
                 formData.append('asignatura',  me.local_idasignatura);
@@ -781,7 +747,7 @@ export default {
                     me.guardadoActivo = true
                     me.editarActivo = true
                     me.evaluacion.id = res.data.id
-                    //me.popupEditEval = false    
+                    //me.popupEditEval = false
                     me.cant_gruposSelec = []
                     for( var i=1; i<=me.grupo_selected.id; i++ ){
                         me.cant_gruposSelec.push(i)
@@ -801,27 +767,23 @@ export default {
         openConfirmEliminar(item){
             let me = this;
             me.evalElimin = item
-            me.activePromptEliminar = true;
+            this.$vs.dialog({
+                type: 'confirm',
+                color: 'danger',
+                title: `Confirmar`,
+                text: '¿Está seguro de eliminar esta evaluación?',
+                accept: this.eliminarEvaluacion
+            })
         },
         eliminarEvaluacion() {
             let me = this;
             me.$http.get(this.$server_url+`eliminar_evaluacion/${me.evalElimin.id}`).then(res => {
-                if( res.data === 0 ){
-                    me.$vs.notify({
-                    text:'No se puede eliminar esta evaluación porque ya esta siendo utilizada por sus estudiantes.',
+                me.$vs.notify({
+                    text:'Evaluación eliminada.',
                     color:'warning',
                     iconPack: 'feather',
                     icon:'icon-alert-triangle'})
-                }else{
-                    me.getEvalDoc()
-                }
-            })
-            .catch(function (error) {
-                me.$vs.notify({
-                    text:'No se puede eliminar esta evaluación porque ya esta siendo utilizada por sus estudiantes!'+error,
-                    color:'danger',
-                    iconPack: 'feather',
-                    icon:'icon-check'})
+                me.getEvalDoc()
             })
         },
         editarFormulario(item) {
@@ -851,9 +813,9 @@ export default {
             for(var i=0; i<me.unidSelect.length; i++){
                me.unidadSelected.push({id: me.unidSelect[i], label: 'Unidad '+me.unidSelect[i]});
             }
-            
+
             me.verPreguntasxEval(item.id);
-          
+
         },
         openConfirmgrupo(item){
             let me = this;
@@ -865,10 +827,10 @@ export default {
             }
             me.activePromptGrupo = true;
         },
-        editarEvaluacion(item) {            
+        editarEvaluacion(item) {
             let me = this;
             item = me.evaluacion;
-            if (me.evaluacion.fecha_inicio === '' || me.evaluacion.fecha_fin === '' || me.evaluacion.puntos === '' || me.evaluacion.duracion === '') {                
+            if (me.evaluacion.fecha_inicio === '' || me.evaluacion.fecha_fin === '' || me.evaluacion.puntos === '' || me.evaluacion.duracion === '') {
                 me.$vs.notify({
                     text:'Debe completar todos los campos antes de guardar',
                     color:'warning',
@@ -877,8 +839,6 @@ export default {
                 return;
             }
 
-           
-
             me.$vs.loading()
             let estado;
             if( me.evaluacion.estado == true ){
@@ -886,7 +846,7 @@ export default {
             }else{
                 estado = 0;
             }
-            
+
             let descripVal = me.evaluacion.descripcion;
             if( me.evaluacion.descripcion === '' || me.evaluacion.descripcion === null || me.evaluacion.descripcion === 'null' ){
                 descripVal = ' '
@@ -895,7 +855,7 @@ export default {
             let formData = new FormData();
                 formData.append('id', item.id);
                 formData.append('nombre', me.evaluacion.nombre);
-             
+
                 formData.append('descripcion', descripVal);
                 formData.append('puntos', me.evaluacion.puntos);
                 formData.append('duracion', me.evaluacion.duracion);
@@ -904,7 +864,7 @@ export default {
                 formData.append('estado', estado);
                 formData.append('docente', me.docente);
                 formData.append('codigo', localStorage.codigo);
-               
+
             me.$http.post(this.$server_url+'evaluacion', formData).then(res => {
                 const index = me.evaluaciones.findIndex(
                     evaluacionBuscar => evaluacionBuscar.id === res.data.id)
@@ -914,7 +874,7 @@ export default {
                 me.editarActivo = false; //desactiva el form editar
                 //me.popupEditEval = false
                 me.cant_gruposSelec = []
-               
+
                 me.$vs.loading.close()
                 me.$vs.notify({
                 text:'Evaluación editada exitosamente',
@@ -933,7 +893,7 @@ export default {
             me.tipoSelected = '';
             me.$vs.loading()
             me.unidadesFiltrar=[];
-            
+
             for(var i=0; i<me.unidadSelected.length; i++){
                me.unidadesFiltrar.push({id: me.unidadSelected[i].id, label: 'Unidad '+me.unidadSelected[i].id});
             }
@@ -949,10 +909,6 @@ export default {
                 formData.append('grupo', me.radios1);
             me.$http.post(this.$server_url+'pregEvaluacion', formData)
             .then(res => {
-                
-
-           
-             
 
                 me.verPreguntasxEval(me.evaluacion.id);
 
@@ -1003,7 +959,7 @@ export default {
                 me.respuestas = []
                 var respuesta = response.data;
                 me.estudiantes = response.data;
-                
+
                 if (response.data.length != 0) {
                     me.alumnos = response.data.items;
                     me.alumnos.forEach(element => {
@@ -1021,7 +977,7 @@ export default {
                                     cal.calificaciones[index] = element.calificaciones[index].calificacion+'/'+element.calificaciones[index].puntos
                                 }
                                 eval("cal.Evaluacion" + index + "=" + element.calificaciones[index].calificacion);
-                                
+
                             } catch (error) {
                                 element.calificaciones[index].calificacion = 0
                                 cal.calificaciones[index] = element.calificaciones[index].calificacion+'/'+element.calificaciones[index].puntos
@@ -1046,15 +1002,14 @@ export default {
             })
 
         },
-    
+
         verPreguntasxEval(id_evaluacion){
             let me = this;
 
-           
             let formData = new FormData();
                 formData.append('evaluacion', id_evaluacion);
                 formData.append('grupo', me.radios1);
-            
+
             me.$vs.loading()
             me.$http.post(this.$server_url+`pregEvaluacionGrupo`, formData).then(res => {
                 me.preguntasEvaluaciones = res.data;
@@ -1066,7 +1021,7 @@ export default {
                         me.puntajeTotalGrupo += me.preguntasEvaluaciones.items[i].puntaje_pregunta;
                     }
                 }
-                
+
                 me.$vs.loading.close()
             })
             .catch(function (error) {
@@ -1074,12 +1029,12 @@ export default {
                 console.log(error+'verPreguntasxEval');
             })
         },
-    
-        
-       
+
+
+
         irRevision(item, val){
-            localStorage.setItem('id_evalRevisar', item.id); 
-            localStorage.setItem('previsualizar_eval', val); 
+            localStorage.setItem('id_evalRevisar', item.id);
+            localStorage.setItem('previsualizar_eval', val);
             //this.$router.push('/revisarevaluacion')
 
             window.location.href = this.urlOrigen+'/revisarevaluacion';
@@ -1097,11 +1052,11 @@ export default {
                 me.puntajeIngresado += (me.puntajetipo[i]*parseInt(cantField))
             }
         },
-       
+
         copiarLink(item){
             let me = this
             let date = new Date()
-            let fecha_actual = moment(date, 'DD/MM/YYYY HH:mm:ss').format('YYYY-MM-DD HH:mm:ss') 
+            let fecha_actual = moment(date, 'DD/MM/YYYY HH:mm:ss').format('YYYY-MM-DD HH:mm:ss')
 
             if( fecha_actual < item.fecha_inicio || fecha_actual > item.fecha_fin ){
                 me.$vs.notify({
@@ -1111,7 +1066,7 @@ export default {
                 icon:'icon-alert-triangle'})
                 return
             }
-            
+
             if( item.estado != 1 ){
                 me.$vs.notify({
                 text:'Esta evaluación está inactiva',
@@ -1119,7 +1074,7 @@ export default {
                 iconPack: 'feather',
                 icon:'icon-alert-triangle'})
                 return
-            } 
+            }
 
 
             let link = me.urlOrigen+'/responderEvaluacion/'+item.id+'-'+localStorage.codigo+'-'+me.usuario.institucion_idInstitucion
@@ -1146,10 +1101,10 @@ export default {
             } catch (err) {
                 console.log('No se pudo copiar');
             }
-            
+
             document.body.removeChild(aux);
         },
-     
+
     },
 }
 </script>

@@ -183,11 +183,6 @@ const router = new Router({
                     name: 'evaluaciones',
                     component: () =>
                         import ('./views/evaluaciones/EvaluacionesComponent.vue'),
-                    meta: {
-                        
-                        pageTitle: 'Evaluaciones',
-                        rule: 'evaluaciones'
-                    }
                 },
 
                 {

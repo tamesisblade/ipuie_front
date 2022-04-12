@@ -137,10 +137,9 @@
         <div align="center">
             <vs-button v-if="volverActivo===false" color="dark" type="border" class="mt-6 m-1" @click="mostrarTodo()">Ver todo</vs-button>
 
-            
-            <vs-button v-if="volverActivo===false" color="warning" type="border" class="mt-6 m-1" @click="$router.push('/evaluacion_imprimir')">&nbsp;&nbsp;&nbsp;&nbsp;PDF&nbsp;&nbsp;&nbsp;&nbsp;</vs-button>
 
-            <!--<div v-if="previsualizar_eval==1 && volverActivo===false" align="center" class="w-full"><vs-button color="warning" type="border" class="mt-6 m-1" @click="imprimirEval()">Imprimir</vs-button></div>-->
+            <!-- <vs-button v-if="volverActivo===false" color="warning" type="border" class="mt-6 m-1" @click="$router.push('/evaluacion_imprimir')">&nbsp;&nbsp;&nbsp;&nbsp;PDF&nbsp;&nbsp;&nbsp;&nbsp;</vs-button> -->
+
 
             <vs-button v-if="usuario.id_group === 4" color="success" type="border" class="mt-6" @click="$router.push('/estudiante/evaluaciones')"><b>← Volver</b></vs-button>
 
@@ -312,7 +311,7 @@ export default {
                 })
 
 
-            
+
         },
         getEvaluacion(item) {
             let me = this
@@ -383,7 +382,7 @@ export default {
             } else {
                 estudiante = me.estudianteSelected.id
             }
-            
+
             if( estudiante===undefined ){
                 console.log('no existen estudiantes');
             }else{
@@ -440,7 +439,7 @@ export default {
                     console.log(error)
                 })
             }
-            
+
         },
         verPreguntasEvaluacionGrupos() {
             let me = this

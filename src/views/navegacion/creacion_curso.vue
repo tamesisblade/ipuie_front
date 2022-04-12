@@ -84,8 +84,11 @@
                         </vs-td>
                         <vs-td>
                             <div class="flex">
-                                 <vx-tooltip text="Editar sección">
+                                <vx-tooltip text="Editar sección">
                                     <vs-button radius type="line" size="large" icon-pack="feather" icon="icon-edit" class="m-1" color="primary" @click="seccion = tr; popupSeccion=true"></vs-button>
+                                </vx-tooltip>
+                                <vx-tooltip text="Eliminar sección">
+                                    <vs-button radius type="line" size="large" icon-pack="feather" icon="icon-trash" class="m-1" color="danger" @click="seccion = tr; openConfirmSeccion()"></vs-button>
                                 </vx-tooltip>
                             </div>
                         </vs-td>
@@ -220,7 +223,30 @@ export default {
             })
             .catch(function (error) { me.$vs.loading.close() })
 
-        }
+        },
+        openConfirmSeccion() {
+            this.$vs.dialog({
+                type: 'confirm',
+                color: 'danger',
+                title: `Confirmar`,
+                text: '¿Está seguro de eliminar esta sección?',
+                accept: this.acceptAlertSeccion
+            })
+        },
+        acceptAlertSeccion() {
+            let me = this
+
+            axios.get('http://localhost:8000/api/elimiar_seccion/' + me.seccion.id_seccion)
+            .then(function (res) {
+                me.$vs.notify({
+                    color: 'danger',
+                    title: 'Sección eliminada',
+                    text: 'Esta sección ya no estará disponible para ningún usuario'
+                })
+                me.getCurso()
+            })
+            .catch(function (error) { me.$vs.loading.close() })
+        },
     },
 }
 </script>
