@@ -47,14 +47,17 @@
           <template slot-scope="{data}">
               <vs-tr :key="indextr" v-for="(tr, indextr) in data">
                   <vs-td> {{indextr+1}} </vs-td>
-                  <vs-td> <img :src="'http://localhost:8000/images/carrousel/'+tr.imagen" style="width: 150px; border-radius: 5px;"> </vs-td>
+                  <vs-td> <img :src="'https://server.ipuiecotocollao.com/images/carrousel/'+tr.imagen" style="width: 150px; border-radius: 5px;"> </vs-td>
                   <vs-td> {{tr.titulo}} <br> {{tr.descripcion}} </vs-td>
                   <vs-td> <vs-button :color="tr.color" type="filled">Color</vs-button> </vs-td>
                   <vs-td>
                       <div class="flex">
                             <vx-tooltip text="Editar sección">
                               <vs-button radius type="line" size="large" icon-pack="feather" icon="icon-edit" class="m-1" color="primary" @click="carrusel = tr; img_old = tr.imagen; id_carrusel = tr.id_carrusel;  popupCarrusel=true"></vs-button>
-                          </vx-tooltip>
+                            </vx-tooltip>
+                            <vx-tooltip text="eliminar sección">
+                              <vs-button radius type="line" size="large" icon-pack="feather" icon="icon-trash" class="m-1" color="danger" @click="id_carrusel=tr.id_carrusel; img_carrusel=tr.imagen; openConfirmEliminarCarrusel()"></vs-button>
+                            </vx-tooltip>
                       </div>
                   </vs-td>
               </vs-tr>
@@ -95,10 +98,10 @@
                 <template slot-scope="{data}">
                     <vs-tr :key="indextr" v-for="(tr, indextr) in data">
                         <vs-td> {{indextr+1}} </vs-td>
-                        <vs-td> <img :src="'http://localhost:8000/images/carrousel/'+tr.imagen" style="width: 120px; border-radius: 5px;"> </vs-td>
+                        <vs-td> <img :src="'https://server.ipuiecotocollao.com/images/carrousel/'+tr.imagen" style="width: 120px; border-radius: 5px;"> </vs-td>
                         <vs-td>
                             <vx-tooltip text="Eliminar esta imagen del cubo">
-                                <vs-button radius type="line" size="large" icon-pack="feather" icon="icon-trash" class="m-1" color="danger" @click="elimiarLadoCubo(tr.id_carrusel)"></vs-button>
+                                <vs-button radius type="line" size="large" icon-pack="feather" icon="icon-trash" class="m-1" color="danger" @click="elimiarLadoCubo(tr.id_carrusel, tr.imagen)"></vs-button>
                             </vx-tooltip>
                         </vs-td>
                     </vs-tr>
@@ -193,7 +196,7 @@ export default {
         let me = this
 
         me.$vs.loading()
-        axios.get('http://localhost:8000/api/carruseles')
+        axios.get('https://server.ipuiecotocollao.com/api/carruseles')
         .then(function (response) {
             me.carruseles = response.data
             me.$vs.loading.close()
@@ -204,7 +207,7 @@ export default {
       getParallax(){
         let me = this
         me.$vs.loading()
-        axios.get('http://localhost:8000/api/get_parallax')
+        axios.get('https://server.ipuiecotocollao.com/api/get_parallax')
         .then(function (response) {
             me.parallax = response.data[0]
             me.img_old_parallax = response.data[0].imagen
@@ -215,7 +218,7 @@ export default {
       getFondo(){
         let me = this
         me.$vs.loading()
-        axios.get('http://localhost:8000/api/get_fondo')
+        axios.get('https://server.ipuiecotocollao.com/api/get_fondo')
         .then(function (response) {
             me.img_old_fondo = response.data[0].imagen
             me.$vs.loading.close()
@@ -240,7 +243,7 @@ export default {
         formData.append('img_old', me.img_old);
         formData.append('tipo', 1);
 
-        axios.post('http://localhost:8000/api/carruseles', formData)
+        axios.post('https://server.ipuiecotocollao.com/api/carruseles', formData)
         .then(function (response) {
             me.$vs.loading.close()
             me.$vs.notify({
@@ -268,7 +271,7 @@ export default {
         formData.append('img_old', me.img_old_parallax);
         formData.append('tipo', 2);
 
-        axios.post('http://localhost:8000/api/carruseles', formData)
+        axios.post('https://server.ipuiecotocollao.com/api/carruseles', formData)
         .then(function (response) {
             me.$vs.loading.close()
             me.$vs.notify({
@@ -282,7 +285,7 @@ export default {
         let me = this
 
         me.$vs.loading()
-        axios.get('http://localhost:8000/api/get_lados_cubo')
+        axios.get('https://server.ipuiecotocollao.com/api/get_lados_cubo')
         .then(function (response) {
             me.lados_cubo = response.data
             me.$vs.loading.close()
@@ -298,7 +301,7 @@ export default {
         let formData = new FormData();
         formData.append('img_carrusel', fileImgPreg);
 
-        axios.post('http://localhost:8000/api/guardar_img_cubo', formData)
+        axios.post('https://server.ipuiecotocollao.com/api/guardar_img_cubo', formData)
         .then(function (response) {
             me.$vs.loading.close()
             me.$vs.notify({
@@ -307,11 +310,11 @@ export default {
         })
         .catch(function (error) { me.$vs.loading.close() })
       },
-      elimiarLadoCubo(id_cubo){
+      elimiarLadoCubo(id_cubo, img){
         let me = this
 
         me.$vs.loading()
-        axios.get('http://localhost:8000/api/eliminar_img_cubo/' + id_cubo)
+        axios.get('https://server.ipuiecotocollao.com/api/eliminar_img_cubo/' + id_cubo+'/'+img)
         .then(function (response) {
             me.$vs.loading.close()
             me.$vs.notify({
@@ -324,7 +327,7 @@ export default {
         let me = this
 
         me.$vs.loading()
-        axios.get('http://localhost:8000/api/get_footer')
+        axios.get('https://server.ipuiecotocollao.com/api/get_footer')
         .then(function (response) {
             me.footer = response.data[0]
             me.img_old_footer = response.data[0].imagen
@@ -349,7 +352,7 @@ export default {
         formData.append('imagen', fileImgPreg);
         formData.append('img_old', me.img_old_footer);
 
-        axios.post('http://localhost:8000/api/guardar_footer', formData)
+        axios.post('https://server.ipuiecotocollao.com/api/guardar_footer', formData)
         .then(function (response) {
             me.$vs.loading.close()
             me.$vs.notify({
@@ -377,7 +380,7 @@ export default {
         formData.append('img_old', me.img_old_fondo);
         formData.append('tipo', 4);//fondo
 
-        axios.post('http://localhost:8000/api/carruseles', formData)
+        axios.post('https://server.ipuiecotocollao.com/api/carruseles', formData)
         .then(function (res) {
             me.$vs.loading.close()
             me.$vs.notify({
@@ -385,7 +388,25 @@ export default {
         })
         .catch(function (error) { console.log(error);
          me.$vs.loading.close() })
-      }
+      },
+      openConfirmEliminarCarrusel(){
+        this.$vs.dialog({
+          type: 'confirm',
+          color: 'danger',
+          title: `Confirmar`,
+          text: '¿Está seguro de eliminar esta sección?',
+          accept: this.eliminarCarrusel
+        })
+      },
+      eliminarCarrusel(){
+          let me = this
+          axios.get("https://server.ipuiecotocollao.com/api/eliminar_carrusel/"+me.id_carrusel+'/'+me.img_carrusel)
+          .then(function (response) {
+              me.getCarruseles()
+          })
+          .catch(function (error) {
+          })
+      },
 
     }
 }

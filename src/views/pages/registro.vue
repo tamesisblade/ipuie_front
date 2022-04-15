@@ -125,7 +125,7 @@ export default {
             formData.append('email', item.email)
             formData.append('name_usuario', item.email)
             formData.append('password', item.password)
-            axios.post("http://localhost:8000/api/register", formData)
+            axios.post("https://server.ipuiecotocollao.com/api/register", formData)
                 .then(function (response) {
                     localStorage.tk = response.data.token
                     localStorage.setItem('usuario', JSON.stringify(response.data.datos));

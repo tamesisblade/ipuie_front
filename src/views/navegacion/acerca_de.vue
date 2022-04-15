@@ -1,6 +1,6 @@
 <template>
 <div align="center">
-    <div align="center" class="w-full parallax mb-6" :style="'padding-top: 5%; background-image: url(http://localhost:8000/images/carrousel/6239383bd3845img1.wallspic.com-manana-rojo-naturaleza-primavera-paisaje_natural-8256x5504.jpg);'">
+    <div align="center" class="w-full parallax mb-6" :style="'padding-top: 5%; background-image: url(https://server.ipuiecotocollao.com/images/carrousel/6239383bd3845img1.wallspic.com-manana-rojo-naturaleza-primavera-paisaje_natural-8256x5504.jpg);'">
       <div style="color: white; font-size: 45px"><b>Acerca de nosotros</b></div>
     </div>
 
@@ -58,7 +58,7 @@ export default {
         getAcerca(){
             let me = this
             me.$vs.loading()
-            axios.get('http://localhost:8000/api/get_acerca')
+            axios.get('https://server.ipuiecotocollao.com/api/get_acerca')
             .then(function (res) {
                 me.contenido = res.data[0].contenido
                 me.cod_mapa = res.data[0].cod_mapa
@@ -74,7 +74,7 @@ export default {
             formData.append('id', me.id);
             formData.append('contenido', me.contenido);
             formData.append('cod_mapa', me.cod_mapa);
-            axios.post('http://localhost:8000/api/save_get_acerca', formData)
+            axios.post('https://server.ipuiecotocollao.com/api/save_get_acerca', formData)
             .then(function (res) {
               me.getAcerca()
             })

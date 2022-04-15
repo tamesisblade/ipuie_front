@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="px-5">
 
     <div class="vx-row">
 
@@ -44,8 +44,8 @@
                 <vs-collapse-item :key="index" v-for="(item, index) in secciones">
                     <div slot="header">
                       <b>{{item.titulo}}</b> &nbsp;&nbsp;
-                      <vs-button class="float-right" v-if="curso_habilitado!=0" type="line" size="small" color="success" @click="irTareas(item)">Ver Tareas</vs-button>
-                      <vs-button class="float-right" v-if="curso_habilitado!=0" type="line" size="small" color="dark" @click="irEvaluaciones(item)">Ver Evaluaciones</vs-button>
+                      <vs-button class="float-right" v-if="curso_habilitado!=0 || usuario[0].id_group == 1" type="line" size="small" color="success" @click="irTareas(item)">Ver Tareas</vs-button>
+                      <vs-button class="float-right" v-if="curso_habilitado!=0 || usuario[0].id_group == 1" type="line" size="small" color="dark" @click="irEvaluaciones(item)">Ver Evaluaciones</vs-button>
                     </div>
                     <div v-if="curso_habilitado==1" v-html="item.contenido"></div>
                 </vs-collapse-item>
@@ -60,7 +60,7 @@
       <div class="vx-col sm:w-1/4 w-full" style="min-width: 200px;">
         <vx-card>
             <div slot="no-body" style="margin: 0% !important;">
-                <img :src="'http://localhost:8000/images/cursos/'+curso.img_portada" alt="content-img" class="responsive card-img-top">
+                <img :src="'https://server.ipuiecotocollao.com/images/cursos/'+curso.img_portada" alt="content-img" class="responsive card-img-top">
             </div>
 
             <div v-if="curso_habilitado==0">
@@ -134,7 +134,7 @@ export default {
         getCurso(){
             let me = this
             me.$vs.loading()
-            axios.get('http://localhost:8000/api/cursos/'+me.id_curso)
+            axios.get('https://server.ipuiecotocollao.com/api/cursos/'+me.id_curso)
             .then(function (response) {
                 me.secciones = response.data.items.secciones
                 me.curso = response.data.items.curso[0]
@@ -145,7 +145,7 @@ export default {
         validaCursoEstudiante(){
             let me = this
 
-            axios.get('http://localhost:8000/api/curso_estudiante/'+me.id_curso+'/'+me.usuario[0].idusuario)
+            axios.get('https://server.ipuiecotocollao.com/api/curso_estudiante/'+me.id_curso+'/'+me.usuario[0].idusuario)
             .then(function (response) {
                 me.curso_habilitado = response.data
             })

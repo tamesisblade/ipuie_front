@@ -8,7 +8,6 @@
             <div class="vx-row " style="color: #2160D5; font-size: 22px;">{{nombre_institucion}}</div>
             <div class="vx-row mt-0">
                 <div class="vx-col w-full" align="justify">
-                    <b>Asignatura: </b>{{evaluaciones[0].nombreasignatura}}<br>
                     <b>Estudiante: </b>{{nombresImprimir}}<br>
                     <b>Calificación: </b>{{calificacionImprimir}}<br>
                     <b>Fecha: </b> {{evaluaciones[0].fecha_fin}}<br>
@@ -17,10 +16,10 @@
                     <div v-if="usuario.id_group===6 && previsualizar_eval!=1"><b>Grupo: </b> {{estudianteSelected.grupo}} <br></div>
                 </div>
             </div>
-            
+
             <div class="w-full oculto-impresion">
                 <ul v-if="previsualizar_eval==1 && usuario.id_group===6" align="center" class="mt-2 mb-0" style="border: 1px solid #D5D5D5; border-radius: 5px; height: 50px;">
-                    
+
                     <vs-radio v-for="(grupos_g, key) in evaluaciones[0].grupos_evaluacion" :key="key" v-model="radios1" v-bind:vs-value="grupos_g" class="m-3" @input="verPreguntasEvaluacionGrupos()">
                         Grupo {{grupos_g}}
                     </vs-radio>
@@ -38,7 +37,7 @@
                     <vs-button v-else color="primary" type="border" class="ml-4" @click="$router.go(-1)"><b>← Volver</b></vs-button>
                 </ul>
             </div>
-            
+
         </div>
 
         <!-------INICIO SECCION RESPONDER---------->
@@ -133,7 +132,6 @@ export default {
             evaluaciones: [],
             evaluacion: {
                 nombre: '',
-                asignatura: '',
                 descripcion: '',
                 fecha_inicio: '',
                 fecha_fin: '',
@@ -263,7 +261,7 @@ export default {
                                 me.verEvalEstudiante();
                                 me.iniciar();
                             }
-                            
+
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -345,7 +343,7 @@ export default {
             } else {
                 estudiante = me.estudianteSelected.id
             }
-            
+
             if( estudiante===undefined ){
                 console.log('no existen estudiantes');
             }else{
@@ -401,7 +399,7 @@ export default {
                     console.log(error)
                 })
             }
-            
+
         },
         verPreguntasEvaluacionGrupos() {
             let me = this
@@ -413,7 +411,7 @@ export default {
                     //                        me.volverActivo=true
                     me.$vs.loading.close()
                 } else {
-                    me.preguntas = res.data;                
+                    me.preguntas = res.data;
                     me.currentx = 1;
                 }
             })

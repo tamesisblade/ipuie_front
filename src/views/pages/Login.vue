@@ -19,7 +19,7 @@
                         <div class="p-8 login-tabs-container">
 
                             <div class="vx-card__title mb-4">
-                                <img src="http://localhost:8000/images/logo_ipuie.png" alt="login" class="img-responsive mx-auto" style="width: 150px;">
+                                <img src="https://server.ipuiecotocollao.com/images/logo_ipuie.png" alt="login" class="img-responsive mx-auto" style="width: 150px;">
                             </div>
 
                             <div>
@@ -70,7 +70,7 @@ export default {
             let formData = new FormData();
             formData.append('name_usuario', me.email);
             formData.append('password', me.password);
-            axios.post('http://localhost:8000/api/login', formData)
+            axios.post('https://server.ipuiecotocollao.com/api/login', formData)
                 .then(function (response) {
                     localStorage.tk = response.data.token;
                     localStorage.setItem('usuario', JSON.stringify(response.data.datos));

@@ -11,19 +11,19 @@
             <template slot-scope="{data}">
                 <vs-tr :key="indextr" v-for="(tr, indextr) in data">
                     <vs-td :data="data[indextr].nombre">
-          
+
                 <a :href="$server_url_file+'tareas/'+data[indextr].archivo" target="_blank">
                             {{data[indextr].tarea}}
-                </a> 
+                </a>
                     </vs-td>
                     <vs-td :data="data[indextr].observaciones">
-                    
+
                         {{data[indextr].observaciones}}
                     </vs-td>
                     <vs-td :data="data[indextr].fecha_entrega">
                         {{data[indextr].fecha_entrega}}
                     </vs-td>
-            
+
                     <vs-td :data="tr.idtarea">
                         <div class="flex">
                             <vs-button color="success" type="relief" @click="realizar(tr)">Realizar</vs-button>
@@ -33,7 +33,7 @@
             </template>
         </vs-table>
     </vs-card>
-       
+
 </div>
 </template>
 
@@ -80,7 +80,7 @@ export default {
     },
     mounted() {
         this.getTareas();
-        
+
     },
     methods: {
         getTareas(id) {
@@ -89,7 +89,7 @@ export default {
                 color: '#046AE7'
             })
             // me.$http.get(this.$server_url+'tareaEstudiantePendiente?idcurso='+ me.idcurso + "&idusuario=" + me.usuario[0].idusuario)
-            var url = "http://localhost:8000/api/tareaEstudiantePendiente?id_seccion=" + me.id_seccion + "&idusuario=" + me.usuario[0].idusuario;
+            var url = "https://server.ipuiecotocollao.com/api/tareaEstudiantePendiente?id_seccion=" + me.id_seccion + "&idusuario=" + me.usuario[0].idusuario;
             axios.get(url)
             .then(function (response) {
                     var respuesta = response.data;

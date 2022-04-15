@@ -1,5 +1,5 @@
 <template>
-<div class="p5">
+<div class="px-5">
 
 <vs-popup title="Tareas" :active.sync="popupTareas">
   <vs-input class="w-full mb-3" label="Descripción tarea" v-model="tarea" />
@@ -19,7 +19,7 @@
 </vs-row>
 
 
- 
+
 
   <vs-input class="w-full mb-base mt-5" label="Observaciones" v-model="observaciones" />
 
@@ -67,6 +67,9 @@
 </vx-card> -->
 
      <vs-card>
+            <vs-button color="primary" type="border" class="m-1" @click="$router.go(-1)"><b>← Volver</b></vs-button>
+            <vs-button color="dark" type="border" class="m-1" @click="actualizar()"><b>Actualizar</b></vs-button>
+
             <vs-collapse>
                 <vs-collapse-item>
                 <div slot="header">
@@ -76,7 +79,7 @@
                 <div>
                     <v-pendiente></v-pendiente>
                 </div>
-                    
+
                 </vs-collapse-item>
 
                 <vs-collapse-item>
@@ -88,7 +91,7 @@
                     <v-realizadas></v-realizadas>
                 </div>
                 </vs-collapse-item>
-            
+
             </vs-collapse>
      </vs-card>
 </div>
@@ -144,7 +147,7 @@ export default {
         getTareas(){
             let me = this
             me.$vs.loading()
-            axios.get('http://localhost:8000/api/tareas?id_seccion='+me.id_seccion)
+            axios.get('https://server.ipuiecotocollao.com/api/tareas?id_seccion='+me.id_seccion)
             .then(function (res) {
                 me.tareas = res.data
                 me.$vs.loading.close()
@@ -175,7 +178,7 @@ export default {
           formData.append('archivo', fileImgPreg)
           formData.append('archivo_old', me.archivo_old)
           formData.append('estado', 1)
-          axios.post("http://localhost:8000/api/tareas", formData)
+          axios.post("https://server.ipuiecotocollao.com/api/tareas", formData)
           .then(function (response) {
             me.$vs.loading.close()
             me.$vs.notify({
@@ -190,7 +193,7 @@ export default {
         },
         eliminarTarea(id_tarea){
           let me = this
-          axios.get("http://localhost:8000/api/eliminar_tarea/"+id_tarea)
+          axios.get("https://server.ipuiecotocollao.com/api/eliminar_tarea/"+id_tarea)
           .then(function (response) {
             me.$vs.loading.close()
             me.$vs.notify({ color: 'success', title: 'Tarea eliminada.', })
@@ -198,6 +201,9 @@ export default {
           })
           .catch(function (error) { me.$vs.loading.close() })
         },
+        actualizar(){
+          location.reload()
+        }
     },
 }
 </script>

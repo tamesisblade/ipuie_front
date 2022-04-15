@@ -14,13 +14,13 @@
             <div class="vx-col sm:w-1/5 w-full mb-6" style="min-width: 250px;" :key="index" v-for="(item, index) in cursos">
             <vx-card align="justify">
                 <div slot="no-body" style="margin: 0% !important;">
-                    <img :src="'http://localhost:8000/images/cursos/' + item.img_portada" alt="content-img" class="responsive card-img-top" style="max-height: 150px;">
+                    <img style="height: 200px;" :src="'https://server.ipuiecotocollao.com/images/cursos/' + item.img_portada" alt="content-img" class="responsive card-img-top" >
                 </div>
                 <h5 class="mb-1"> {{item.titulo}} </h5>
                 <div class="text-grey mb-3" style="font-size: 12px;"> {{item.subtitulo}} </div>
                 <div align="center">
                     <vs-button style="font-size: 12px; padding: 5px; display: inline-block; width: 45%;" class="m-1" size="small" type="line" color="primary" @click="$router.push('/detalle_curso/'+item.id_curso)">Ver curso</vs-button>
-                  
+
                     <vs-button style="font-size: 12px; padding: 5px; display: inline-block; width: 45%;" class="m-1" size="small" type="line" color="#b9b9b9" @click="irInscripcion(item)">Inscribirse</vs-button>
                 </div>
 
@@ -36,7 +36,7 @@
             <div class="vx-col sm:w-1/5 w-full mb-6" style="min-width: 250px;" :key="index" v-for="(item, index) in cursos">
             <vx-card align="justify">
                 <div slot="no-body" style="margin: 0% !important;">
-                    <img :src="'http://localhost:8000/images/cursos/' + item.img_portada" alt="content-img" class="responsive card-img-top">
+                    <img style="height: 200px;" :src="'https://server.ipuiecotocollao.com/images/cursos/' + item.img_portada" alt="content-img" class="responsive card-img-top">
                 </div>
                 <h5 class="mb-1"> {{item.titulo}} </h5>
                 <div class="text-grey mb-3" style="font-size: 12px;"> {{item.subtitulo}} </div>
@@ -54,7 +54,7 @@
         <div class="vx-col sm:w-1/5 w-full mb-6" style="min-width: 250px;" :key="index" v-for="(item, index) in cursos">
         <vx-card align="justify">
             <div slot="no-body" style="margin: 0% !important;">
-                <img :src="'http://localhost:8000/images/cursos/' + item.img_portada" alt="content-img" class="responsive card-img-top">
+                <img style="height: 200px;" :src="'https://server.ipuiecotocollao.com/images/cursos/' + item.img_portada" alt="content-img" class="responsive card-img-top">
             </div>
             <h5 class="mb-1"> {{item.titulo}} </h5>
             <div class="text-grey mb-3" style="font-size: 12px;"> {{item.subtitulo}} </div>
@@ -111,7 +111,7 @@ export default {
         getCursos(){
             let me = this
             me.$vs.loading()
-            axios.get('http://localhost:8000/api/cursos')
+            axios.get('https://server.ipuiecotocollao.com/api/cursos')
             .then(function (res) {
                 me.cursos = res.data
                 me.$vs.loading.close()
@@ -130,7 +130,7 @@ export default {
         acceptAlertCurso() {
             let me = this
 
-            axios.get('http://localhost:8000/api/elimiar_curso/' + me.id_curso)
+            axios.get('https://server.ipuiecotocollao.com/api/elimiar_curso/' + me.id_curso)
             .then(function (res) {
                 me.$vs.notify({
                     color: 'danger',

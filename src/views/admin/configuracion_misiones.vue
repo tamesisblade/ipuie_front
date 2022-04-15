@@ -108,7 +108,7 @@ export default{
         getEventos(){
             let me = this
             me.$vs.loading()
-            axios.get('http://localhost:8000/api/eventos')
+            axios.get('https://server.ipuiecotocollao.com/api/eventos')
             .then(function (res) {
                 me.eventos = res.data
                 me.$vs.loading.close()
@@ -118,7 +118,7 @@ export default{
         getAeronaves(){
             let me = this
             me.$vs.loading()
-            axios.get('http://localhost:8000/api/aeronaves')
+            axios.get('https://server.ipuiecotocollao.com/api/aeronaves')
             .then(function (res) {
                 me.aeronaves = res.data
                 me.$vs.loading.close()
@@ -138,7 +138,7 @@ export default{
             let formData = new FormData()
             formData.append('nombre_evento', me.nombre_evento);
             me.$vs.loading()
-            axios.post('http://localhost:8000/api/eventos', formData)
+            axios.post('https://server.ipuiecotocollao.com/api/eventos', formData)
             .then(function (res) {
                 me.$vs.loading.close()
                 me.nombre_evento=''
@@ -162,7 +162,7 @@ export default{
         },
         eliminarEvento(){
           let me = this
-            axios.delete('http://localhost:8000/api/eventos/'+ me.id_evento)
+            axios.delete('https://server.ipuiecotocollao.com/api/eventos/'+ me.id_evento)
             .then(function (res) {
                 me.getEventos()
             })
@@ -179,7 +179,7 @@ export default{
         },
         eliminarAeronave(){
           let me = this
-            axios.delete('http://localhost:8000/api/aeronaves/'+ me.id_aeronave)
+            axios.delete('https://server.ipuiecotocollao.com/api/aeronaves/'+ me.id_aeronave)
             .then(function (res) {
                 me.getAeronaves()
             })
@@ -198,7 +198,7 @@ export default{
             let formData = new FormData()
             formData.append('nombre_aeronave', me.nombre_aeronave);
             me.$vs.loading()
-            axios.post('http://localhost:8000/api/aeronaves', formData)
+            axios.post('https://server.ipuiecotocollao.com/api/aeronaves', formData)
             .then(function (res) {
                 me.$vs.loading.close()
                 me.nombre_aeronave=''

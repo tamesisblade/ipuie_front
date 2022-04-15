@@ -11,10 +11,9 @@
         <div class="vx-row mb-6 mt-4">
             <vs-list :key="index" v-for="(item, index) in evaluaciones">
                 <vs-list-header color="#3BA0FF" v-bind:title="'Evaluación '+(index + 1)"></vs-list-header>
-                
+
                 <vs-list-item>
                     <template slot="avatar">
-                        Asignatura: {{item.nombreasignatura}}<br>
                         Disponible: desde {{item.fecha_inicio}} hasta {{item.fecha_fin}}<br>
                         Duración: {{item.duracion}} minutos<br>
                         Puntos: {{item.puntos}}<br>
@@ -33,15 +32,14 @@
             <div v-else align="right">Click en la calificación para ver la evaluación resuelta.</div>
             <vs-list :key="index" v-for="(item, index) in evaluaciones" class="mt-6">
                 <vs-list-header color="#3BA0FF" v-bind:title="'Evaluación '+(index + 1)"></vs-list-header>
-                
+
                 <vs-list-item>
                     <template slot="avatar">
-                        Asignatura: {{item.nombreasignatura}}<br>
                         Disponible: desde {{item.fecha_inicio}} hasta {{item.fecha_fin}}<br>
                         Puntos: {{item.puntos}}<br>
                         Observaciones: {{item.descripcion}}
                     </template>
-                    
+
                     <vs-button color="success" type="border" class="m-1" @click="irRevision(item)">{{item.calificacion}} - Ver</vs-button>
                 </vs-list-item>
             </vs-list>
@@ -66,7 +64,6 @@ export default {
             evaluaciones: [],
             evaluacion: {
                 nombre: '',
-                asignatura: '',
                 descripcion: '',
                 fecha_inicio: '',
                 fecha_fin: '',
@@ -92,7 +89,7 @@ export default {
         this.estudiante = this.usuario.idusuario
         this.nombre_estudiante = this.usuario.nombres
         this.apellido_estudiante = this.usuario.apellidos
-        
+
         var urlBack = window.location.href
         var urlV = urlBack.split('/')
         this.urlOrigen = urlV[0]+'/'+urlV[1]+'/'+urlV[2]+'/responderEvaluacion'
@@ -130,7 +127,7 @@ export default {
         verEvalPend(){
             this.evaluaciones = [];
             this.$vs.loading()
-            let formData = new FormData();              
+            let formData = new FormData();
                 formData.append('codigo', localStorage.id_seccion);
                 formData.append('estudiante', this.usuario[0].idusuario);
 
@@ -142,7 +139,7 @@ export default {
         verEvalComplet(){
             this.evaluaciones = [];
             this.$vs.loading()
-            let formData = new FormData();              
+            let formData = new FormData();
                 formData.append('codigo', localStorage.id_seccion);
                 formData.append('estudiante', this.usuario[0].idusuario);
 
@@ -153,7 +150,7 @@ export default {
         },
         irRevision(item){
             localStorage.setItem('id_evalRevisar', item.id);
-            localStorage.setItem('grupo_estudiante', item.grupo); 
+            localStorage.setItem('grupo_estudiante', item.grupo);
             this.$router.push('/revisarevaluacion')
         }
     },

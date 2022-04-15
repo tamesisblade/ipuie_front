@@ -258,7 +258,7 @@ export default {
   methods: {
     getMenu() {
       let me = this;
-      axios.get("http://localhost:8000/api/menu?idgrupo="+me.id_perfil)
+      axios.get("https://server.ipuiecotocollao.com/api/menu?idgrupo="+me.id_perfil)
       .then(function(response) {
         me.navMenuItems = response.data;
       })

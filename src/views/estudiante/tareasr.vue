@@ -6,19 +6,19 @@
             <vs-th sort-key="descripcion">Tarea</vs-th>
                 <vs-th sort-key="descripcion">Descripción</vs-th>
                 <vs-th sort-key="fecha_inicio">Fecha Entrega</vs-th>
-            
+
                 <vs-th sort-key="fecha_final">Observación</vs-th>
                 <vs-th sort-key="fecha_final">Nota</vs-th>
             </template>
             <template slot-scope="{data}">
                 <vs-tr :key="indextr" v-for="(tr, indextr) in data">
                     <vs-td :data="data[indextr].nombre">
-                
+
                       <a :href="$server_url_file+'tareas/'+data[indextr].archivo" target="_blank">
                             {{data[indextr].tarea}}
-                      </a> 
+                      </a>
 
-                    
+
 
                     </vs-td>
                     <vs-td :data="data[indextr].observaciones">
@@ -27,7 +27,7 @@
                     <vs-td :data="data[indextr].fecha_entrega">
                         {{data[indextr].fecha_entrega}}
                     </vs-td>
-               
+
                     <vs-td :data="data[indextr].comentario">
                         {{data[indextr].comentario}}
                     </vs-td>
@@ -38,7 +38,7 @@
             </template>
         </vs-table>
     </vs-card>
-       
+
 </div>
 </template>
 
@@ -93,7 +93,7 @@ export default {
                 color: '#046AE7'
             })
             // me.$http.get(this.$server_url+'tareaEstudianteRealizada?idcurso='+ me.idcurso + "&idusuario=" + me.usuario[0].idusuario)
-            var url = "http://localhost:8000/api/tareaEstudianteRealizada?id_seccion=" + me.id_seccion + "&idusuario=" + me.usuario[0].idusuario;
+            var url = "https://server.ipuiecotocollao.com/api/tareaEstudianteRealizada?id_seccion=" + me.id_seccion + "&idusuario=" + me.usuario[0].idusuario;
             axios.get(url)
             .then(function (response) {
                     var respuesta = response.data;

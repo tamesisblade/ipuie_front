@@ -85,9 +85,9 @@ export default {
             formData.append('forma_pago', me.forma_pago.label)
             formData.append('valor', me.valor)
             formData.append('estado', 2)
-            axios.post("http://localhost:8000/api/inscripcion_curso", formData)
+            axios.post("https://server.ipuiecotocollao.com/api/inscripcion_curso", formData)
             .then(function (response) {
-              if( response.data == 0 ){
+              if( response.data == '0' ){
                 me.$vs.notify({
                     color: 'warning',
                     title: 'Usted ya ha enviado una solicitud de inscripción, por favor espere a que el administrador lo apruebe.',

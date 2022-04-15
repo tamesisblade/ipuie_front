@@ -3,7 +3,7 @@
     <!------BARRA SUPERIOR-------->
     <div class="vx-col sm:w-3/4 w-full" style="font-size: 18px;">
         <div v-if="evaluaciones[0]===undefined">No existe evaluación</div>
-        <vx-card v-else v-bind:title="evaluaciones[0].nombreasignatura" title-color="primary">
+        <vx-card v-else title-color="primary">
             <div class="vx-row mt-0">
                 <div class="vx-col w-full" align="justify">
                     <b>Inicia: </b> {{evaluaciones[0].fecha_inicio}} - <b>finaliza: </b> {{evaluaciones[0].fecha_fin}}<br>
@@ -141,9 +141,9 @@
             <!-- <vs-button v-if="volverActivo===false" color="warning" type="border" class="mt-6 m-1" @click="$router.push('/evaluacion_imprimir')">&nbsp;&nbsp;&nbsp;&nbsp;PDF&nbsp;&nbsp;&nbsp;&nbsp;</vs-button> -->
 
 
-            <vs-button v-if="usuario.id_group === 4" color="success" type="border" class="mt-6" @click="$router.push('/estudiante/evaluaciones')"><b>← Volver</b></vs-button>
+            <vs-button v-if="usuario.id_group === 4" color="success" type="border" class="mt-6" @click="$router.go(-1)"><b>← Volver</b></vs-button>
 
-            <vs-button v-else color="success" type="border" class="mt-6 m-1" @click="$router.push('/evaluaciones')"><b>← Volver</b></vs-button>
+            <vs-button v-else color="success" type="border" class="mt-6 m-1" @click="$router.go(-1)"><b>← Volver</b></vs-button>
         </div>
 
     </vx-card>
@@ -183,7 +183,6 @@ export default {
             evaluaciones: [],
             evaluacion: {
                 nombre: '',
-                asignatura: '',
                 descripcion: '',
                 fecha_inicio: '',
                 fecha_fin: '',

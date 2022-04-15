@@ -135,7 +135,7 @@
                 <vs-table stripe v-if="evaluaciones!=0" v-model="evalSelected" pagination max-items="25" search :data="evaluaciones">
                     <template slot="header">
                         <vs-button color="primary" type="border" class="m-1" @click="$router.go(-1)"><b>← Volver</b></vs-button>
-                        <vs-button @click="limpiar(); popupEditEval=true; agregarActivo=true;" color="dark" type="filled"  class="m-1">Crear mi evaluación</vs-button>
+                        <vs-button @click="limpiar(); popupEditEval=true; agregarActivo=true;" color="dark" type="filled"  class="m-1">Crear evaluación</vs-button>
                         <!-- <vs-button @click="irPreguntas" size="small" style="font-size: 14px;" color="primary" type="filled" class="mr-1">Crear Pregunta</vs-button> -->
                     </template>
 
@@ -149,10 +149,8 @@
                     <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
 
                         <vs-td :data="data[indextr].tipo_nombre">
-                            <b>Asignatura:</b> {{ data[indextr].nombreasignatura }}<br>
                             <b>Puntos:</b> {{ data[indextr].puntos }} &nbsp;&nbsp;-&nbsp;&nbsp;
                             <b>Duración:</b> {{ data[indextr].duracion }} min<br>
-                            <b>Tipo:</b> {{ data[indextr].tipo_nombre }}
                         </vs-td>
 
                         <vs-td>
@@ -220,7 +218,7 @@
 
     <!-- Modal Editar Evaluaciones-->
     <div class="demo-alignment">
-        <vs-popup fullscreen classContent="popup-example" v-bind:title="'Evaluación - GRUPO '+radios1" :active.sync="popupEditEval">
+        <vs-popup fullscreen classContent="popup-example" v-bind:title="'Evaluación'" :active.sync="popupEditEval">
 
         <vs-tabs alignment="fixed">
         <vs-tab label="Evaluación">
@@ -280,14 +278,13 @@
                 </template>
 
                 <template slot="thead">
-                    <vs-th sort-key="descripcion" style="font-size: 15px; color: #18DE8A;">Preguntas de mi evaluación</vs-th>
+                    <vs-th sort-key="descripcion" style="font-size: 15px; color: #18DE8A;">Preguntas evaluación</vs-th>
                     <vs-th sort-key="nombre_tipo">Detalle</vs-th>
                     <vs-th>Acciones</vs-th>
                 </template>
                 <template slot-scope="{data}">
                     <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
                         <vs-td :data="data[indextr].descripcion">
-                            Tema: {{ data[indextr].nombre_tema}}<br>
                             {{ data[indextr].descripcion }}
                             <img v-if="data[indextr].img_pregunta!='' && data[indextr].img_pregunta!='null' && data[indextr].img_pregunta!=null" v-bind:src="$data_url+'archivos/img/img_preguntas/'+data[indextr].img_pregunta" class="img-responsive" style="border-radius: 5px;" width="100px">
                             <vs-collapse>
@@ -307,8 +304,7 @@
 
                         <vs-td :data="data[indextr].nombre_tipo">
                             {{data[indextr].clasificacion}}<br>
-                            <b>Puntaje:</b> {{data[indextr].puntaje_pregunta}}<br>
-                            <b>Tipo:</b> {{data[indextr].nombre_tipo}}
+                            <b>Puntaje:</b> {{data[indextr].puntaje_pregunta}}
                         </vs-td>
 
                         <vs-td>
@@ -339,8 +335,7 @@
 
     <!-- Modal Preguntas-->
     <div class="demo-alignment">
-        <vs-popup fullscreen classContent="popup-example" v-bind:title="'Seleccione las preguntas para esta Evaluación - GRUPO '+radios1" :active.sync="popupSelecPreg">
-            <b>Asignatura:</b> {{ local_nombreasignatura }}
+        <vs-popup fullscreen classContent="popup-example" v-bind:title="'Seleccione las preguntas para esta Evaluación'+radios1" :active.sync="popupSelecPreg">
             <vs-table stripe v-if="preguntas!=0" v-model="pregSelected" pagination max-items="25" search :data="preguntas.items">
 
                 <template slot="header">
@@ -362,7 +357,6 @@
                 <template slot-scope="{data}">
                 <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
                 <vs-td :data="data[indextr].descripcion">
-                    Tema: {{ data[indextr].nombre_tema }} <br>
                     {{ data[indextr].descripcion }}
                     <img v-if="data[indextr].img_pregunta!='' && data[indextr].img_pregunta!='null' && data[indextr].img_pregunta!=null" v-bind:src="$data_url+'archivos/img/img_preguntas/'+data[indextr].img_pregunta" class="img-responsive" width="100px" style="border-radius: 5px;">
 
@@ -383,8 +377,7 @@
 
                 <vs-td :data="data[indextr].nombre_tipo">
                     {{data[indextr].clasificacion}}<br>
-                    <b>Puntaje:</b> {{data[indextr].puntaje_pregunta}}<br>
-                    <b>Tipo:</b> {{data[indextr].nombre_tipo}}
+                    <b>Puntaje:</b> {{data[indextr].puntaje_pregunta}}
                 </vs-td>
 
                 <vs-td :data="data[indextr].id">
@@ -423,7 +416,6 @@
 </template>
 
 <script>
-import crearPreguntas from './PreguntasComponent.vue'
 import flatPickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css';
 import Vue from 'vue'
@@ -449,7 +441,6 @@ export default {
             evaluaciones: [],
             evaluacion: {
                 nombre: '',
-                asignatura: '',
                 descripcion: '',
                 fecha_inicio: '',
                 fecha_fin: '',
@@ -487,9 +478,6 @@ export default {
                 img_opcion2: '',
                 img_opcion3: ''
             },
-            asignaturas: [],
-            asignatura: {id: '', label: ''},
-            asignaturaSelected: {id: '', label: ''},
             editarActivo: false,
             date: new Date().toJSON(),
             datetime: null,
@@ -589,14 +577,11 @@ export default {
             indexCantField: 0,
             evalElimin: [],
             activePromptEliminar: false,
-            local_idasignatura: '',
-            local_nombreasignatura: '',
             popupCrearPreguntas: false,
         }
     },
     components: {
         'v-select': vSelect,
-        'crear-preguntas': crearPreguntas,
         flatPickr
     },
     created() {
@@ -608,10 +593,6 @@ export default {
         var urlBack = window.location.href
         var urlV = urlBack.split('/')
         me.urlOrigen = urlV[0]+'/'+urlV[1]+'/'+urlV[2]
-
-        me.local_idasignatura = localStorage.idasignatura
-        me.local_nombreasignatura = localStorage.nombreasignatura
-        console.log(me.local_idasignatura+'--'+me.local_nombreasignatura);
 
         me.getEvalDoc();
 
@@ -725,7 +706,6 @@ export default {
 
             let formData = new FormData();
                 formData.append('nombre', me.evaluacion.nombre);
-                formData.append('asignatura',  me.local_idasignatura);
                 formData.append('descripcion', descripVal);
                 formData.append('puntos', me.evaluacion.puntos);
                 formData.append('duracion', me.evaluacion.duracion);
@@ -790,7 +770,6 @@ export default {
             let me = this;
             me.cantidadesField = [0,0,0,0,0];
             me.radios1 = 1;
-            me.asignaturaSelected = {id: item.id_asignatura, label: item.nombreasignatura};
             me.evaluacion.nombre = item.nombre_evaluacion;
             me.evaluacion.descripcion = item.descripcion;
             me.evaluacion.puntos = item.puntos;
@@ -943,6 +922,15 @@ export default {
             if(this.id_evaluacion===''){
                 this.id_evaluacion = 0
             }
+
+            this.datosPreguntas = {
+                txtpregunta:'',
+                respuesta:'',
+                ocpion1:'',
+                ocpion2:'',
+                ocpion3:'',
+                ocpion4:'',
+            },
 
             localStorage.id_desde_eval = this.evaluacion.id
             localStorage.grupo_desde_eval = this.radios1

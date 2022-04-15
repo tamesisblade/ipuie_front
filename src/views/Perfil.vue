@@ -1,7 +1,7 @@
 <template>
 <vx-card title="Mi Perfil">
     <div class="text-center">
-        <vs-avatar size="120px" :src="'http://localhost:8000/perfil/'+usuario[0].foto_user" />
+        <vs-avatar size="120px" :src="'https://server.ipuiecotocollao.com/perfil/'+usuario[0].foto_user" />
     </div>
     <div class="vx-row mb-6">
         <div class="vx-col w-full sm:w-1/2">
@@ -126,7 +126,7 @@ export default {
             formData.append('telefono', this.usuario[0].telefono);
             formData.append('password', this.password);
             formData.append('institucion_idInstitucion', this.usuario[0].institucion_idInstitucion);
-            axios.post('http://localhost:8000/api/perfil', formData)
+            axios.post('https://server.ipuiecotocollao.com/api/perfil', formData)
                 .then(function (response) {
                     me.file = '';
                     me.$vs.loading.close(),
@@ -143,7 +143,7 @@ export default {
         },
         getInstituciones() {
             let me = this;
-            axios.get('http://localhost:8000/api/selectInstitucion?idregion=' + me.idregion + '&idciudad=' + me.idciudad)
+            axios.get('https://server.ipuiecotocollao.com/api/selectInstitucion?idregion=' + me.idregion + '&idciudad=' + me.idciudad)
                 .then(function (response) {
                     me.instituciones = response.data;
                 })
@@ -152,7 +152,7 @@ export default {
         getInstitucion() {
             let me = this;
             me.usuario[0].institucion_idInstitucion = ''
-            axios.get('http://localhost:8000/api/selectInstitucion?idregion=' + me.idregion + '&idciudad=' + me.idciudad)
+            axios.get('https://server.ipuiecotocollao.com/api/selectInstitucion?idregion=' + me.idregion + '&idciudad=' + me.idciudad)
                 .then(function (response) {
                     me.instituciones = response.data;
                 })
@@ -160,7 +160,7 @@ export default {
         },
         async getCiudadSelect() {
             let me = this;
-            axios.get("http://localhost:8000/api/ciudad").then(function (response) {
+            axios.get("https://server.ipuiecotocollao.com/api/ciudad").then(function (response) {
                 me.ciudad = response.data
             });
         },
