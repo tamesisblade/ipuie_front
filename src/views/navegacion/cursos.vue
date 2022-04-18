@@ -14,7 +14,7 @@
             <div class="vx-col sm:w-1/5 w-full mb-6" style="min-width: 250px;" :key="index" v-for="(item, index) in cursos">
             <vx-card align="justify">
                 <div slot="no-body" style="margin: 0% !important;">
-                    <img style="height: 200px;" :src="'https://server.ipuiecotocollao.com/images/cursos/' + item.img_portada" alt="content-img" class="responsive card-img-top" >
+                    <img style="height: 200px;" :src="$server_images+'cursos/' + item.img_portada" alt="content-img" class="responsive card-img-top" >
                 </div>
                 <h5 class="mb-1"> {{item.titulo}} </h5>
                 <div class="text-grey mb-3" style="font-size: 12px;"> {{item.subtitulo}} </div>
@@ -36,7 +36,7 @@
             <div class="vx-col sm:w-1/5 w-full mb-6" style="min-width: 250px;" :key="index" v-for="(item, index) in cursos">
             <vx-card align="justify">
                 <div slot="no-body" style="margin: 0% !important;">
-                    <img style="height: 200px;" :src="'https://server.ipuiecotocollao.com/images/cursos/' + item.img_portada" alt="content-img" class="responsive card-img-top">
+                    <img style="height: 200px;" :src="$server_images+'cursos/' + item.img_portada" alt="content-img" class="responsive card-img-top">
                 </div>
                 <h5 class="mb-1"> {{item.titulo}} </h5>
                 <div class="text-grey mb-3" style="font-size: 12px;"> {{item.subtitulo}} </div>
@@ -54,7 +54,7 @@
         <div class="vx-col sm:w-1/5 w-full mb-6" style="min-width: 250px;" :key="index" v-for="(item, index) in cursos">
         <vx-card align="justify">
             <div slot="no-body" style="margin: 0% !important;">
-                <img style="height: 200px;" :src="'https://server.ipuiecotocollao.com/images/cursos/' + item.img_portada" alt="content-img" class="responsive card-img-top">
+                <img style="height: 200px;" :src="$server_images+'cursos/' + item.img_portada" alt="content-img" class="responsive card-img-top">
             </div>
             <h5 class="mb-1"> {{item.titulo}} </h5>
             <div class="text-grey mb-3" style="font-size: 12px;"> {{item.subtitulo}} </div>

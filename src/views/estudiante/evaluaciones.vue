@@ -140,7 +140,8 @@ export default {
             this.evaluaciones = [];
             this.$vs.loading()
             let formData = new FormData();
-                formData.append('codigo', localStorage.id_seccion);
+                formData.append('codigo', localStorage.id_curso);
+                formData.append('seccion_id', localStorage.id_seccion);
                 formData.append('estudiante', this.usuario[0].idusuario);
 
             this.$http.post(this.$server_url+'evalCompleEstCurso', formData).then(res => {
@@ -148,6 +149,7 @@ export default {
                 this.$vs.loading.close()
             })
         },
+      
         irRevision(item){
             localStorage.setItem('id_evalRevisar', item.id);
             localStorage.setItem('grupo_estudiante', item.grupo);

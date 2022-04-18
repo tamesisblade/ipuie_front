@@ -89,7 +89,7 @@ export default {
                 color: '#046AE7'
             })
             // me.$http.get(this.$server_url+'tareaEstudiantePendiente?idcurso='+ me.idcurso + "&idusuario=" + me.usuario[0].idusuario)
-            var url = "https://server.ipuiecotocollao.com/api/tareaEstudiantePendiente?id_seccion=" + me.id_seccion + "&idusuario=" + me.usuario[0].idusuario;
+            var url = this.$server_url+'tareaEstudiantePendiente?id_seccion=' + me.id_seccion + "&idusuario=" + me.usuario[0].idusuario;
             axios.get(url)
             .then(function (response) {
                     var respuesta = response.data;

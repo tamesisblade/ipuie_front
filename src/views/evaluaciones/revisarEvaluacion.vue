@@ -59,10 +59,10 @@
 
                             <!-----PREGUNTAS ESCRITAS---->
                             <div v-if="item.id_tipo_pregunta===2 || item.id_tipo_pregunta===6">
-                                <div align="right" class="mb-3" v-if="usuario.id_group != 4 && previsualizar_eval!=1">
+                                <div align="right" class="mb-3" v-if="usuario[0].id_group == 1 && previsualizar_eval!=1">
                                     <vs-input type="number" v-model="calificacionManual" style="display: inline-block; width: 80px;" />
-                                    <vs-button v-if="calificacionManual>=0 && calificacionManual<=item.puntaje_pregunta" style="display: inline-block; width: 80px; padding-left: 12px;" @click="calificarManual(item.puntaje, item.id_respuesta_pregunta)">calificar</vs-button>
-                                    <vs-button v-else disabled style="display: inline-block; width: 80px; padding-left: 12px;">calificar</vs-button>
+                                    <vs-button v-if="calificacionManual>=0 && calificacionManual<=item.puntaje_pregunta " style="display: inline-block; width: 80px; padding-left: 12px;" @click="calificarManual(item.puntaje, item.id_respuesta_pregunta)">calificar1</vs-button>
+                                    <vs-button v-else disabled style="display: inline-block; width: 80px; padding-left: 12px;">calificar2</vs-button>
                                 </div>
 
                                 <div v-for="(itemop, index1) in item.opciones" :key="index1">
@@ -244,7 +244,7 @@ export default {
             // formData.append('codigo', localStorage.id_seccion);
             // formData.append('evaluacion', id_evalRevisar);
 
-            me.$http.get(this.$server_url+'estudiantesEvalCurso?codigo='+localStorage.id_seccion+'&evaluacion='+id_evalRevisar)
+            me.$http.get(this.$server_url+'estudiantesEvalCurso?codigo='+localStorage.id_curso+'&evaluacion='+id_evalRevisar)
                 .then(function (response) {
                     if (response.data[0] === undefined) {
                         if( me.previsualizar_eval!=1 ){

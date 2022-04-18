@@ -147,7 +147,7 @@ export default {
         getTareas(){
             let me = this
             me.$vs.loading()
-            axios.get('https://server.ipuiecotocollao.com/api/tareas?id_seccion='+me.id_seccion)
+            axios.get(this.$server_url+'tareas?id_seccion='+me.id_seccion)
             .then(function (res) {
                 me.tareas = res.data
                 me.$vs.loading.close()
@@ -178,7 +178,7 @@ export default {
           formData.append('archivo', fileImgPreg)
           formData.append('archivo_old', me.archivo_old)
           formData.append('estado', 1)
-          axios.post("https://server.ipuiecotocollao.com/api/tareas", formData)
+          axios.post(this.$server_url+'tareas', formData)
           .then(function (response) {
             me.$vs.loading.close()
             me.$vs.notify({
@@ -193,7 +193,7 @@ export default {
         },
         eliminarTarea(id_tarea){
           let me = this
-          axios.get("https://server.ipuiecotocollao.com/api/eliminar_tarea/"+id_tarea)
+          axios.get(this.$server_url+'eliminar_tarea/'+id_tarea)
           .then(function (response) {
             me.$vs.loading.close()
             me.$vs.notify({ color: 'success', title: 'Tarea eliminada.', })

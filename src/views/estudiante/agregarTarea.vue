@@ -94,7 +94,7 @@ export default {
             let formData = new FormData();
             formData.append('archivo', file);
             formData.append('idusuario', me.usuario[0].idusuario);
-            me.$http.post(this.$server_url+'archivo', formData)
+            axios.post(this.$server_url+'archivo', formData)
             // axios.post('https://server.ipuiecotocollao.com/api/archivo', formData)
                 .then(function (response) {
                     // me.getContenido();
@@ -143,7 +143,7 @@ export default {
             formData.append('idtarea', localStorage.getItem('idtarea'));
 
 
-            me.$http.post(this.$server_url+'respuesta', formData)
+            axios.post(this.$server_url+'respuesta', formData)
 
                 .then(function (response) {
                     // me.getContenido();

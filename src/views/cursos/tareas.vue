@@ -147,6 +147,7 @@
                   :href="$server_url_file + 'tareas/' + data[indextr].url"
                   target="_blank"
                 >
+
                   {{ data[indextr].archivo }}
                 </a>
               </vs-td>
@@ -181,12 +182,13 @@
                   >
                   </vs-button>
                   <vs-button
+                    icon="delete"
                     color="danger"
                     size="small"
                     type="gradient"
                     @click="confirmEliminarCalificacion(tr)"
                   >
-                    X TAREA
+                    Devolver tarea
                   </vs-button>
                 </div>
               </vs-td>
@@ -303,7 +305,7 @@ export default {
       let me = this;
       me.$vs.loading();
       axios
-        .get("https://server.ipuiecotocollao.com/api/tareas?id_seccion=" + me.id_seccion)
+        .get(this.$server_url+'tareas?id_seccion=' + me.id_seccion)
         .then(function (res) {
           me.tareas = res.data;
           me.$vs.loading.close();
@@ -327,6 +329,8 @@ export default {
       let fileImgPreg;
       fileImgPreg = document.getElementById("file1").files[0];
 
+   
+     
       me.$vs.loading();
       let formData = new FormData();
       formData.append("id_tarea", me.id_tarea);
@@ -334,16 +338,22 @@ export default {
       formData.append("observaciones", me.observaciones);
       formData.append("fecha_entrega", me.fecha_entrega);
       formData.append("archivo", fileImgPreg);
-      formData.append("archivo_old", me.archivo_old);
+      if(fileImgPreg == undefined){
+        
+      }else{
+          formData.append("archivo_old", me.archivo_old);
+      }
+    
       formData.append("estado", 1);
       axios
-        .post("https://server.ipuiecotocollao.com/api/tareas", formData)
+        .post(this.$server_url+'tareas', formData)
         .then(function (response) {
           me.$vs.loading.close();
           me.$vs.notify({
             color: "success",
             title: "Tarea guardada exitosamente.",
           });
+          me.id_tarea = 0
           me.popupTareas = false;
           me.getTareas();
         })
@@ -354,7 +364,7 @@ export default {
     eliminarTarea(id_tarea) {
       let me = this;
       axios
-        .get("https://server.ipuiecotocollao.com/api/eliminar_tarea?id_tarea=" + id_tarea)
+        .get(this.$server_url+'+eliminar_tarea?id_tarea=' + id_tarea)
         .then(function (response) {
           me.$vs.loading.close();
           me.$vs.notify({ color: "success", title: "Tarea eliminada." });
@@ -426,7 +436,7 @@ export default {
         color: "#046AE7",
       });
       axios
-        .post("https://server.ipuiecotocollao.com/api/editarCalificacionTarea", formData)
+        .post(this.$server_url+'editarCalificacionTarea', formData)
         // me.$http.post(this.$server_url+'editarCalificacionTarea', formData)
 
         .then(function (response) {
@@ -452,6 +462,7 @@ export default {
       me.idrespuesta = item.id;
 
       me.calificacion.url = item.url;
+
 
       me.popupTareaEstudiantes = false;
       me.$vs.dialog({
@@ -486,7 +497,8 @@ export default {
             icon: "icon-alert-triangle",
           });
 
-          me.calificar();
+          me.getTareas();
+          me.calificar()
           me.limpiar();
         })
         .catch(function (error) {

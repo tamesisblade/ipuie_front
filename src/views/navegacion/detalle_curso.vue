@@ -60,7 +60,7 @@
       <div class="vx-col sm:w-1/4 w-full" style="min-width: 200px;">
         <vx-card>
             <div slot="no-body" style="margin: 0% !important;">
-                <img :src="'https://server.ipuiecotocollao.com/images/cursos/'+curso.img_portada" alt="content-img" class="responsive card-img-top">
+                <img :src="this.$server_images+'cursos/'+curso.img_portada" alt="content-img" class="responsive card-img-top">
             </div>
 
             <div v-if="curso_habilitado==0">
@@ -127,6 +127,7 @@ export default {
     },
     mounted() {
         this.id_curso = this.$route.params.id_curso
+        localStorage.setItem('id_curso',this.id_curso)
         this.getCurso()
         this.validaCursoEstudiante()
     },
@@ -134,7 +135,7 @@ export default {
         getCurso(){
             let me = this
             me.$vs.loading()
-            axios.get('https://server.ipuiecotocollao.com/api/cursos/'+me.id_curso)
+            axios.get(this.$server_url+'cursos/'+me.id_curso)
             .then(function (response) {
                 me.secciones = response.data.items.secciones
                 me.curso = response.data.items.curso[0]
@@ -145,7 +146,7 @@ export default {
         validaCursoEstudiante(){
             let me = this
 
-            axios.get('https://server.ipuiecotocollao.com/api/curso_estudiante/'+me.id_curso+'/'+me.usuario[0].idusuario)
+            axios.get(this.$server_url+'curso_estudiante/'+me.id_curso+'/'+me.usuario[0].idusuario)
             .then(function (response) {
                 me.curso_habilitado = response.data
             })

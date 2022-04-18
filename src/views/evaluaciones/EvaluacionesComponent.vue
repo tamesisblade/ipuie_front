@@ -6,56 +6,97 @@
             <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
                   <vs-input label="Escriba la pregunta" class="w-full" placeholder="Pregunta" v-model="datosPreguntas.txtpregunta"/>
             </vs-col>
-            <vs-divider color="warning">Escribe las posibles respuestas</vs-divider>
 
         </vs-row>
 
-        <vs-row>
-            <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
-                 <vs-input label="Respuesta 1" style="width: 90%;" placeholder="Respuesta 1" v-model="datosPreguntas.opcion1"/>
-            </vs-col>
-            <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
-                 <vs-input label="Respuesta 2" style="width: 90%;" placeholder="Respuesta 2" v-model="datosPreguntas.opcion2"/>
-            </vs-col>
-        </vs-row>
+        <ul  style="display:flex;" class="mt-5">
+            
+            <li>
+            <vs-radio v-model="datosPreguntas.tipo" vs-name="radios2" vs-value="5">Opción simple</vs-radio>
+            </li>
+            <li>
+            <vs-radio v-model="datosPreguntas.tipo" class="ml-3" vs-name="radios2" vs-value="1">Opción multiple</vs-radio>
+            </li>
+            <li>
+            <vs-radio v-model="datosPreguntas.tipo" class="ml-3" vs-name="radios2" vs-value="6">Respuesta abierta</vs-radio>
+            </li>
+          
+        </ul>
 
-         <vs-row>
-            <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
-                 <vs-input label="Respuesta 3" style="width: 90%;"  placeholder="Respuesta 3" v-model="datosPreguntas.opcion3"/>
-            </vs-col>
-            <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
-                 <vs-input label="Respuesta 4" style="width: 90%;"  placeholder="Respuesta 4" v-model="datosPreguntas.opcion4"/>
-            </vs-col>
-        </vs-row>
-         <vs-divider class="mt-4" color="success">Seleccione la respuesta a la pregunta</vs-divider>
+        <div v-if="datosPreguntas.tipo == 5 || datosPreguntas.tipo == 1">
+            <vs-divider color="warning">Escribe la respuesta de la pregunta </vs-divider>
+            <vs-row>
+                <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
+                    <vs-input label="Respuesta 1" style="width: 90%;" placeholder="Respuesta 1" v-model="datosPreguntas.opcion1"/>
+                </vs-col>
+                <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
+                    <vs-input label="Respuesta 2" style="width: 90%;" placeholder="Respuesta 2" v-model="datosPreguntas.opcion2"/>
+                </vs-col>
+            </vs-row>
 
-            <div>
+            <vs-row>
+                <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
+                    <vs-input label="Respuesta 3" style="width: 90%;"  placeholder="Respuesta 3" v-model="datosPreguntas.opcion3"/>
+                </vs-col>
+                <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
+                    <vs-input label="Respuesta 4" style="width: 90%;"  placeholder="Respuesta 4" v-model="datosPreguntas.opcion4"/>
+                </vs-col>
+            </vs-row>
+            <vs-divider class="mt-4" color="success">Seleccione la respuesta a la pregunta {{datosPreguntas.ch1}}</vs-divider>
+        
+            <div v-if="datosPreguntas.tipo == 5">
                 <ul style="display:flex;flex-direction: row;justify-content: center;">
                     <div>
                         <li>
-                          <vs-radio v-model="datosPreguntas.respuesta"  vs-name="radios1" vs-value="1">Respuesta 1</vs-radio>
+                            <vs-radio v-model="datosPreguntas.respuesta" @input="rd1 = 1;rd2=0;rd3=0;rd4=0;"  vs-name="radios1" vs-value="1">Respuesta 1</vs-radio>
                         </li>
                     </div>
                     <div>
-                         <li>
-                          <vs-radio v-model="datosPreguntas.respuesta" class="ml-3" vs-name="radios1" vs-value="2">Respuesta 2</vs-radio>
+                        <li>
+                            <vs-radio v-model="datosPreguntas.respuesta" @input="rd2 = 1;rd1=0;rd3=0;rd4=0;" class="ml-3" vs-name="radios1" vs-value="2">Respuesta 2</vs-radio>
                         </li>
                     </div>
                     <div>
-                         <li>
-                          <vs-radio v-model="datosPreguntas.respuesta" class="ml-3" vs-name="radios1" vs-value="3">Respuesta 3</vs-radio>
+                            <li>
+                            <vs-radio v-model="datosPreguntas.respuesta" @input="rd3 = 1;rd1=0;rd2=0;rd4=0;" class="ml-3" vs-name="radios1" vs-value="3">Respuesta 3</vs-radio>
                         </li>
                     </div>
                     <div>
-                         <li>
-                          <vs-radio v-model="datosPreguntas.respuesta" class="ml-3" vs-name="radios1" vs-value="4">Respuesta 4</vs-radio>
+                            <li>
+                            <vs-radio v-model="datosPreguntas.respuesta" @input="rd4 = 1;rd1=0;rd2=0;rd3=0;" class="ml-3" vs-name="radios1" vs-value="4">Respuesta 4</vs-radio>
                         </li>
                     </div>
 
                 </ul>
             </div>
 
+            <div v-if="datosPreguntas.tipo == 1">
+                <ul style="display:flex;flex-direction: row;justify-content: center;">
+                    <div>
+                        <li>
+                            <vs-checkbox color="success"  v-model="datosPreguntas.ch1">Respuesta 1</vs-checkbox>
+                        </li>
+                    </div>
+                    <div>
+                        <li>
+                            <vs-checkbox color="success" v-model="datosPreguntas.ch2">Respuesta 2</vs-checkbox>
+                        </li>
+                    </div>
+                    <div>
+                        <li>
+                            <vs-checkbox color="success" v-model="datosPreguntas.ch3">Respuesta 3</vs-checkbox>
+                        </li>
+                    </div>
+                    <div>
+                        <li>
+                            <vs-checkbox color="success" v-model="datosPreguntas.ch4">Respuesta 4</vs-checkbox>
+                        </li>
+                    </div>
 
+                </ul>
+            </div>
+        </div>
+       
         <vs-row class="mt-5">
             <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
               <vs-button type="relief" @click="generarPregunta()">Generar Pregunta</vs-button>
@@ -196,17 +237,34 @@
                     <vs-th v-for="(item, index) in respuestas[0].calificaciones" :key="index">
                         Ev{{index}}
                     </vs-th>
+                    <vs-th>Acciones</vs-th>
 
                 </template>
                 <template slot-scope="{data}">
                 <vs-tr :key="indextr" v-for="(tr, indextr) in data">
                     <vs-td :data="tr">
                         {{ tr.Estudiante }}
+                      
+                       
                     </vs-td>
 
                     <vs-td :key="$indexs" v-for="(item, $indexs) in tr.calificaciones">
                         <span v-if="item">{{item}}</span>
                         <span v-else>0</span>
+                    </vs-td>
+                    <vs-td> 
+                        <div style="display:flex;">
+                            <vx-tooltip  style="display: inline-block;" text="Editar calificación" position="top" color="primary">
+                                <vs-button class="modal-default-button" radius @click="openModalCalificacion(tr)"  size="small" color="success" type="line" icon-pack="feather" icon="icon-edit">
+                                </vs-button>
+                             </vx-tooltip> &nbsp;
+
+                            <vx-tooltip  style="display: inline-block;" text="Ver evaluación" position="top" color="primary">
+                                <vs-button class="modal-default-button" radius @click="abrirEvaluacion(tr)"  size="small" color="warning" type="line" icon-pack="feather" icon="icon-bookmark">
+                                </vs-button>
+                            </vx-tooltip> &nbsp;
+                        </div>
+                       
                     </vs-td>
 
                 </vs-tr>
@@ -322,7 +380,7 @@
                     <vs-button @click="irPreguntas" color="primary" type="line" class="ml-3">Crear pregunta</vs-button>
                 </div>
             </div>
-            </vs-tab>
+        </vs-tab>
 
 
                 <!-----------fin lista preguntas por evaluacion------------->
@@ -409,6 +467,22 @@
         </vs-popup>
     </div>
     <!----fin modal preguntas--->
+    <!--MODAL PARA EDITAR LA CALIFICACION-->
+       <vs-popup
+      background-color="rgba(255,255,255,.6)"
+      title="Cambiar calificación" :active.sync="popupEditCalificacion">
+        <vs-row>
+            <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+               <vs-input label="Ingrese la calificacion" class="w-full" placeholder="Calificacon ejemplo 0- 10" v-model="calificacion.nota"/>
+            </vs-col>
+        </vs-row>
+
+        <vs-row class="mt-4">
+            <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+                <vs-button type="relief" @click="changeCalificacion()">Actualizar calificación</vs-button>
+            </vs-col>
+        </vs-row>
+    </vs-popup>
 
 
 </vx-card>
@@ -427,13 +501,23 @@ import $ from 'jquery'
 export default {
     data() {
         return {
+               rd1:'0',
+                rd2:'0',
+                rd3:'0',
+                rd4:'0',
             datosPreguntas:{
+                tipo:'5',
                 txtpregunta:'',
                 respuesta:'',
                 ocpion1:'',
                 ocpion2:'',
                 ocpion3:'',
                 ocpion4:'',
+                ch1:false,
+                ch2:false,
+                ch3:false,
+                ch4:false,
+              
             },
 
 
@@ -578,6 +662,11 @@ export default {
             evalElimin: [],
             activePromptEliminar: false,
             popupCrearPreguntas: false,
+            calificacion:{
+                id:0,
+                nota:0,
+            },
+            popupEditCalificacion:false,
         }
     },
     components: {
@@ -623,7 +712,8 @@ export default {
             let user = JSON.parse(localStorage.getItem("usuario"))
             let getUser = user[0].idusuario
             formData1.append('docente', getUser);
-            formData1.append('codigo', localStorage.id_seccion);
+            formData1.append('codigo', localStorage.id_curso);
+            formData1.append('seccion_id', localStorage.id_seccion);
             me.$http.post(this.$server_url+'evaluacionesDocente', formData1).then(res => {
                 me.evaluaciones = res.data;
                 me.$vs.loading.close()
@@ -635,10 +725,27 @@ export default {
         },
         generarPregunta(){
              let me = this
+            
             me.$vs.loading()
             let formData1 = new FormData();
             formData1.append('pregunta', me.datosPreguntas.txtpregunta);
-            formData1.append('respuesta', me.datosPreguntas.respuesta);
+            //respuestas opcion simple
+            if(me.datosPreguntas.tipo == 5) {
+                formData1.append('tipo1',me.rd1);
+                formData1.append('tipo2',me.rd2);
+                formData1.append('tipo3',me.rd3);
+                formData1.append('tipo4',me.rd4);  
+                formData1.append('conRespuestas','yes');
+            }
+            //respuestas opcion multiple
+            if(me.datosPreguntas.tipo == 1) {
+                formData1.append('tipo1',me.datosPreguntas.ch1 ? '1':'0');
+                formData1.append('tipo2',me.datosPreguntas.ch2 ? '1':'0');
+                formData1.append('tipo3',me.datosPreguntas.ch3 ? '1':'0');
+                formData1.append('tipo4',me.datosPreguntas.ch4 ? '1':'0'); 
+                formData1.append('conRespuestas','yes'); 
+            }
+                formData1.append('id_tipo_pregunta',me.datosPreguntas.tipo)
                 formData1.append('opcion1', me.datosPreguntas.opcion1);
                 formData1.append('opcion2', me.datosPreguntas.opcion2);
                 formData1.append('opcion3', me.datosPreguntas.opcion3);
@@ -673,6 +780,7 @@ export default {
             this.unidadSelected = [];
             this.grupo_selected = '';
             this.radios1 = 1;
+            
         },
         agregar() {
             let me = this;
@@ -713,7 +821,8 @@ export default {
                 formData.append('fecha_fin', me.evaluacion.fecha_fin);
                 formData.append('estado', estado);
                 formData.append('docente', me.docente);
-                formData.append('codigo', localStorage.id_seccion);
+                formData.append('codigo', localStorage.id_curso);
+                formData.append('seccion_id', localStorage.id_seccion);
                 formData.append('idtipoeval', me.tipoevaluacionselect.id);
                 formData.append('id_grupo_opciones', me.grupo_selected.id);
                 formData.append('cant_unidades', idunidades);
@@ -943,7 +1052,7 @@ export default {
         verCalificaciones(){
             let me = this;
             me.$vs.loading()
-            me.$http.get(this.$server_url+`verCalificacionEval/${localStorage.id_seccion}`).then(response => {
+            me.$http.get(this.$server_url+`verCalificacionEval/${localStorage.id_curso}/${localStorage.id_seccion}`).then(response => {
                 me.respuestas = []
                 var respuesta = response.data;
                 me.estudiantes = response.data;
@@ -952,9 +1061,12 @@ export default {
                     me.alumnos = response.data.items;
                     me.alumnos.forEach(element => {
                         var cal = new Object();
+                        cal.id = element.calificaciones[0].calificacion_id
+                        cal.evaluacion_id = element.calificaciones[0].id 
                         cal.idusuario = element.usuario_idusuario
                         cal.Cedula = element.cedula
                         cal.Estudiante = element.nombres + " " + element.apellidos
+                        cal.calificacion = element.calificaciones[0].calificacion
                         cal.calificaciones = new Object();
                         for (let index = 0; index < element.total.length; index++) {
                             try {
@@ -989,6 +1101,47 @@ export default {
                 console.log(error);
             })
 
+        },
+        //modal para cambiar la calificacion
+        openModalCalificacion(tr){
+            let me = this;
+            me.calificacion.id = tr.id
+            me.calificacion.nota = tr.calificacion
+            me.popupEditCalificacion = true
+        },
+
+        abrirEvaluacion(tr){
+            let me = this;
+            localStorage.setItem('id_evalRevisar',tr.evaluacion_id)
+            let route = this.$router.resolve({path: '/revisarevaluacion'});
+            window.open(route.href, '_blank');
+        },
+
+          //para cambiar la calificacion al estudiante
+        changeCalificacion(){
+            let me = this;
+            if(me.calificacion.nota < 0  ){
+                this.$vs.notify({
+                        text:'la calificación no puede ser menor a cero',
+                        color:'warning',
+                        iconPack: 'feather',
+                        icon:'icon-check'})
+                return false;
+            }
+            this.$vs.loading()
+            let formData = new FormData();
+            formData.append('id', me.calificacion.id);
+            formData.append('nota', me.calificacion.nota);
+              
+            this.$http.post(this.$server_url+'changeCalificacion', formData)
+            .then(res => {
+                this.verCalificaciones()
+                this.$vs.loading.close()
+                me.popupEditCalificacion = false;
+                me.calificacion.id = ""
+                me.calificacion.nota = ""
+            })
+             .catch(function (error) { me.$vs.loading.close() })
         },
 
         verPreguntasxEval(id_evaluacion){
