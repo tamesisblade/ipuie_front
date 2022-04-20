@@ -18,6 +18,7 @@
                         Duración: {{item.duracion}} minutos<br>
                         Puntos: {{item.puntos}}<br>
                         Observaciones: {{item.descripcion}}
+                    
                     </template>
                     <vs-button @click="openConfirm(item);" color="success" class="m-1">Resolver</vs-button>
                 </vs-list-item>

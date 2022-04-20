@@ -951,7 +951,8 @@ export default {
                 formData.append('fecha_fin', me.evaluacion.fecha_fin);
                 formData.append('estado', estado);
                 formData.append('docente', me.docente);
-                formData.append('codigo', localStorage.codigo);
+                formData.append('codigo', localStorage.id_curso);
+                formData.append('seccion_id', localStorage.codigo);
 
             me.$http.post(this.$server_url+'evaluacion', formData).then(res => {
                 const index = me.evaluaciones.findIndex(

@@ -29,7 +29,8 @@
     <div cols="12" v-for="(item, index) in preguntas.items" :key="index" v-bind:id="'contenPreg'+(index+1)" style="display: none;" class="mb-4">
         <div class="mb-5" style="font-size: 19px;" align="center">
             <div align="left">
-                <b>{{ index+1 }}) <span class="pregAbierta">{{item.descripcion}}</span></b>
+           
+                <b>{{ index+1 }} <span class="pregAbierta">{{item.descripcion}}</span></b>
             </div>
 
 
@@ -49,7 +50,7 @@
     <div class="vx-col sm:w-1/4 w-full">
     <vx-card>
         <div align="center">
-            <img src="https://plataforma.prolipadigital.com.ec/img/prolipa.a3e6ff1b.png" style="max-width: 225px;" class="mb-10">
+            <!-- <img src="https://plataforma.prolipadigital.com.ec/img/prolipa.a3e6ff1b.png" style="max-width: 225px;" class="mb-10"> -->
 
         Tiempo para resolver esta evaluación:
         <div v-if="iniciarActivo===false && evaluaciones[0]" class="reloj mt-3" style="font-size: 35px; color: #2974FE;">{{evaluaciones[0].duracion}} minutos</div>
