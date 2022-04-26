@@ -52,6 +52,15 @@
                         </div>
                         <div class="vx-row mb-6">
                             <div class="vx-col sm:w-1/3 w-full">
+                                <span>Ciudad</span>
+                            </div>
+                            <div class="vx-col sm:w-2/3 w-full">
+                                <v-select :options="ciudades" :reduce="ciudades => ciudades" label="label" v-model="estudiante.ciudad"></v-select>
+                                <span class="text-danger text-sm">{{ errors.ciudad }}</span>
+                            </div>
+                        </div>
+                        <div class="vx-row mb-6">
+                            <div class="vx-col sm:w-1/3 w-full">
                                 <span>Contraseña</span>
                             </div>
                             <div class="vx-col sm:w-2/3 w-full">
@@ -92,6 +101,7 @@ export default {
                 apellidos: '',
                 email: '',
                 password: '',
+                ciudad: '',
             },
 
             estudiante: {
@@ -100,13 +110,26 @@ export default {
                 apellidos: '',
                 email: '',
                 password: '',
-            }
+                ciudad: '',
+            },
+
+            ciudades: [
+              {id: 'Quito', label: 'Quito'},
+              {id: 'Guayaquil', label: 'Guayaquil'},
+              {id: 'Cuenca', label: 'Cuenca'},
+              {id: 'Ambato', label: 'Ambato'},
+              {id: 'Loja', label: 'Loja'},
+              {id: 'Ibarra', label: 'Ibarra'},
+              {id: 'Manta', label: 'Manta'},
+              {id: 'Puyo', label: 'Puyo'},
+              {id: 'Machala', label: 'Machala'},
+              {id: 'Esmeraldas', label: 'Esmeraldas'},
+              {id: 'Tena', label: 'Tena'},
+            ]
         }
     },
     mounted() {
-        /* if (localStorage.tk != null) {
-            this.$router.push('/');
-        } else {} */
+
     },
     methods: {
         guardar(item) {
@@ -118,6 +141,7 @@ export default {
                 apellidos: '',
                 email: '',
                 password: '',
+                ciudad: '',
             }
             formData.append('cedula', item.cedula)
             formData.append('nombres', item.nombres)
@@ -125,6 +149,9 @@ export default {
             formData.append('email', item.email)
             formData.append('name_usuario', item.email)
             formData.append('password', item.password)
+            formData.append('ciudad', item.ciudad.id)
+            formData.append('id_group', 2)
+
             axios.post("https://server.ipuiecotocollao.com/api/register", formData)
                 .then(function (response) {
                     localStorage.tk = response.data.token
@@ -150,6 +177,11 @@ export default {
                         }
                         try {
                             me.errors.email = error.response.data.errors.email[0]
+                        } catch (error) {
+
+                        }
+                        try {
+                            me.errors.ciudad = error.response.data.errors.ciudad[0]
                         } catch (error) {
 
                         }

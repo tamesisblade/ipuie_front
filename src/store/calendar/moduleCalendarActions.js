@@ -62,6 +62,14 @@ export default {
     })
   },
   editEvent ({ commit }, event) {
+    if( event.startDate == 'Invalid date' ){
+      alert('Seleccione la fecha de inicio');
+      return;
+    }
+    if( event.endDate == 'Invalid date' ){
+      alert('Seleccione la fecha de fin');
+      return;
+    }
     let formData = new FormData();
         formData.append('id', event.id);
         formData.append('idusuario', event.idusuario);

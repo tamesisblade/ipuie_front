@@ -49,7 +49,7 @@
                   v-if="calendarView === view.val"
                   :key="String(view.val) + 'filled'"
                   type="filled" style="padding: 7px 10px 7px 10px !important; font-size: 14px;"
-                  class="p-3 md:px-8 md:py-3" 
+                  class="p-3 md:px-8 md:py-3"
                   :class="{'border-l-0': index, 'rounded-r-none': calendarViewTypes.length !== index+1}"
                   @click="calendarView = view.val"
                   >{{ view.label }}</vs-button>
@@ -65,7 +65,7 @@
 
             </div>
           </div>
-            
+
           <div class="vx-row sm:flex hidden mt-4">
             <div class="vx-col w-full flex">
               <!-- Labels -->
@@ -90,7 +90,6 @@
         accept-text= "Guardar"
         :cancel-text="label_cancel"
         @accept="addEvent"
-        @cancel="removeEvent"
         :active.sync="activePromptAddEvent">
 
         <div class="calendar__label-container flex mb-6">
@@ -219,6 +218,16 @@ export default {
       me.instituciones=[]
     },
     addEvent () {
+
+      if( this.usuario[0].id_group != 4 ){
+        this.$vs.notify({
+        text:'No tiene permisos',
+        color:'warning',
+        iconPack: 'feather',
+        icon:'icon-alert-triangle'})
+        return;
+      }
+
       if( this.title == '' || this.startDate_send == '' || this.endDate_send == '' ||  this.hora_inicio == '' || this.hora_fin == '' ){
         this.$vs.notify({
         text:'Complete todos los campos antes de guardar.',
@@ -227,9 +236,9 @@ export default {
         icon:'icon-alert-triangle'})
         return
       }
-      const obj = { 
+      const obj = {
         idusuario: this.usuario[0].idusuario,
-        id: this.id, 
+        id: this.id,
         title: this.title,
         startDate: this.startDate_send,
         endDate: this.endDate_send,
@@ -271,9 +280,10 @@ export default {
       this.addNewEventDialog(date)
     },
     openEditEvent (event) {
-      
+
+
       const e = this.$store.getters['calendar/getEvent'](event.id)
-      
+
       this.id = e.id
       this.title = e.title.split('(')[0]
       this.startDate = e.startDate
@@ -302,7 +312,7 @@ export default {
   },
   created () {
     this.usuario = JSON.parse(localStorage.getItem('usuario'));
-   
+
     this.$store.registerModule('calendar', moduleCalendar)
     this.$store.dispatch('calendar/fetchEvents')
     this.$store.dispatch('calendar/fetchEventLabels')
@@ -316,7 +326,7 @@ export default {
 <style lang="scss">
 @import "@/assets/scss/vuexy/apps/simple-calendar.scss";
 .vs-dialog {
-  
+
     min-width: 600px!important;
 }
 </style>

@@ -27,7 +27,6 @@
     <vx-card class="w-full mb-6 p-8" align="center" style="opacity: 1;">
       <h1>Imagen de fondo</h1>
       <input type="file" name="file5" id="file5" class="w-full inputfile mb-base">
-
       <vs-button type="gradient" color="primary" @click="guardarFondo()">Guardar</vs-button>
     </vx-card>
 

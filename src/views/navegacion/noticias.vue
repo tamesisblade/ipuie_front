@@ -13,14 +13,15 @@
         <div class="px-8 py-5" style="width: 65%; min-width: 350px; display: inline-block;" align="justify">
             <h3 class="mb-1"> {{item.titulo}} </h3><br>
             <div class="text-grey mb-3" style="font-size: 12px;"> {{item.subtitulo}} </div>
-        </div>
 
-        <div class="p-5" style="width: 14%; min-width: 150px; display: inline-block; border-left: 1px solid #EBEBEB;" align="center">
-            <vs-button class="w-full mb-1" style="font-size: 12px; padding: 5px;" size="small" type="line" color="primary" @click="$router.push('/detalle_noticia/'+item.id_noticia)">Ver noticia completa</vs-button>
-            <div v-if="usuario[0]">
-                <vs-button v-if="usuario[0].id_group == 1" class="mb-1 w-full" size="small" style="font-size: 12px;" type="line" color="dark" @click="$router.push('/creacion_noticia/'+item.id_noticia)">Editar noticia</vs-button>
-                <vs-button v-if="usuario[0].id_group == 1" class="mb-1 w-full" size="small" style="font-size: 12px;" type="line" color="danger" @click="id_noticia = item.id_noticia; openConfirmNoticia();">Borrar noticia</vs-button>
+            <div class="w-full flex">
+              <vs-button class="m-2 float-right" style="font-size: 12px; padding: 5px;" size="small" type="line" color="primary" @click="$router.push('/detalle_noticia/'+item.id_noticia)">Ver noticia completa</vs-button>
+              <div v-if="usuario[0]">
+                  <vs-button v-if="usuario[0].id_group == 1" class="m-2" size="small" style="font-size: 12px;" type="line" color="dark" @click="$router.push('/creacion_noticia/'+item.id_noticia)">Editar noticia</vs-button>
+                  <vs-button v-if="usuario[0].id_group == 1" class="m-2" size="small" style="font-size: 12px;" type="line" color="danger" @click="id_noticia = item.id_noticia; img_noticia = item.img_portada; openConfirmNoticia();">Borrar noticia</vs-button>
+              </div>
             </div>
+
         </div>
     </div>
 
@@ -44,6 +45,7 @@ export default {
             noticias: [],
             popUpEliminar: false,
             id_noticia: '',
+            img_noticia: '',
         }
     },
     created() {
@@ -83,7 +85,7 @@ export default {
         acceptAlertNoticia() {
             let me = this
 
-            axios.get('https://server.ipuiecotocollao.com/api/elimiar_noticia/' + me.id_noticia)
+            axios.get('https://server.ipuiecotocollao.com/api/elimiar_noticia/' + me.id_noticia+'/'+me.img_noticia)
             .then(function (res) {
                 me.$vs.notify({
                     color: 'danger',

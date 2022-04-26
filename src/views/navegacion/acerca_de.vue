@@ -1,17 +1,12 @@
 <template>
 <div align="center">
-    <div align="center" class="w-full parallax mb-6" :style="'padding-top: 5%; background-image: url(https://server.ipuiecotocollao.com/images/carrousel/6239383bd3845img1.wallspic.com-manana-rojo-naturaleza-primavera-paisaje_natural-8256x5504.jpg);'">
-      <div style="color: white; font-size: 45px"><b>Acerca de nosotros</b></div>
-    </div>
-
 
     <div class="w-full" style="width: 80%; min-width: 350px;" v-html="contenido"></div>
 
-
-    <div v-if="usuario[0]">
+    <div v-if="usuario">
       <div align="center" v-if="usuario[0].id_group == 1">
           <div>Contenido</div>
-          <quill-editor v-model="contenido" class="mb-base"></quill-editor>
+          <froala id="edit" :tag="'textarea'" :config="config" v-model="contenido"></froala>
 
           <vs-textarea class="w-full mb-3" label="Código del mapa" v-model="cod_mapa" />
           <vs-button type="gradient" color="primary" class="mb-6" @click="popupSeccion=false; save_get_acerca()">Guardar</vs-button>
@@ -29,29 +24,34 @@ import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
 import Vue from 'vue'
 import axios from 'axios'
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
-
-import { quillEditor } from 'vue-quill-editor'
+import VueFroala from 'vue-froala-wysiwyg';
 Vue.use(axios)
 export default {
     components: {
         'v-select': vSelect,
-        quillEditor
+        VueFroala
     },
     data() {
         return {
+          usuario: [],
             contenido: '',
             cod_mapa: '',
-            id: 1, //acerca de default
+            id: 1, //acerca de default,
+            config: {
+              events: {
+                initialized: function () {
+                  console.log('initialized')
+                }
+              }
+            },
         }
     },
     created() {
-        this.usuario = JSON.parse(localStorage.getItem('usuario'));
+
 
     },
     mounted() {
+      this.usuario = JSON.parse(localStorage.getItem('usuario'));
       this.getAcerca()
     },
     methods: {

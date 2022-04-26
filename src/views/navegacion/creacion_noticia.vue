@@ -6,9 +6,9 @@
         <vs-input label="Titulo de la sección" v-model="noticia.subtitulo" class="w-full mb-6" />
 
         <div style="font-size: 12px; color: gray;" class="mb-1">Imagen de portada</div>
-        <input type="file" name="file1" id="file1" class="inputfile mb-6">
+        <input type="file" name="file_notic" id="file_notic" class="inputfile mb-6">
 
-        <quill-editor v-model="noticia.contenido" class="mb-6"></quill-editor>
+        <froala id="edit" :tag="'textarea'" :config="config" v-model="noticia.contenido"></froala>
 
         <div align="right">
             <vs-button type="border" color="dark" class="m-2" @click="$router.go(-1)">regresar</vs-button>
@@ -26,13 +26,9 @@ import Vue from 'vue'
 import axios from 'axios'
 import {FormWizard, TabContent} from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
-
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
-
-import { quillEditor } from 'vue-quill-editor'
 import Prism from 'vue-prism-component'
+
+import VueFroala from 'vue-froala-wysiwyg';
 
 Vue.use(axios)
 export default {
@@ -40,17 +36,25 @@ export default {
         'v-select': vSelect,
         FormWizard,
         TabContent,
-        quillEditor,
-        Prism
+        Prism,
+        VueFroala
     },
     data() {
         return {
             usuario: [],
-            noticia: { titulo: '', subtitulo: '', contenido: '<br><br><br><br><br><br><br><br><br>', img_portada: ''},
+            noticia: { titulo: '', subtitulo: '', contenido: '<br><br><br><br><br>', img_portada: ''},
             noticias: [],
             popupSeccion: false,
             id_noticia: '',
             img_old: '',
+            config: {
+              events: {
+                initialized: function () {
+                  console.log('initialized')
+                }
+              }
+            },
+            model: 'Edit Your Content Here!'
         }
     },
     created() {
@@ -84,7 +88,7 @@ export default {
             let me = this
             me.$vs.loading()
             let fileImgPreg
-            fileImgPreg = document.getElementById("file1").files[0];
+            fileImgPreg = document.getElementById("file_notic").files[0];
 
             let formData = new FormData();
             formData.append('titulo', me.noticia.titulo);

@@ -1,14 +1,14 @@
 <template>
 
-<div class="w-full parallax" :style="'color: '+parallax.color_texto+'; background-image: url(https://server.ipuiecotocollao.com/images/carrousel/'+parallax.imagen+');'">
+<div class="w-full parallax" :style="'background-image: url(https://server.ipuiecotocollao.com/images/carrousel/'+parallax.imagen+');'">
   <div class="w-full vx-row p-12">
     <div class="vx-col w-full lg:w-3/4 sm:w-1/2 mb-base px-8">
-        <div style="font-size: 30px; color: white;" class="mb-base">
+        <div :style="'font-size: 30px; color: '+parallax.color+';'" class="mb-base">
           <!-- Vive una <b style="font-size: 50px; color: blue;">experiencia</b> divina. -->
           <b>{{parallax.titulo}}</b>
         </div>
 
-        <div style="font-size: 22px; color: white;" class="mb-base">
+        <div :style="'font-size: 22px; color: '+parallax.color_texto+';'" class="mb-base">
             {{parallax.descripcion}}
         </div>
     </div>
@@ -49,6 +49,10 @@ export default {
             swiperOption: {
                 effect: 'cube',
                 grabCursor: true,
+                autoplay: {
+                    delay: 2500,
+                    disableOnInteraction: false
+                },
                 cubeEffect: {
                     shadow: true,
                     slideShadows: true,

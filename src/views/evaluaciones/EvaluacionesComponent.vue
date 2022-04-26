@@ -10,7 +10,7 @@
         </vs-row>
 
         <ul  style="display:flex;" class="mt-5">
-            
+
             <li>
             <vs-radio v-model="datosPreguntas.tipo" vs-name="radios2" vs-value="5">Opción simple</vs-radio>
             </li>
@@ -20,7 +20,7 @@
             <li>
             <vs-radio v-model="datosPreguntas.tipo" class="ml-3" vs-name="radios2" vs-value="6">Respuesta abierta</vs-radio>
             </li>
-          
+
         </ul>
 
         <div v-if="datosPreguntas.tipo == 5 || datosPreguntas.tipo == 1">
@@ -43,7 +43,7 @@
                 </vs-col>
             </vs-row>
             <vs-divider class="mt-4" color="success">Seleccione la respuesta a la pregunta {{datosPreguntas.ch1}}</vs-divider>
-        
+
             <div v-if="datosPreguntas.tipo == 5">
                 <ul style="display:flex;flex-direction: row;justify-content: center;">
                     <div>
@@ -96,7 +96,7 @@
                 </ul>
             </div>
         </div>
-       
+
         <vs-row class="mt-5">
             <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
               <vs-button type="relief" @click="generarPregunta()">Generar Pregunta</vs-button>
@@ -190,6 +190,7 @@
                     <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
 
                         <vs-td :data="data[indextr].tipo_nombre">
+                            {{ data[indextr].nombre_evaluacion }} <br>
                             <b>Puntos:</b> {{ data[indextr].puntos }} &nbsp;&nbsp;-&nbsp;&nbsp;
                             <b>Duración:</b> {{ data[indextr].duracion }} min<br>
                         </vs-td>
@@ -244,15 +245,15 @@
                 <vs-tr :key="indextr" v-for="(tr, indextr) in data">
                     <vs-td :data="tr">
                         {{ tr.Estudiante }}
-                      
-                       
+
+
                     </vs-td>
 
                     <vs-td :key="$indexs" v-for="(item, $indexs) in tr.calificaciones">
                         <span v-if="item">{{item}}</span>
                         <span v-else>0</span>
                     </vs-td>
-                    <vs-td> 
+                    <vs-td>
                         <div style="display:flex;">
                             <vx-tooltip  style="display: inline-block;" text="Editar calificación" position="top" color="primary">
                                 <vs-button class="modal-default-button" radius @click="openModalCalificacion(tr)"  size="small" color="success" type="line" icon-pack="feather" icon="icon-edit">
@@ -264,7 +265,7 @@
                                 </vs-button>
                             </vx-tooltip> &nbsp;
                         </div>
-                       
+
                     </vs-td>
 
                 </vs-tr>
@@ -517,7 +518,7 @@ export default {
                 ch2:false,
                 ch3:false,
                 ch4:false,
-              
+
             },
 
 
@@ -725,7 +726,7 @@ export default {
         },
         generarPregunta(){
              let me = this
-            
+
             me.$vs.loading()
             let formData1 = new FormData();
             formData1.append('pregunta', me.datosPreguntas.txtpregunta);
@@ -734,7 +735,7 @@ export default {
                 formData1.append('tipo1',me.rd1);
                 formData1.append('tipo2',me.rd2);
                 formData1.append('tipo3',me.rd3);
-                formData1.append('tipo4',me.rd4);  
+                formData1.append('tipo4',me.rd4);
                 formData1.append('conRespuestas','yes');
             }
             //respuestas opcion multiple
@@ -742,8 +743,8 @@ export default {
                 formData1.append('tipo1',me.datosPreguntas.ch1 ? '1':'0');
                 formData1.append('tipo2',me.datosPreguntas.ch2 ? '1':'0');
                 formData1.append('tipo3',me.datosPreguntas.ch3 ? '1':'0');
-                formData1.append('tipo4',me.datosPreguntas.ch4 ? '1':'0'); 
-                formData1.append('conRespuestas','yes'); 
+                formData1.append('tipo4',me.datosPreguntas.ch4 ? '1':'0');
+                formData1.append('conRespuestas','yes');
             }
                 formData1.append('id_tipo_pregunta',me.datosPreguntas.tipo)
                 formData1.append('opcion1', me.datosPreguntas.opcion1);
@@ -755,7 +756,8 @@ export default {
             me.$http.post(this.$server_url+'guardarEvaluacion', formData1).then(res => {
                 me.evaluaciones = res.data;
                 me.$vs.loading.close()
-                me.getEvalDoc()
+                // me.getEvalDoc()
+                me.verPreguntasxEval(localStorage.id_desde_eval);
                 me.popupCrearPreguntas = false;
                 me.popupEditEval = true
                 // console.log(me.evaluaciones)
@@ -780,7 +782,7 @@ export default {
             this.unidadSelected = [];
             this.grupo_selected = '';
             this.radios1 = 1;
-            
+
         },
         agregar() {
             let me = this;
@@ -1063,7 +1065,7 @@ export default {
                     me.alumnos.forEach(element => {
                         var cal = new Object();
                         cal.id = element.calificaciones[0].calificacion_id
-                        cal.evaluacion_id = element.calificaciones[0].id 
+                        cal.evaluacion_id = element.calificaciones[0].id
                         cal.idusuario = element.usuario_idusuario
                         cal.Cedula = element.cedula
                         cal.Estudiante = element.nombres + " " + element.apellidos
@@ -1133,7 +1135,7 @@ export default {
             let formData = new FormData();
             formData.append('id', me.calificacion.id);
             formData.append('nota', me.calificacion.nota);
-              
+
             this.$http.post(this.$server_url+'changeCalificacion', formData)
             .then(res => {
                 this.verCalificaciones()

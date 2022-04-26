@@ -44,7 +44,25 @@
             <span>Teléfono</span>
         </div>
         <div class="vx-col sm:w-2/3 w-full">
-            <vs-input class="w-full" icon-pack="feather" icon="icon-smartphone" icon-no-border v-model="usuario.telefono" />
+            <vs-input type="number" class="w-full" icon-pack="feather" icon="icon-smartphone" icon-no-border v-model="usuario.telefono" />
+        </div>
+    </div>
+    <div class="vx-row mb-6">
+        <div class="vx-col sm:w-1/3 w-full">
+            <span>Ciudad</span>
+        </div>
+        <div class="vx-col sm:w-2/3 w-full">
+            <v-select :options="ciudades" :reduce="ciudades => ciudades" label="label" v-model="usuario.ciudad"></v-select>
+            <span class="text-danger text-sm">{{ errors.ciudad }}</span>
+        </div>
+    </div>
+    <div class="vx-row mb-6">
+        <div class="vx-col sm:w-1/3 w-full">
+            <span>Tipo Usuario</span>
+        </div>
+        <div class="vx-col sm:w-2/3 w-full">
+            <v-select :options="tipo_usuarios" :reduce="tipo_usuarios => tipo_usuarios" label="label" v-model="usuario.id_group"></v-select>
+            <span class="text-danger text-sm">{{ errors.id_group }}</span>
         </div>
     </div>
     <div class="vx-row mb-6" v-if="editarActivo===false">
@@ -171,7 +189,10 @@
 <script>
 import Vue from 'vue'
 import axios from 'axios'
+import "vue-select/dist/vue-select.css";
+import vSelect from "vue-select";
 Vue.use(axios)
+Vue.component("v-select", vSelect);
 export default {
     data() {
         return {
@@ -185,6 +206,8 @@ export default {
                 apellidos: '',
                 email: '',
                 password: '',
+                id_group: '',
+                ciudad: '',
             },
 
             usuario: {
@@ -193,7 +216,28 @@ export default {
                 apellidos: '',
                 email: '',
                 password: '',
+                id_group: '',
+                ciudad: '',
             },
+            ciudades: [
+              {id: 'Quito', label: 'Quito'},
+              {id: 'Guayaquil', label: 'Guayaquil'},
+              {id: 'Cuenca', label: 'Cuenca'},
+              {id: 'Ambato', label: 'Ambato'},
+              {id: 'Loja', label: 'Loja'},
+              {id: 'Ibarra', label: 'Ibarra'},
+              {id: 'Manta', label: 'Manta'},
+              {id: 'Puyo', label: 'Puyo'},
+              {id: 'Machala', label: 'Machala'},
+              {id: 'Esmeraldas', label: 'Esmeraldas'},
+              {id: 'Tena', label: 'Tena'},
+            ],
+
+            tipo_usuarios: [
+              {id: 1, label: 'Administrador'},
+              {id: 2, label: 'Estudiante'},
+              {id: 3, label: 'Docente'},
+            ],
 
             editarActivo: false,
             idusuarioSelec: '',
@@ -237,6 +281,8 @@ export default {
             formData.append('apellidos', item.apellidos)
             formData.append('email', item.email)
             formData.append('name_usuario', item.email)
+            formData.append('ciudad', item.ciudad.id)
+            formData.append('id_group', item.id_group.id)
             formData.append('password', item.password)
             axios.post("https://server.ipuiecotocollao.com/api/crearUsuario", formData)
                 .then(function (response) {
@@ -266,7 +312,17 @@ export default {
 
                         }
                         try {
+                            me.errors.ciudad = error.response.data.errors.ciudad[0]
+                        } catch (error) {
+
+                        }
+                        try {
                             me.errors.password = error.response.data.errors.password[0]
+                        } catch (error) {
+
+                        }
+                        try {
+                            me.errors.id_group = error.response.data.errors.id_group[0]
                         } catch (error) {
 
                         }
@@ -293,7 +349,11 @@ export default {
             formData.append('nombres', item.nombres)
             formData.append('apellidos', item.apellidos)
             formData.append('email', item.email)
+            formData.append('telefono', item.telefono)
             formData.append('name_usuario', item.email)
+            formData.append('ciudad', item.ciudad)
+            formData.append('id_group', item.id_group)
+
             axios.post("https://server.ipuiecotocollao.com/api/editarUsuario", formData)
                 .then(function (response) {
                     me.popupEditarUsuario=false
@@ -318,6 +378,16 @@ export default {
                         }
                         try {
                             me.errors.email = error.response.data.errors.email[0]
+                        } catch (error) {
+
+                        }
+                        try {
+                            me.errors.ciudad = error.response.data.errors.ciudad[0]
+                        } catch (error) {
+
+                        }
+                        try {
+                            me.errors.id_group = error.response.data.errors.id_group[0]
                         } catch (error) {
 
                         }
