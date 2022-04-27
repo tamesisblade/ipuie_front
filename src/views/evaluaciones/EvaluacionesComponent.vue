@@ -10,15 +10,15 @@
         </vs-row>
 
         <ul  style="display:flex;" class="mt-5">
-
+          
             <li>
-            <vs-radio v-model="datosPreguntas.tipo" vs-name="radios2" vs-value="5">Opción simple</vs-radio>
+            <vs-radio v-model="datosPreguntas.tipo" vs-name="radioOpcion" vs-value="5">Opción simple</vs-radio>
             </li>
             <li>
-            <vs-radio v-model="datosPreguntas.tipo" class="ml-3" vs-name="radios2" vs-value="1">Opción multiple</vs-radio>
+            <vs-radio v-model="datosPreguntas.tipo" class="ml-3" vs-name="radioOpcion" vs-value="1">Opción multiple</vs-radio>
             </li>
             <li>
-            <vs-radio v-model="datosPreguntas.tipo" class="ml-3" vs-name="radios2" vs-value="6">Respuesta abierta</vs-radio>
+            <vs-radio v-model="datosPreguntas.tipo" class="ml-3" vs-name="radioOpcion" vs-value="6">Respuesta abierta</vs-radio>
             </li>
 
         </ul>
@@ -726,12 +726,49 @@ export default {
         },
         generarPregunta(){
              let me = this
+           
+         
+            
+            if(me.datosPreguntas.tipo == undefined){
+                me.$vs.notify({
+                    text:'Debe seleccionar un tipo de pregunta por favor',
+                    color:'warning',
+                    iconPack: 'feather',
+                    icon:'icon-alert-triangle'})
+                return;
+            }
 
-            me.$vs.loading()
+            if(me.datosPreguntas.txtpregunta == ""){
+                me.$vs.notify({
+                    text:'El campo pregunta no  puede quedar vacio',
+                    color:'warning',
+                    iconPack: 'feather',
+                    icon:'icon-alert-triangle'})
+                return;
+            }
+
+          
             let formData1 = new FormData();
             formData1.append('pregunta', me.datosPreguntas.txtpregunta);
             //respuestas opcion simple
             if(me.datosPreguntas.tipo == 5) {
+                //VALIDACION
+                if(me.datosPreguntas.opcion1 == undefined  || me.datosPreguntas.opcion2 == undefined || me.datosPreguntas.opcion3 == undefined || me.datosPreguntas.opcion4 == undefined){
+                    me.$vs.notify({
+                        text:'Debe llenar los 4 campos',
+                        color:'warning',
+                        iconPack: 'feather',
+                        icon:'icon-alert-triangle'})
+                    return;
+                }
+                if(me.rd1 == 0 && me.rd2 == 0 && me.rd3 == 0 && me.rd4 == 0){
+                    me.$vs.notify({
+                        text:'Debe seleccionar una respuesta',
+                        color:'warning',
+                        iconPack: 'feather',
+                        icon:'icon-alert-triangle'})
+                    return;
+                }
                 formData1.append('tipo1',me.rd1);
                 formData1.append('tipo2',me.rd2);
                 formData1.append('tipo3',me.rd3);
@@ -740,6 +777,27 @@ export default {
             }
             //respuestas opcion multiple
             if(me.datosPreguntas.tipo == 1) {
+                //VALIDACION
+                if(me.datosPreguntas.opcion1 == undefined  || me.datosPreguntas.opcion2 == undefined || me.datosPreguntas.opcion3 == undefined || me.datosPreguntas.opcion4 == undefined){
+                    me.$vs.notify({
+                        text:'Debe llenar los 4 campos',
+                        color:'warning',
+                        iconPack: 'feather',
+                        icon:'icon-alert-triangle'})
+                    return;
+                    
+                }
+
+                if(me.datosPreguntas.ch1 == undefined  && me.datosPreguntas.ch2 == undefined && me.datosPreguntas.ch3 == undefined && me.datosPreguntas.ch4 == undefined){
+                    me.$vs.notify({
+                        text:'Debe seleccionar al menos una respuesta',
+                        color:'warning',
+                        iconPack: 'feather',
+                        icon:'icon-alert-triangle'})
+                    return;
+                    
+                }
+
                 formData1.append('tipo1',me.datosPreguntas.ch1 ? '1':'0');
                 formData1.append('tipo2',me.datosPreguntas.ch2 ? '1':'0');
                 formData1.append('tipo3',me.datosPreguntas.ch3 ? '1':'0');
@@ -753,6 +811,7 @@ export default {
                 formData1.append('opcion4', me.datosPreguntas.opcion4);
             formData1.append('usuario', me.usuario[0].idusuario);
             formData1.append('evaluacion_id', localStorage.id_desde_eval);
+              me.$vs.loading()
             me.$http.post(this.$server_url+'guardarEvaluacion', formData1).then(res => {
                 me.evaluaciones = res.data;
                 me.$vs.loading.close()
@@ -897,7 +956,7 @@ export default {
             }
             me.editarActivo = true; //activa el form editar
 
-            me.unidSelect = item.cant_unidades.split(',');
+            // me.unidSelect = item.cant_unidades.split(',');
             me.cant_grupos_select = me.grupo_selected.id; //cantidad de grupos o filas de evaluaciones desde la base
             me.unidadSelected=[];
             for(var i=0; i<me.unidSelect.length; i++){

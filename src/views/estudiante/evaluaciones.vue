@@ -129,7 +129,8 @@ export default {
             this.evaluaciones = [];
             this.$vs.loading()
             let formData = new FormData();
-                formData.append('codigo', localStorage.id_seccion);
+                formData.append('codigo', localStorage.id_curso);
+                formData.append('seccion_id', localStorage.id_seccion);
                 formData.append('estudiante', this.usuario[0].idusuario);
 
             this.$http.post(this.$server_url+'evaluacionesEstudianteCurso', formData).then(res => {
