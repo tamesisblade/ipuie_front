@@ -29,7 +29,6 @@
     <div cols="12" v-for="(item, index) in preguntas.items" :key="index" v-bind:id="'contenPreg'+(index+1)" style="display: none;" class="mb-4">
         <div class="mb-5" style="font-size: 19px;" align="center">
             <div align="left">
-           
                 <b>{{ index+1 }} <span class="pregAbierta">{{item.descripcion}}</span></b>
             </div>
 
@@ -348,6 +347,7 @@ import VueRouter from 'vue-router'
                             }
 
                             var opcionRespuesta = (this.respuestasAcum[index].id_opcion_pregunta).split(',')
+                           
                             var califPreg = 0;
                             for( var i=0; i<tamselecV; i++ ){
                                 for( var k=0; k<opcionRespuesta.length; k++ ){
@@ -402,6 +402,8 @@ import VueRouter from 'vue-router'
                         }catch (error){
                         }
                     }
+
+                   
 
                     this.guardarRespuesta(this.id_evalRevisar, pregsRecorrer[j].id, this.usuario[0].idusuario, opcionesSeleccionadasV, califPregFinal)
 
@@ -509,7 +511,7 @@ import VueRouter from 'vue-router'
             },
             verRespuestasGrupo(){
                 let formData = new FormData();
-                formData.append('grupo', this.grupo_estudiante);
+                formData.append('grupo', '1');
                 formData.append('evaluacion',  this.id_evalRevisar);
 
                 this.$http.post(this.$server_url+'getRespuestasAcum', formData).then(res => {
