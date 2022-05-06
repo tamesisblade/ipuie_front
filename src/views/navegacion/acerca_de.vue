@@ -16,6 +16,14 @@
 
     <div style="width: 100%" v-html="cod_mapa"></div>
 
+
+
+            <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
+
+
+
+
+
 </div>
 </template>
 
@@ -25,6 +33,17 @@ import 'vue-select/dist/vue-select.css';
 import Vue from 'vue'
 import axios from 'axios'
 import VueFroala from 'vue-froala-wysiwyg';
+
+
+    import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
+    // import EssentialsPlugin from '@ckeditor/ckeditor5-essentials';
+    // import BoldPlugin from '@ckeditor/ckeditor5-basic-styles';
+    // import ItalicPlugin from '@ckeditor/ckeditor5-basic-styles';
+    // import LinkPlugin from '@ckeditor/ckeditor5-link';
+    // import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph';
+
+
 Vue.use(axios)
 export default {
     components: {
@@ -44,6 +63,30 @@ export default {
                 }
               }
             },
+
+
+            editor: ClassicEditor,
+                editorData: '<p>Content of the editor.</p>',
+                editorConfig: {
+                    plugins: [
+                        // EssentialsPlugin,
+                        // BoldPlugin,
+                        // ItalicPlugin,
+                        // LinkPlugin,
+                        // ParagraphPlugin
+                    ],
+
+                    toolbar: {
+                        items: [
+                            'bold',
+                            'italic',
+                            'link',
+                            'undo',
+                            'redo'
+                        ]
+                    }
+                }
+
         }
     },
     created() {

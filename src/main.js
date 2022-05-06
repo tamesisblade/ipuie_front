@@ -97,10 +97,12 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 // Import and use Vue Froala lib.
 import VueFroala from 'vue-froala-wysiwyg'
 Vue.use(VueFroala)
+
+
+import CKEditor from '@ckeditor/ckeditor5-vue2';
+Vue.use( CKEditor );
+
 Vue.config.productionTip = false
-
-
-
 
 new Vue({
   router,
