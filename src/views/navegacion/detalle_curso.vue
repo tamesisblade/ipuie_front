@@ -169,6 +169,7 @@ export default {
         irEvaluaciones(item){
              let me = this
             localStorage.id_seccion = item.id_seccion
+            localStorage.tituloSeccion = item.titulo
             if(me.usuario[0].id_group == 2){
                 me.$router.push('/estudiante/evaluaciones')
             }else{
