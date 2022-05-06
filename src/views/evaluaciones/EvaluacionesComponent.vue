@@ -166,7 +166,7 @@
 
 <vx-card>
 
-    <h2 style="color:#7F7E7E" class="mb-4" v-if="evaluaciones[0]!=null">Sección: {{evaluaciones[0].nombre_curso}}</h2>
+    <h2 style="color:#7F7E7E" class="mb-4" v-if="evaluaciones[0]!=null">Sección: {{tituloSeccion}}</h2>
 
     <vs-tabs alignment="fixed">
         <vs-tab label="Evaluaciones" @click="getEvalDoc()">
@@ -502,6 +502,7 @@ import $ from 'jquery'
 export default {
     data() {
         return {
+            tituloSeccion:'',
                rd1:'0',
                 rd2:'0',
                 rd3:'0',
@@ -676,6 +677,7 @@ export default {
     },
     created() {
         let me = this;
+        me.tituloSeccion = localStorage.tituloSeccion
         me.usuario = JSON.parse(localStorage.getItem('usuario'));
         me.docente = me.usuario[0].idusuario
         me.nombre_docente = me.usuario.nombres
@@ -725,10 +727,7 @@ export default {
             })
         },
         generarPregunta(){
-             let me = this
-           
-         
-            
+             let me = this  
             if(me.datosPreguntas.tipo == undefined){
                 me.$vs.notify({
                     text:'Debe seleccionar un tipo de pregunta por favor',
@@ -746,13 +745,12 @@ export default {
                     icon:'icon-alert-triangle'})
                 return;
             }
-
-          
+    
             let formData1 = new FormData();
             formData1.append('pregunta', me.datosPreguntas.txtpregunta);
             //respuestas opcion simple
             if(me.datosPreguntas.tipo == 5) {
-                //VALIDACION
+               // VALIDACION
                 if(me.datosPreguntas.opcion1 == undefined  || me.datosPreguntas.opcion2 == undefined || me.datosPreguntas.opcion3 == undefined || me.datosPreguntas.opcion4 == undefined){
                     me.$vs.notify({
                         text:'Debe llenar los 4 campos',
@@ -1156,7 +1154,7 @@ export default {
                   console.log(error);
             })
 
-            me.$http.get(this.$server_url+`verEvalCursoExport/${localStorage.id_seccion}`).then(res => {
+            me.$http.get(this.$server_url+`verEvalCursoExport/${localStorage.id_curso}/${localStorage.id_seccion}`).then(res => {
                 me.evaluacionestabla = res.data;
             })
             .catch(function (error) {
