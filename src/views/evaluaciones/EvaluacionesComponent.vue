@@ -245,7 +245,7 @@
                 <vs-tr :key="indextr" v-for="(tr, indextr) in data">
                     <vs-td :data="tr">
                         {{ tr.Estudiante }}
-                        {{ tr }}
+                        <!-- {{ tr }} -->
 
                     </vs-td>
 
