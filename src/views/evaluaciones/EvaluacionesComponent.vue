@@ -235,26 +235,52 @@
                 </template>
                 <template slot="thead">
                     <vs-th sort-key="nombres">Estudiante</vs-th>
-                    <vs-th v-for="(item, index) in respuestas[0].calificaciones" :key="index">
+                    <vs-th sort-key="nombres">Calificaciones</vs-th>
+                    <!-- <vs-th v-for="(item, index) in respuestas[0].calificaciones" :key="index">
                         Ev{{index}}
-                    </vs-th>
-                    <vs-th>Acciones</vs-th>
+                    </vs-th> -->
+                    <!-- <vs-th>Acciones</vs-th> -->
 
                 </template>
                 <template slot-scope="{data}">
                 <vs-tr :key="indextr" v-for="(tr, indextr) in data">
                     <vs-td :data="tr">
-                        {{ tr.Estudiante }}
-                        <!-- {{ tr }} -->
+                        {{ tr.Estudiante }} 
 
                     </vs-td>
+                    <vs-td>
+                         <div :key="index1" v-for="(item, index1) in tr.ids">
+                            <div v-if="item.calificacion_id == null">
+                                 <p>Evaluacion:{{ item.nombre_evaluacion }}</p>
+                                <vs-chip>Sin Evaluación</vs-chip>
+                                   <vs-divider></vs-divider>
+                            </div>
+                        
+                            <div v-else>
+                                <p>Evaluacion:{{ item.nombre_evaluacion }}</p>
+                                <p>Calificación:<span style="font-weight: bold;">{{ item.calificacion }} / {{item.puntos}}</span></p>
+                                <div style="display:flex;">
+                                    <vx-tooltip  style="display: inline-block;" text="Editar calificación" position="top" color="primary">
+                                        <vs-button class="modal-default-button" radius @click="openModalCalificacion(item)"  size="small" color="success" type="line" icon-pack="feather" icon="icon-edit">
+                                        </vs-button>
+                                    </vx-tooltip> &nbsp;
 
-                    <vs-td :key="$indexs" v-for="(item, $indexs) in tr.calificaciones">
+                                    <vx-tooltip  style="display: inline-block;" text="Ver evaluación" position="top" color="primary">
+                                        <vs-button class="modal-default-button" radius @click="abrirEvaluacion(item)"  size="small" color="warning" type="line" icon-pack="feather" icon="icon-bookmark">
+                                        </vs-button>
+                                    </vx-tooltip> &nbsp;
+                                </div>   
+                            </div>  
+                          
+                         </div>
+                        
+                    </vs-td>
+                    <!-- <vs-td :key="$indexs" v-for="(item, $indexs) in tr.calificaciones">
                     
                         <span v-if="item">{{item}}</span>
                         <span v-else>0</span>
-                    </vs-td>
-                    <vs-td>
+                    </vs-td> -->
+                    <!-- <vs-td>
                         <div style="display:flex;">
                             <vx-tooltip  style="display: inline-block;" text="Editar calificación" position="top" color="primary">
                                 <vs-button class="modal-default-button" radius @click="openModalCalificacion(tr)"  size="small" color="success" type="line" icon-pack="feather" icon="icon-edit">
@@ -267,7 +293,7 @@
                             </vx-tooltip> &nbsp;
                         </div>
 
-                    </vs-td>
+                    </vs-td> -->
 
                 </vs-tr>
                 </template>
@@ -668,6 +694,7 @@ export default {
             calificacion:{
                 id:0,
                 nota:0,
+                puntos:0,
             },
             popupEditCalificacion:false,
         }
@@ -1122,6 +1149,7 @@ export default {
                     me.alumnos = response.data.items;
                     me.alumnos.forEach(element => {
                         var cal = new Object();
+                        cal.ids = element.calificaciones
                         cal.id = element.calificaciones[0].calificacion_id
                         cal.evaluacion_id = element.calificaciones[0].id
                         cal.idusuario = element.usuario_idusuario
@@ -1166,14 +1194,15 @@ export default {
         //modal para cambiar la calificacion
         openModalCalificacion(tr){
             let me = this;
-            me.calificacion.id = tr.id
+            me.calificacion.id = tr.calificacion_id
             me.calificacion.nota = tr.calificacion
+            me.calificacion.puntos = tr.puntos
             me.popupEditCalificacion = true
         },
 
         abrirEvaluacion(tr){
             let me = this;
-            localStorage.setItem('id_evalRevisar',tr.evaluacion_id)
+            localStorage.setItem('id_evalRevisar',tr.id)
             let route = this.$router.resolve({path: '/revisarevaluacion'});
             window.open(route.href, '_blank');
         },
@@ -1184,6 +1213,14 @@ export default {
             if(me.calificacion.nota < 0  ){
                 this.$vs.notify({
                         text:'la calificación no puede ser menor a cero',
+                        color:'warning',
+                        iconPack: 'feather',
+                        icon:'icon-check'})
+                return false;
+            }
+            if(me.calificacion.nota > me.calificacion.puntos){
+                 this.$vs.notify({
+                        text:`la calificación no puede ser mayor a ${me.calificacion.puntos}`,
                         color:'warning',
                         iconPack: 'feather',
                         icon:'icon-check'})
