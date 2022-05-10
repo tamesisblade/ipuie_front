@@ -245,11 +245,12 @@
                 <vs-tr :key="indextr" v-for="(tr, indextr) in data">
                     <vs-td :data="tr">
                         {{ tr.Estudiante }}
-
+                        {{ tr }}
 
                     </vs-td>
 
                     <vs-td :key="$indexs" v-for="(item, $indexs) in tr.calificaciones">
+                    
                         <span v-if="item">{{item}}</span>
                         <span v-else>0</span>
                     </vs-td>
@@ -1011,7 +1012,7 @@ export default {
                 formData.append('estado', estado);
                 formData.append('docente', me.docente);
                 formData.append('codigo', localStorage.id_curso);
-                formData.append('seccion_id', localStorage.codigo);
+                formData.append('seccion_id', localStorage.id_seccion);
 
             me.$http.post(this.$server_url+'evaluacion', formData).then(res => {
                 const index = me.evaluaciones.findIndex(
