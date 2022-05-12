@@ -167,7 +167,6 @@
     <vs-prompt title="Exportar a Excel" class="export-options" @cancle="clearFields" @accept="exportToExcel" accept-text="Exportar" @close="clearFields" :active.sync="activePrompt">
 
         <vs-input v-model="fileName" placeholder="Ingrese el nombre del archivo" class="w-full" />
-        <v-select v-model="selectedFormat" :options="formats" class="my-4" />
 
     </vs-prompt>
     <!----fin modal exportar--------->
@@ -604,7 +603,7 @@ export default {
             editarActivo: false,
             date: new Date().toJSON(),
             datetime: null,
-
+            fileName: '',
             agregarActivo: false,
             popupEditEval: false,
             popupSelecPreg: false,
@@ -672,6 +671,7 @@ export default {
             ],
 
             activePromptGrupo: false,
+            activePrompt: false,
             textoConfirmgrup: '',
             puntajeTotalGrupo: 0,
             popupEvalAleatoria: false,
@@ -729,17 +729,6 @@ export default {
 
     },
     methods: {
-
-        formatJson(filterVal, jsonData) {
-            return jsonData.map(v => filterVal.map(j => {
-                return v[j]
-            }))
-        },
-        clearFields() {
-            this.fileName = ''
-            this.cellAutoWidth = true
-            this.selectedFormat = 'xls'
-        },
         onResize() {
             if (window.innerWidth < 769)
                 this.isMobile = true;
@@ -1367,7 +1356,7 @@ export default {
                     data,
                     filename: this.fileName,
                     autoWidth: this.cellAutoWidth,
-                    bookType: this.selectedFormat
+                    bookType: 'xlsx'
                 })
                 this.clearFields()
                 this.guardarActivo = '';
