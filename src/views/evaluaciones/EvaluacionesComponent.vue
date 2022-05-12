@@ -163,6 +163,16 @@
     </vs-prompt>
 
 
+<!----modal exportar--------->
+    <vs-prompt title="Exportar a Excel" class="export-options" @cancle="clearFields" @accept="exportToExcel" accept-text="Exportar" @close="clearFields" :active.sync="activePrompt">
+
+        <vs-input v-model="fileName" placeholder="Ingrese el nombre del archivo" class="w-full" />
+        <v-select v-model="selectedFormat" :options="formats" class="my-4" />
+
+    </vs-prompt>
+    <!----fin modal exportar--------->
+
+
 
 <vx-card>
 
@@ -1339,6 +1349,43 @@ export default {
             }
 
             document.body.removeChild(aux);
+        },
+        exportToExcel () {
+            let headerTitle = ['Cédula', 'Estudiante'];
+            let headerVal = ['Cedula', 'Estudiante'];
+
+            for (let index = 0; index < this.alumnos[0].total.length; index++) {
+                headerTitle.push("Evaluación" + index)
+                headerVal.push("Evaluacion" + index)
+            }
+
+            import('@/vendor/Export2Excel').then(excel => {
+                const list = this.respuestas
+                const data = this.formatJson(headerVal, list)
+                excel.export_json_to_excel({
+                    header: headerTitle,
+                    data,
+                    filename: this.fileName,
+                    autoWidth: this.cellAutoWidth,
+                    bookType: this.selectedFormat
+                })
+                this.clearFields()
+                this.guardarActivo = '';
+                this.generarActivo = ' ';
+                this.textAlertCant = '';
+                this.cantidad = '';
+                this.codigoSelected = [];
+            })
+        },
+        formatJson(filterVal, jsonData) {
+            return jsonData.map(v => filterVal.map(j => {
+                return v[j]
+            }))
+        },
+        clearFields() {
+            this.fileName = ''
+            this.cellAutoWidth = true
+            this.selectedFormat = 'xls'
         },
 
     },
