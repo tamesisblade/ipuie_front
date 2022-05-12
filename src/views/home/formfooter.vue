@@ -48,7 +48,7 @@
     </div>
 
     <div class="vx-col w-full lg:w-1/3 sm:w-1/2 mb-base p-12" align="center">
-        <img style="width: 120px;" :src="'https://server.ipuiecotocollao.com/images/carrousel/'+footer.imagen"/>
+        <img style="width: 120px;" :src="'http://localhost:8000/images/carrousel/'+footer.imagen"/>
     </div>
 
 </div>
@@ -81,7 +81,7 @@ export default {
         let me = this
 
         me.$vs.loading()
-        axios.get('https://server.ipuiecotocollao.com/api/get_footer')
+        axios.get('http://localhost:8000/api/get_footer')
         .then(function (response) {
             me.footer = response.data[0]
             me.$vs.loading.close()
@@ -98,7 +98,7 @@ export default {
         formData.append('telefono', me.telefono);
         formData.append('mensaje', me.mensaje);
 
-        axios.post('https://server.ipuiecotocollao.com/api/enviar_mail', formData)
+        axios.post('http://localhost:8000/api/enviar_mail', formData)
         .then(function (res) {
             me.$vs.notify({
                 text:'Correo enviado exitosamente, nos pondremos en contacto con usted tan pronto como nos sea posible.', color:'success', iconPack: 'feather', icon:'icon-check'})

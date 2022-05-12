@@ -77,6 +77,7 @@ export default {
 
             let fileImgPreg = document.getElementById("file1").files[0];
 
+            me.$vs.loading()
             let formData = new FormData();
             formData.append('id_curso', me.id_curso)
             formData.append('id_estudiante', me.usuario[0].idusuario)
@@ -85,7 +86,7 @@ export default {
             formData.append('forma_pago', me.forma_pago.label)
             formData.append('valor', me.valor)
             formData.append('estado', 2)
-            axios.post("https://server.ipuiecotocollao.com/api/inscripcion_curso", formData)
+            axios.post("http://localhost:8000/api/inscripcion_curso", formData)
             .then(function (response) {
               if( response.data == '0' ){
                 me.$vs.notify({
@@ -98,10 +99,12 @@ export default {
                     title: 'Solicitud enviada exitosamente, por favor espera la aprobación.',
                 })
               }
+
+                me.$vs.loading.close()
                 me.$router.go(-1);
             })
             .catch(function (error) {
-
+              me.$vs.loading.close()
             })
 
         },

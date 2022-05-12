@@ -19,7 +19,7 @@
                 <h5 class="mb-1"> {{item.titulo}} </h5>
                 <div class="text-grey mb-3" style="font-size: 12px;"> {{item.subtitulo}} </div>
                 <div align="center">
-                    <vs-button style="font-size: 12px; padding: 5px; display: inline-block; width: 45%;" class="m-1" size="small" type="line" color="primary" @click="$router.push('/detalle_curso/'+item.id_curso)">Ver curso</vs-button>
+                    <vs-button style="font-size: 12px; padding: 5px; display: inline-block; width: 45%;" class="m-1" size="small" type="line" color="primary" @click="irCurso(item)">Ver curso</vs-button>
 
                     <vs-button style="font-size: 12px; padding: 5px; display: inline-block; width: 45%;" class="m-1" size="small" type="line" color="#b9b9b9" @click="irInscripcion(item)">Inscribirse</vs-button>
                 </div>
@@ -108,10 +108,14 @@ export default {
             localStorage.id_curso_inscripcion = item.id_curso
             this.$router.push('/inscripcion_curso')
         },
+        irCurso(item){
+            localStorage.id_curso_inscripcion = item.id_curso
+            this.$router.push('/detalle_curso/'+item.id_curso)
+        },
         getCursos(){
             let me = this
             me.$vs.loading()
-            axios.get('https://server.ipuiecotocollao.com/api/cursos')
+            axios.get('http://localhost:8000/api/cursos')
             .then(function (res) {
                 me.cursos = res.data
                 me.$vs.loading.close()
@@ -130,7 +134,7 @@ export default {
         acceptAlertCurso() {
             let me = this
 
-            axios.get('https://server.ipuiecotocollao.com/api/elimiar_curso/' + me.id_curso)
+            axios.get('http://localhost:8000/api/elimiar_curso/' + me.id_curso)
             .then(function (res) {
                 me.$vs.notify({
                     color: 'danger',

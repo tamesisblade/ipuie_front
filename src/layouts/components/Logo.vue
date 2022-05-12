@@ -23,6 +23,6 @@
       </g>
   </svg>-->
   <div>
-    <img src="https://server.ipuiecotocollao.com/images/logo_layout.png" style="width: 50px;">
+    <img src="http://localhost:8000/images/logo_layout.png" style="width: 50px;">
   </div>
 </template>

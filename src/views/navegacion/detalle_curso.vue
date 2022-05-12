@@ -122,7 +122,7 @@ export default {
     created() {
         this.usuario = JSON.parse(localStorage.getItem('usuario'));
         if( !this.usuario ){
-          this.usuario = []
+          this.usuario = [{idusuario: 0, id_group: 3}]
         }
     },
     mounted() {
