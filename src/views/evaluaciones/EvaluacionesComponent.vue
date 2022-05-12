@@ -10,7 +10,7 @@
         </vs-row>
 
         <ul  style="display:flex;" class="mt-5">
-          
+
             <li>
             <vs-radio v-model="datosPreguntas.tipo" vs-name="radioOpcion" vs-value="5">Opción simple</vs-radio>
             </li>
@@ -245,7 +245,7 @@
                 <template slot-scope="{data}">
                 <vs-tr :key="indextr" v-for="(tr, indextr) in data">
                     <vs-td :data="tr">
-                        {{ tr.Estudiante }} 
+                        {{ tr.Estudiante }}
 
                     </vs-td>
                     <vs-td>
@@ -255,7 +255,7 @@
                                 <vs-chip>Sin Evaluación</vs-chip>
                                    <vs-divider></vs-divider>
                             </div>
-                        
+
                             <div v-else>
                                 <p>Evaluacion:{{ item.nombre_evaluacion }}</p>
                                 <p>Calificación:<span style="font-weight: bold;">{{ item.calificacion }} / {{item.puntos}}</span></p>
@@ -269,14 +269,14 @@
                                         <vs-button class="modal-default-button" radius @click="abrirEvaluacion(item)"  size="small" color="warning" type="line" icon-pack="feather" icon="icon-bookmark">
                                         </vs-button>
                                     </vx-tooltip> &nbsp;
-                                </div>   
-                            </div>  
-                          
+                                </div>
+                            </div>
+
                          </div>
-                        
+
                     </vs-td>
                     <!-- <vs-td :key="$indexs" v-for="(item, $indexs) in tr.calificaciones">
-                    
+
                         <span v-if="item">{{item}}</span>
                         <span v-else>0</span>
                     </vs-td> -->
@@ -755,7 +755,7 @@ export default {
             })
         },
         generarPregunta(){
-             let me = this  
+             let me = this
             if(me.datosPreguntas.tipo == undefined){
                 me.$vs.notify({
                     text:'Debe seleccionar un tipo de pregunta por favor',
@@ -773,20 +773,20 @@ export default {
                     icon:'icon-alert-triangle'})
                 return;
             }
-    
+
             let formData1 = new FormData();
             formData1.append('pregunta', me.datosPreguntas.txtpregunta);
             //respuestas opcion simple
             if(me.datosPreguntas.tipo == 5) {
                // VALIDACION
-                if(me.datosPreguntas.opcion1 == undefined  || me.datosPreguntas.opcion2 == undefined || me.datosPreguntas.opcion3 == undefined || me.datosPreguntas.opcion4 == undefined){
-                    me.$vs.notify({
-                        text:'Debe llenar los 4 campos',
-                        color:'warning',
-                        iconPack: 'feather',
-                        icon:'icon-alert-triangle'})
-                    return;
-                }
+                // if(me.datosPreguntas.opcion1 == undefined  || me.datosPreguntas.opcion2 == undefined || me.datosPreguntas.opcion3 == undefined || me.datosPreguntas.opcion4 == undefined){
+                //     me.$vs.notify({
+                //         text:'Debe llenar los 4 campos',
+                //         color:'warning',
+                //         iconPack: 'feather',
+                //         icon:'icon-alert-triangle'})
+                //     return;
+                // }
                 if(me.rd1 == 0 && me.rd2 == 0 && me.rd3 == 0 && me.rd4 == 0){
                     me.$vs.notify({
                         text:'Debe seleccionar una respuesta',
@@ -811,7 +811,7 @@ export default {
                         iconPack: 'feather',
                         icon:'icon-alert-triangle'})
                     return;
-                    
+
                 }
 
                 if(me.datosPreguntas.ch1 == undefined  && me.datosPreguntas.ch2 == undefined && me.datosPreguntas.ch3 == undefined && me.datosPreguntas.ch4 == undefined){
@@ -821,7 +821,7 @@ export default {
                         iconPack: 'feather',
                         icon:'icon-alert-triangle'})
                     return;
-                    
+
                 }
 
                 formData1.append('tipo1',me.datosPreguntas.ch1 ? '1':'0');
@@ -1042,9 +1042,6 @@ export default {
                 formData.append('seccion_id', localStorage.id_seccion);
 
             me.$http.post(this.$server_url+'evaluacion', formData).then(res => {
-                const index = me.evaluaciones.findIndex(
-                    evaluacionBuscar => evaluacionBuscar.id === res.data.id)
-                me.evaluacion[index] = res.data;
                 me.getEvalDoc();
                 //me.clasifGrupEstEval(item);
                 me.editarActivo = false; //desactiva el form editar

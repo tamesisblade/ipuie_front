@@ -154,6 +154,7 @@ export default {
         },
         irInscripcion(){
             localStorage.tipo_registro = 'inscripcion'
+            localStorage.id_curso_inscripcion = this.id_curso
             this.$router.push('/inscripcion_curso')
         },
         irTareas(item){
