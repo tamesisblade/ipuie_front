@@ -33,7 +33,8 @@
                     <div class="mb-5" style="font-size: 20px;" align="center">
                         <vs-divider v-if="index>0 && vertodo===true" />
                         <div align="right">
-                            <b>{{item.puntaje}}</b> / {{item.puntaje_pregunta}} pts<br>
+                            <!-- <b>{{item.puntaje}}</b> / {{item.puntaje_pregunta}} pts<br> -->
+                             <b>{{item.puntaje}}</b> puntos<br>
                             {{item.nombre_tipo}}
                         </div>
                         <div align="left">

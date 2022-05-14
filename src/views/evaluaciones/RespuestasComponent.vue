@@ -266,6 +266,7 @@ export default {
       .then((res) => {
         if (res.data.length > 0) {
           this.evaluaciones = res.data;
+          localStorage.setItem('puntos',this.evaluaciones[0].puntos)
           this.validarTiempo();
           this.preguntasEvaluacionGrupo();
         } else {
@@ -462,6 +463,10 @@ export default {
       });
     },
     calificarValidado() {
+      localStorage.setItem('cantidadPreguntas',this.preguntas.items.length)
+      console.log('rr',this.preguntas.items)
+      console.log('ff', this.respuestasAcum)
+    
       var pregsRecorrer = this.preguntas.items;
       var opcionesSeleccionadas = [];
       var opcionesSeleccionadasV = [];
@@ -477,55 +482,56 @@ export default {
           pregsRecorrer[j].id_tipo_pregunta === 1 ||
           pregsRecorrer[j].id_tipo_pregunta === 3 ||
           pregsRecorrer[j].id_tipo_pregunta === 5
-        ) {
+        ) 
+        {
           if (
             pregsRecorrer[j].id_tipo_pregunta === 3 ||
             pregsRecorrer[j].id_tipo_pregunta === 5
-          ) {
-            opcionesSeleccionadas = $(
-              "input:radio[name=" + pregsRecorrer[j].id + "]:checked"
-            ).val();
+             ) 
+          {
+              opcionesSeleccionadas = $(
+                  "input:radio[name=" + pregsRecorrer[j].id + "]:checked"
+                ).val();
           } else {
-            $("." + pregsRecorrer[j].id + ":checked").each(function () {
-              opcionesSeleccionadas += $(this).val() + ",";
-            });
+              $("." + pregsRecorrer[j].id + ":checked").each(function () {
+                opcionesSeleccionadas += $(this).val() + ",";
+              });
           }
-
-          try {
-            var tamselecV = 0;
-            opcionesSeleccionadasV = opcionesSeleccionadas.split(",");
-            if (opcionesSeleccionadasV === undefined) {
-              opcionesSeleccionadasV = "";
-              tamselecV = 1;
-            } else {
-              tamselecV = opcionesSeleccionadasV.length - 1;
-              if (opcionesSeleccionadasV.length - 1 <= 0) {
-                tamselecV = 1;
-              }
-            }
-
-            var opcionRespuesta =
-              this.respuestasAcum[index].id_opcion_pregunta.split(",");
-
-            var califPreg = 0;
-            for (var i = 0; i < tamselecV; i++) {
-              for (var k = 0; k < opcionRespuesta.length; k++) {
-                if (opcionesSeleccionadasV[i] === opcionRespuesta[k]) {
-                  //alert(opcionesSeleccionadasV[i] +'==='+ opcionRespuesta[k]);
-                  califPreg++;
+              try {
+                var tamselecV = 0;
+                opcionesSeleccionadasV = opcionesSeleccionadas.split(",");
+                if (opcionesSeleccionadasV === undefined) {
+                  opcionesSeleccionadasV = "";
+                  tamselecV = 1;
+                } else {
+                  tamselecV = opcionesSeleccionadasV.length - 1;
+                  if (opcionesSeleccionadasV.length - 1 <= 0) {
+                    tamselecV = 1;
+                  }
                 }
-              }
-            }
 
-            if (tamselecV > opcionRespuesta.length) {
-              califPreg = califPreg - (tamselecV - opcionRespuesta.length);
-            }
-            califPregFinal = (
-              (califPreg * this.respuestasAcum[index].puntaje_pregunta) /
-              opcionRespuesta.length
-            ).toFixed(2);
+                var opcionRespuesta =
+                  this.respuestasAcum[index].id_opcion_pregunta.split(",");
 
-          } catch (error) {}
+                var califPreg = 0;
+                for (var i = 0; i < tamselecV; i++) {
+                  for (var k = 0; k < opcionRespuesta.length; k++) {
+                    if (opcionesSeleccionadasV[i] === opcionRespuesta[k]) {
+                      //alert(opcionesSeleccionadasV[i] +'==='+ opcionRespuesta[k]);
+                      califPreg++;
+                    }
+                  }
+                }
+
+                if (tamselecV > opcionRespuesta.length) {
+                  califPreg = califPreg - (tamselecV - opcionRespuesta.length);
+                }
+                califPregFinal = (
+                  (califPreg * this.respuestasAcum[index].puntaje_pregunta) /
+                  opcionRespuesta.length
+                ).toFixed(2);
+
+              } catch (error) {}
         } else {
           //calificar preguntas tipo 2 o 6
           try {
@@ -589,6 +595,7 @@ export default {
 
       this.enviarEvaluacion();
     },
+   
     guardarRespuesta(evaluacion, pregunta, estudiante, respuestas, puntaje) {
       let formData = new FormData();
       formData.append("evaluacion", evaluacion);
@@ -596,7 +603,8 @@ export default {
       formData.append("estudiante", this.usuario[0].idusuario);
       formData.append("respuesta", respuestas);
       formData.append("puntaje", puntaje);
-
+      formData.append('puntos',localStorage.puntos)
+      formData.append('cantidadPreguntas',localStorage.cantidadPreguntas)
       this.$http
         .post(this.$server_url + "guardarRespuesta", formData)
         .then((res) => {})
@@ -612,6 +620,8 @@ export default {
       formData.append("evaluacion", me.id_evalRevisar);
       formData.append("calificacion", me.calificacion.toFixed(2));
       formData.append("grupo", me.grupo_estudiante);
+      formData.append('puntos',localStorage.puntos)
+      formData.append('cantidadPreguntas',localStorage.cantidadPreguntas)
 
       this.$http
         .post(this.$server_url + "respEvaluacion", formData)
@@ -622,7 +632,7 @@ export default {
             urlV[0] + "/" + urlV[1] + "/" + urlV[2] + "/revisarevaluacion";
         })
         .catch(function (error) {
-          //window.location.href = me.urlOrigen;
+          window.location.href = me.urlOrigen;
         });
     },
     volver() {
