@@ -59,6 +59,7 @@
                             </div>
 
                             <!-----PREGUNTAS ESCRITAS---->
+                            
                             <div v-if="item.id_tipo_pregunta===2 || item.id_tipo_pregunta===6">
                                 <div align="right" class="mb-3" v-if="usuario[0].id_group == 1 && previsualizar_eval!=1">
                                     <vs-input type="number" v-model="calificacionManual" style="display: inline-block; width: 80px;" />
