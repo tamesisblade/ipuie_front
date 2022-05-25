@@ -33,7 +33,8 @@
                     <div class="mb-5" style="font-size: 20px;" align="center">
                         <vs-divider v-if="index>0 && vertodo===true" />
                         <div align="right">
-                            <b>{{item.puntaje}}</b> / {{item.puntaje_pregunta}} pts<br>
+                            <!-- <b>{{item.puntaje}}</b> / {{item.puntaje_pregunta}} pts<br> -->
+                             <b>{{item.puntaje}}</b> puntos<br>
                             {{item.nombre_tipo}}
                         </div>
                         <div align="left">
@@ -58,6 +59,7 @@
                             </div>
 
                             <!-----PREGUNTAS ESCRITAS---->
+                            
                             <div v-if="item.id_tipo_pregunta===2 || item.id_tipo_pregunta===6">
                                 <div align="right" class="mb-3" v-if="usuario[0].id_group == 1 && previsualizar_eval!=1">
                                     <vs-input type="number" v-model="calificacionManual" style="display: inline-block; width: 80px;" />
