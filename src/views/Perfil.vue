@@ -114,7 +114,7 @@ export default {
             formData.append('ciudad', me.estudiante.ciudad.id)
             formData.append('id_group', me.usuario[0].id_group)
 
-            axios.post("http://localhost:8000/api/editarUsuario", formData)
+            axios.post("http://127.0.0.1:8000/api/editarUsuario", formData)
                 .then(function (response) {
                     localStorage.removeItem('tk');
                     localStorage.removeItem('usuario');

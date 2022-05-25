@@ -86,7 +86,7 @@ export default {
             formData.append('forma_pago', me.forma_pago.label)
             formData.append('valor', me.valor)
             formData.append('estado', 2)
-            axios.post("http://localhost:8000/api/inscripcion_curso", formData)
+            axios.post("http://127.0.0.1:8000/api/inscripcion_curso", formData)
             .then(function (response) {
               if( response.data == '0' ){
                 me.$vs.notify({

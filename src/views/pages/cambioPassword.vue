@@ -84,7 +84,7 @@ export default {
             let formData = new FormData();
             formData.append('idusuario', me.usuario[0].idusuario);
             formData.append('password', me.password);
-            axios.post("http://localhost:8000/api/cambio_password", formData)
+            axios.post("http://127.0.0.1:8000/api/cambio_password", formData)
                 .then(function (response) {
                     localStorage.setItem('usuario', JSON.stringify(response.data));
                     me.$router.push('/');

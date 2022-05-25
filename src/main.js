@@ -72,11 +72,11 @@ require('./assets/css/iconfont.css')
 Vue.config.productionTip = false
 
 // url server
-Vue.prototype.$server_url = "http://localhost:8000/api/"
-Vue.prototype.$server_url_file = "http://localhost:8000/"
+Vue.prototype.$server_url = "http://127.0.0.1:8000/api/"
+Vue.prototype.$server_url_file = "http://127.0.0.1:8000/"
 const server_url = Vue.prototype.$server_url
 
-Vue.prototype.$server_images = "http://localhost:8000/images/"
+Vue.prototype.$server_images = "http://127.0.0.1:8000/images/"
 
 Vue.prototype.$fondo_web = "fondo_web.jpg"
 const fondo_web = Vue.prototype.$fondo_web

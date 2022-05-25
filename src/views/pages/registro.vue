@@ -152,7 +152,7 @@ export default {
             formData.append('ciudad', item.ciudad.id)
             formData.append('id_group', 2)
 
-            axios.post("http://localhost:8000/api/register", formData)
+            axios.post("http://127.0.0.1:8000/api/register", formData)
                 .then(function (response) {
                     localStorage.tk = response.data.token
                     localStorage.setItem('usuario', JSON.stringify(response.data.datos));

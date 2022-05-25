@@ -155,7 +155,7 @@ export default {
       let me = this;
       me.$vs.loading();
       axios
-        .get("http://localhost:8000/api/get_acerca")
+        .get("http://127.0.0.1:8000/api/get_acerca")
         .then(function (res) {
           me.contenido = res.data[0].contenido;
           me.cod_mapa = res.data[0].cod_mapa;
@@ -175,7 +175,7 @@ export default {
       formData.append("cod_mapa", me.cod_mapa);
       axios
         .post(
-          "http://localhost:8000/api/save_get_acerca",
+          "http://127.0.0.1:8000/api/save_get_acerca",
           formData
         )
         .then(function (res) {

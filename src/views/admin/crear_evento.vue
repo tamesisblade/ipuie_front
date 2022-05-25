@@ -37,7 +37,7 @@ export default{
           let formData = new FormData()
           formData.append('nombre_evento', me.nombre_evento);
           me.$vs.loading()
-          axios.post('http://localhost:8000/api/eventos', formData)
+          axios.post('http://127.0.0.1:8000/api/eventos', formData)
           .then(function (res) {
               me.$vs.loading.close()
               me.nombre_evento=''

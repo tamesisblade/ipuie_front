@@ -95,7 +95,7 @@ export default {
             formData.append('archivo', file);
             formData.append('idusuario', me.usuario[0].idusuario);
             axios.post(this.$server_url+'archivo', formData)
-            // axios.post('http://localhost:8000/api/archivo', formData)
+            // axios.post('http://127.0.0.1:8000/api/archivo', formData)
                 .then(function (response) {
                     // me.getContenido();
 
@@ -168,7 +168,7 @@ export default {
                 color: '#046AE7'
             })
             me.$http.get(this.$server_url+'archivo?idusuario=', + me.usuario[0].idusuario)
-            // var url = "http://localhost:8000/api/archivo?idusuario=" + me.usuario[0].idusuario;
+            // var url = "http://127.0.0.1:8000/api/archivo?idusuario=" + me.usuario[0].idusuario;
             // axios.get(url)
             .then(function (response) {
                     var respuesta = response.data;

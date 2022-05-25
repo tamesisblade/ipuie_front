@@ -115,7 +115,7 @@ export default {
         getCursos(){
             let me = this
             me.$vs.loading()
-            axios.get('http://localhost:8000/api/cursos')
+            axios.get('http://127.0.0.1:8000/api/cursos')
             .then(function (res) {
                 me.cursos = res.data
                 me.$vs.loading.close()
@@ -134,7 +134,7 @@ export default {
         acceptAlertCurso() {
             let me = this
 
-            axios.get('http://localhost:8000/api/elimiar_curso/' + me.id_curso)
+            axios.get('http://127.0.0.1:8000/api/elimiar_curso/' + me.id_curso)
             .then(function (res) {
                 me.$vs.notify({
                     color: 'danger',

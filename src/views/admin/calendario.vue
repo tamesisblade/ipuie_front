@@ -218,8 +218,7 @@ export default {
       me.instituciones=[]
     },
     addEvent () {
-
-      if( this.usuario[0].id_group != 4 ){
+      if( this.usuario[0].id_group != 1 ){
         this.$vs.notify({
         text:'No tiene permisos',
         color:'warning',

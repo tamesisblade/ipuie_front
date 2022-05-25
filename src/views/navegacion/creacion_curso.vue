@@ -20,7 +20,7 @@
                   <vs-input label="Titulo" v-model="curso.titulo" class="w-full" />
               </div>
               <div class="vx-col md:w-1/2 w-full mt-5">
-                  <vs-input label="Subtitulo"  v-model="curso.subtitulo" class="w-full" />
+                  <vs-input label="Descripción"  v-model="curso.subtitulo" class="w-full" />
               </div>
               <div class="vx-col md:w-1/2 w-full mt-5">
                   <vs-input label="Capacitador"  v-model="curso.capacitador" class="w-full" />
@@ -155,7 +155,7 @@ export default {
             let me = this
 
             me.$vs.loading()
-            axios.get('http://localhost:8000/api/cursos/'+me.id_curso)
+            axios.get('http://127.0.0.1:8000/api/cursos/'+me.id_curso)
             .then(function (response) {
                 me.secciones = response.data.items.secciones
                 me.curso = response.data.items.curso[0]
@@ -188,7 +188,7 @@ export default {
 
             formData.append('id_curso', me.id_curso);
 
-            axios.post('http://localhost:8000/api/cursos', formData)
+            axios.post('http://127.0.0.1:8000/api/cursos', formData)
             .then(function (response) {
                 me.id_curso = response.data.id_curso
                 me.$vs.loading.close()
@@ -213,7 +213,7 @@ export default {
             formData.append('id_seccion', me.seccion.id_seccion);
             formData.append('id_curso', me.id_curso);
 
-            axios.post('http://localhost:8000/api/guardar_seccion', formData)
+            axios.post('http://127.0.0.1:8000/api/guardar_seccion', formData)
             .then(function (response) {
                 me.getCurso()
                 me.popupSeccion = false
@@ -236,7 +236,7 @@ export default {
         acceptAlertSeccion() {
             let me = this
 
-            axios.get('http://localhost:8000/api/elimiar_seccion/' + me.seccion.id_seccion)
+            axios.get('http://127.0.0.1:8000/api/elimiar_seccion/' + me.seccion.id_seccion)
             .then(function (res) {
                 me.$vs.notify({
                     color: 'danger',
