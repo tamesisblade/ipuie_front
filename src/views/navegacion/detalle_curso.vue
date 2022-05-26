@@ -18,8 +18,7 @@
         </vx-card>
 
         <vx-card class="mb-3">
-        <vs-collapse >
-
+        <vs-collapse>
             <vs-collapse-item>
                 <div slot="header"> Detalles del curso </div>
                 <div style="border: 1px solid gray;" class="p-5 mb-12">
@@ -37,22 +36,22 @@
                     <span> {{curso.descripcion}} </span>
                 </div>
             </vs-collapse-item>
-
-            <vs-collapse-item>
-                <div slot="header"> Contenido del curso </div>
-                <vs-collapse>
-                <vs-collapse-item :key="index" v-for="(item, index) in secciones">
-                    <div slot="header">
-                      <b>{{item.titulo}}</b> &nbsp;&nbsp;
-                      <vs-button class="float-right" v-if="curso_habilitado!=0 || usuario[0].id_group == 1" type="line" size="small" color="success" @click="irTareas(item)">Ver Tareas</vs-button>
-                      <vs-button class="float-right" v-if="curso_habilitado!=0 || usuario[0].id_group == 1" type="line" size="small" color="dark" @click="irEvaluaciones(item)">Ver Evaluaciones</vs-button>
-                    </div>
-                    <div v-if="curso_habilitado==1" v-html="item.contenido"></div>
-                </vs-collapse-item>
-                </vs-collapse>
-
-            </vs-collapse-item>
         </vs-collapse>
+
+        <div class="w-full text-xl" style="padding-left: 3%;"> Contenido del curso </div>
+        <vs-collapse>
+        <vs-collapse-item :key="index" v-for="(item, index) in secciones">
+            <div slot="header">
+              <b>{{item.titulo}}</b> &nbsp;&nbsp;
+              <div class="float-right" v-if="usuario[0]">
+                <vs-button class="float-right" v-if="curso_habilitado!=0 || usuario[0].id_group == 1" type="line" size="small" color="success" @click="irTareas(item)">Ver Tareas</vs-button>
+                <vs-button class="float-right" v-if="curso_habilitado!=0 || usuario[0].id_group == 1" type="line" size="small" color="dark" @click="irEvaluaciones(item)">Ver Evaluaciones</vs-button>
+              </div>
+            </div>
+            <div v-if="curso_habilitado==1" v-html="item.contenido"></div>
+        </vs-collapse-item>
+        </vs-collapse>
+
         </vx-card>
       </div>
 
@@ -146,10 +145,12 @@ export default {
         validaCursoEstudiante(){
             let me = this
 
-            axios.get(this.$server_url+'curso_estudiante/'+me.id_curso+'/'+me.usuario[0].idusuario)
-            .then(function (response) {
-                me.curso_habilitado = response.data
-            })
+            if( me.usuario.length > 0 ){
+              axios.get(this.$server_url+'curso_estudiante/'+me.id_curso+'/'+me.usuario[0].idusuario)
+              .then(function (response) {
+                  me.curso_habilitado = response.data
+              })
+            }
 
         },
         irInscripcion(){

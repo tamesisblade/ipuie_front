@@ -12,7 +12,7 @@
             </div>
 
             <div class="vx-col sm:w-1/5 w-full mb-6" style="min-width: 250px;" :key="index" v-for="(item, index) in cursos">
-            <vx-card align="justify">
+              <vx-card align="justify">
                 <div slot="no-body" style="margin: 0% !important;">
                     <img style="height: 200px;" :src="$server_images+'cursos/' + item.img_portada" alt="content-img" class="responsive card-img-top" >
                 </div>
@@ -23,11 +23,10 @@
 
                     <vs-button style="font-size: 12px; padding: 5px; display: inline-block; width: 45%;" class="m-1" size="small" type="line" color="#b9b9b9" @click="irInscripcion(item)">Inscribirse</vs-button>
                 </div>
+                <vs-button v-if="usuario[0].idusuario == item.capacitador" class="mt-3 w-full" size="small" style="font-size: 12px;" type="border" color="dark" @click="$router.push('/creacion_curso/'+item.id_curso)">Editar curso</vs-button>
+                <vs-button v-if="usuario[0].idusuario == item.capacitador" class="mt-3 w-full" size="small" style="font-size: 12px;" type="border" color="danger" @click="id_curso = item.id_curso; openConfirmCurso();">Borrar curso</vs-button>
 
-                <vs-button class="mt-3 w-full" size="small" style="font-size: 12px;" type="border" color="dark" @click="$router.push('/creacion_curso/'+item.id_curso)">Editar curso</vs-button>
-                <vs-button class="mt-3 w-full" size="small" style="font-size: 12px;" type="border" color="danger" @click="id_curso = item.id_curso; openConfirmCurso();">Borrar curso</vs-button>
-
-            </vx-card>
+              </vx-card>
             </div>
 
         </div>

@@ -23,7 +23,7 @@
                   <vs-input label="Descripción"  v-model="curso.subtitulo" class="w-full" />
               </div>
               <div class="vx-col md:w-1/2 w-full mt-5">
-                  <vs-input label="Capacitador"  v-model="curso.capacitador" class="w-full" />
+                  <vs-input label="Capacitador"  v-model="curso.capacitador" disabled="true" class="w-full" />
               </div>
               <div class="vx-col md:w-1/4 w-full mt-5">
                     <vs-input label="Duración (horas)" type="number" v-model="curso.cant_horas" class="w-full" />
@@ -142,6 +142,9 @@ export default {
         this.usuario = JSON.parse(localStorage.getItem('usuario'));
         if( !this.usuario ){
           this.usuario = []
+        }else{
+          this.curso.capacitador = this.usuario[0].nombres +' '+ this.usuario[0].apellidos
+
         }
     },
     mounted() {
@@ -174,7 +177,7 @@ export default {
             let formData = new FormData();
             formData.append('titulo', me.curso.titulo);
             formData.append('subtitulo', me.curso.subtitulo);
-            formData.append('capacitador', me.curso.capacitador);
+            formData.append('capacitador', me.usuario[0].idusuario);
             formData.append('cant_horas', me.curso.cant_horas);
             formData.append('precio', me.curso.precio);
             formData.append('descuento', me.curso.descuento);

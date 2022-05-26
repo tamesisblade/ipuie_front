@@ -1,5 +1,6 @@
 <template>
   <div class="p5">
+
     <vs-popup title="Tareas" :active.sync="popupTareas">
       <vs-input class="w-full mb-3" label="Descripción tarea" v-model="tarea" />
 
@@ -131,6 +132,9 @@
     >
       <div>
         <vs-table max-items="10" search pagination :data="tareaAlumnos">
+          <template slot="header">
+              <vs-button color="warning" size="small" style="font-size: 14px;" @click="exportToExcel">Exportar</vs-button>
+          </template>
           <template slot="thead">
             <vs-th sort-key="nombre">Tarea</vs-th>
             <vs-th sort-key="nombre">Estudiante</vs-th>
@@ -265,6 +269,8 @@ export default {
       editarpromptCalificacion: false,
       tareaAlumnos: [],
       editarActivo: false,
+      activePrompt: false,
+      fileName: 'listado_tareas',
     };
   },
   created() {
@@ -329,8 +335,8 @@ export default {
       let fileImgPreg;
       fileImgPreg = document.getElementById("file1").files[0];
 
-   
-     
+
+
       me.$vs.loading();
       let formData = new FormData();
       formData.append("id_tarea", me.id_tarea);
@@ -339,11 +345,11 @@ export default {
       formData.append("fecha_entrega", me.fecha_entrega);
       formData.append("archivo", fileImgPreg);
       if(fileImgPreg == undefined){
-        
+
       }else{
           formData.append("archivo_old", me.archivo_old);
       }
-    
+
       formData.append("estado", 1);
       axios
         .post(this.$server_url+'tareas', formData)
@@ -505,6 +511,37 @@ export default {
           me.$vs.loading.close();
         });
     },
+
+
+    exportToExcel () {
+        let headerTitle = ['Estudiante', 'Fecha', 'Observacion', 'Nota', 'Comentario'];
+        let headerVal = ['estudiante', 'fecha_create', 'descripcion', 'nota', 'comentario'];
+
+
+        import('@/vendor/Export2Excel').then(excel => {
+            const list = this.tareaAlumnos
+            const data = this.formatJson(headerVal, list)
+            excel.export_json_to_excel({
+                header: headerTitle,
+                data,
+                filename: this.fileName,
+                autoWidth: this.cellAutoWidth,
+                bookType: 'xlsx'
+            })
+            this.clearFields()
+        })
+    },
+    formatJson(filterVal, jsonData) {
+        return jsonData.map(v => filterVal.map(j => {
+            return v[j]
+        }))
+    },
+    clearFields() {
+        this.fileName = ''
+        this.cellAutoWidth = true
+        this.selectedFormat = 'xls'
+    },
+
   },
 };
 </script>
