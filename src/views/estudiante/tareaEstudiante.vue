@@ -67,7 +67,7 @@
 </vx-card> -->
 
      <vs-card>
-            <vs-button color="primary" type="border" class="m-1" @click="$router.go(-1)"><b>← Volver</b></vs-button>
+            <vs-button color="primary" type="border" class="m-1" @click="volver_detalle_curso()"><b>← Volver</b></vs-button>
             <vs-button color="dark" type="border" class="m-1" @click="actualizar()"><b>Actualizar</b></vs-button>
 
             <vs-collapse>
@@ -203,6 +203,9 @@ export default {
         },
         actualizar(){
           location.reload()
+        },
+        volver_detalle_curso(){
+          this.$router.push('/detalle_curso/' + localStorage.id_curso)
         }
     },
 }

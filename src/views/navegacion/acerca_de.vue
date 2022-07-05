@@ -11,11 +11,10 @@
         <br><br><br>
         <vs-divider>Contenido</vs-divider>
         <span>Recomendación: para subir imagenes utilice la opción de url.</span>
-        <!-- <froala id="edit" :tag="'textarea'" :config="config" v-model="contenido"></froala> -->
 
-        <!-- <quill-editor :config="config_quill" v-model="contenido"></quill-editor> -->
-        <quill-editor v-model="contenido"></quill-editor>
+        <froala id="edit" :tag="'textarea'" :config="config" v-model="contenido"></froala>
 
+        <div></div>
 
         <vs-divider>Mapa</vs-divider>
         <vs-textarea
@@ -28,7 +27,6 @@
           color="primary"
           class="mb-6"
           @click="
-            popupSeccion = false;
             save_get_acerca();
           "
           >Guardar</vs-button
@@ -38,11 +36,8 @@
 
     <div style="width: 100%" v-html="cod_mapa"></div>
 
-    <!-- <ckeditor :editor="editor" v-model="contenido" :config="editorConfig" ></ckeditor> -->
   </div>
 </template>
-
-<script src="/node_modules/quill-image-resize-module/image-resize.min.js"></script>
 
 <script>
 import vSelect from "vue-select";
@@ -51,29 +46,11 @@ import Vue from "vue";
 import axios from "axios";
 import VueFroala from "vue-froala-wysiwyg";
 
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
-
-import { quillEditor } from 'vue-quill-editor'
-
-// import Parchment from 'parchment'
-
-// import ImageResize from 'quill-image-resize-module'//Add
-// quillEditor.register('modules/imageResize', ImageResize)//Add
-
-
-
-
 Vue.use(axios);
 export default {
   components: {
     "v-select": vSelect,
     VueFroala,
-    quillEditor,
-    // ImageResize
   },
   data() {
     return {
@@ -82,65 +59,32 @@ export default {
       cod_mapa: "",
       id: 1, //acerca de default,
       config: {
+        imageUploadRemoteUrls: false,
         events: {
           initialized: function () {
-            console.log("initialized");
+            console.log('initialized')
           },
-          // "image.beforeUpload": function(files) {
-          // var editor = this;
-          //   if (files.length) {
-          //     // Create a File Reader.
-          //     var reader = new FileReader();
-          //     // Set the reader to insert images when they are loaded.
-          //     reader.onload = function(e) {
-          //       var result = e.target.result;
-          //       editor.image.insert(result, null, null, editor.image.get());
-          //     };
-          //     // Read image as base64.
-          //     reader.readAsDataURL(files[0]);
-          //   }
-          //   editor.popups.hideAll();
-          //   // Stop default upload chain.
-          //   return false;
-          // }
-        },
+          "image.beforeUpload": function(files) {
+            var editor = this;
+              if (files.length) {
+                // Create a File Reader.
+                var reader = new FileReader();
+                // Set the reader to insert images when they are loaded.
+                reader.onload = function(e) {
+                  var result = e.target.result;
+                  editor.image.insert(result, null, null, editor.image.get());
+                };
+                // Read image as base64.
+                reader.readAsDataURL(files[0]);
+              }
+              editor.popups.hideAll();
+              // Stop default upload chain.
+              return false;
+          }
+
+        }
       },
 
-
-
-      // config_quill: {
-      //   modules: {
-      //     // ImageResize: {//Add
-      //     //   displayStyles: {//Add
-      //     //     backgroundColor:'black',
-      //     //     border:'none',
-      //     //     color:'white'
-      //     //   },
-      //     //   modules: ['Resize','DisplaySize','Toolbar']//Add
-      //     // },
-      //     imageResize: {
-      //         // See optional "config" below
-      //     },
-      //     toolbar: [
-      //       ['bold','italic','underline','strike','image'],
-      //       ['formula','clean'],
-      //       ['blockquote','code-block'],
-      //       [{'list':'ordered'}, {'list':'bullet'}],
-      //       [{'script':'sub'}, {'script':'super'}],
-      //       [{'size': ['small', false,'large','huge']}],
-      //       [{'font': fonts }],
-      //       [{'header': [1, 2, 3, 4, 5, 6, false]}],
-      //       [{'color': [] }, {'background': [] }],
-      //       [{'align': [] }],
-      //       [{'direction':'rtl'}]
-      //     ]
-      //   },
-      //   placeholder:'Enter content...'
-      // },
-
-      editor: ClassicEditor,
-      editorData: "<p>Your Post Content</p>",
-      editorConfig: {},
     };
   },
   created() {
@@ -155,7 +99,7 @@ export default {
       let me = this;
       me.$vs.loading();
       axios
-        .get("http://127.0.0.1:8000/api/get_acerca")
+        .get("https://server.ipuiecotocollao.com/api/get_acerca/1")
         .then(function (res) {
           me.contenido = res.data[0].contenido;
           me.cod_mapa = res.data[0].cod_mapa;
@@ -175,7 +119,7 @@ export default {
       formData.append("cod_mapa", me.cod_mapa);
       axios
         .post(
-          "http://127.0.0.1:8000/api/save_get_acerca",
+          "https://server.ipuiecotocollao.com/api/save_get_acerca",
           formData
         )
         .then(function (res) {
@@ -198,4 +142,11 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+@media only screen and (max-width: 500px) {
+  img{
+    max-width: 300px !important;
+  }
+}
+
 </style>

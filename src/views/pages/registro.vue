@@ -44,27 +44,29 @@
                         </div>
                         <div class="vx-row mb-6">
                             <div class="vx-col sm:w-1/3 w-full">
-                                <span>Teléfono</span>
+                                <span>Ciudad</span>
                             </div>
                             <div class="vx-col sm:w-2/3 w-full">
-                                <vs-input class="w-full" icon-pack="feather" icon="icon-smartphone" icon-no-border v-model="estudiante.telefono" />
+                                <v-select :options="ciudades" :reduce="ciudades => ciudades" label="name_es" v-model="estudiante.ciudad"></v-select>
+                                <span class="text-danger text-sm">{{ errors.ciudad }}</span>
                             </div>
                         </div>
                         <div class="vx-row mb-6">
                             <div class="vx-col sm:w-1/3 w-full">
-                                <span>Ciudad</span>
+                                <span>Teléfono</span>
                             </div>
                             <div class="vx-col sm:w-2/3 w-full">
-                                <v-select :options="ciudades" :reduce="ciudades => ciudades" label="label" v-model="estudiante.ciudad"></v-select>
-                                <span class="text-danger text-sm">{{ errors.ciudad }}</span>
+                                <vs-input type="number" class="w-full" icon-pack="feather" icon="icon-smartphone" icon-no-border v-model="estudiante.telefono" />
                             </div>
                         </div>
                         <div class="vx-row mb-6">
                             <div class="vx-col sm:w-1/3 w-full">
                                 <span>Contraseña</span>
                             </div>
-                            <div class="vx-col sm:w-2/3 w-full">
-                                <vs-input type="password" class="w-full" icon-pack="feather" icon="icon-lock" icon-no-border v-model="estudiante.password" />
+                            <div class="vx-col sm:w-2/3 w-full" align="left">
+                                <vs-input class="mr-2" style="width: 80%; display: inline-block;" type="password" icon-pack="feather" icon="icon-lock" icon-no-border v-model="estudiante.password" />
+                                <vs-button @click="ver_password" style="width: 10%; display: inline-block;" radius color="primary" size="large" type="flat" icon-pack="feather" icon="icon-eye" class="mb-2"></vs-button>
+                                <div> {{pass_view}} </div>
                                 <span class="text-danger text-sm">{{ errors.password }}</span>
                             </div>
                         </div>
@@ -87,6 +89,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import "vue-select/dist/vue-select.css";
 import vSelect from "vue-select";
+import prefijos from "../admin/countries.json"
 Vue.use(axios)
 Vue.component("v-select", vSelect);
 export default {
@@ -102,6 +105,7 @@ export default {
                 email: '',
                 password: '',
                 ciudad: '',
+                telefono: '',
             },
 
             estudiante: {
@@ -111,27 +115,24 @@ export default {
                 email: '',
                 password: '',
                 ciudad: '',
+                telefono: '',
             },
 
-            ciudades: [
-              {id: 'Quito', label: 'Quito'},
-              {id: 'Guayaquil', label: 'Guayaquil'},
-              {id: 'Cuenca', label: 'Cuenca'},
-              {id: 'Ambato', label: 'Ambato'},
-              {id: 'Loja', label: 'Loja'},
-              {id: 'Ibarra', label: 'Ibarra'},
-              {id: 'Manta', label: 'Manta'},
-              {id: 'Puyo', label: 'Puyo'},
-              {id: 'Machala', label: 'Machala'},
-              {id: 'Esmeraldas', label: 'Esmeraldas'},
-              {id: 'Tena', label: 'Tena'},
-            ]
+            ciudades: prefijos.countries,
+            pass_view: '',
         }
     },
     mounted() {
 
     },
     methods: {
+        ver_password(){
+          if( this.pass_view == '' ){
+            this.pass_view = this.estudiante.password
+          }else{
+            this.pass_view = ''
+          }
+        },
         guardar(item) {
             let me = this
             let formData = new FormData();
@@ -149,10 +150,11 @@ export default {
             formData.append('email', item.email)
             formData.append('name_usuario', item.email)
             formData.append('password', item.password)
-            formData.append('ciudad', item.ciudad.id)
+            formData.append('ciudad', item.ciudad.name_es)
+            formData.append('telefono', item.telefono)
             formData.append('id_group', 2)
 
-            axios.post("http://127.0.0.1:8000/api/register", formData)
+            axios.post("https://server.ipuiecotocollao.com/api/register", formData)
                 .then(function (response) {
                     localStorage.tk = response.data.token
                     localStorage.setItem('usuario', JSON.stringify(response.data.datos));

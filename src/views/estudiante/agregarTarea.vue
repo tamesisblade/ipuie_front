@@ -1,12 +1,11 @@
 <template>
 <div class="px-5 vx-col w-full mt-4">
     <vx-card title="Agregar Tarea">
-      <vs-button color="primary" type="border" class="m-1" @click="$router.go(-1)"><b>← Volver</b></vs-button>
-        <input id="nombreArchivo" hidden  />
-        <input id="extensionArchivo" hidden />
-        <input id="codigoArchivo" hidden />
+      <vs-button color="primary" type="border" class="m-1" @click="$router.go(-1)"><b>← Volver</b></vs-button> <br><br>
 
-        <vue-dropzone class="vx-card" ref="dropzone" id="drop1"  @vdropzone-complete="guardarFile" :options="dropzoneOptions"></vue-dropzone>
+        Seleccione el archivo de su tarea:
+        <input type="file" name="archivo_tarea" id="archivo_tarea" class="w-full inputfile">
+        <span class="text-gray">(Si requiere subir varios archivos puede subir un comprimido zip o rar)</span>
 
 
         <vs-textarea class="mt-8" label="Descripción" v-model="descripcion" />
@@ -23,17 +22,12 @@
 <script>
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
-import VueDocPreview from 'vue-doc-preview'
 import Vue from 'vue'
 import axios from 'axios'
-import vue2Dropzone from 'vue2-dropzone'
-import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 Vue.use(axios)
 export default {
     components: {
         'v-select': vSelect,
-        vueDropzone: vue2Dropzone,
-        VueDocPreview
     },
     data() {
         return {
@@ -56,10 +50,6 @@ export default {
                 init: function() {
                     this.on("success", function(file, responseText) {
 
-
-
-
-
                         console.log("hola",responseText)
 
                     });
@@ -75,110 +65,51 @@ export default {
         console.log(this.usuario);
     },
      mounted() {
-        // this.getContenido();
+
     },
     methods: {
-        // guardarFile(file){
-        //     let me = this;
-        //     me.file = file;
-        // },
 
-
-         async guardarFile(file) {
+        guardar() {
             let me = this
-            me.file = file;
-            console.log(me.file)
-            me.$vs.loading({
-                color: '#046AE7'
-            })
-            let formData = new FormData();
-            formData.append('archivo', file);
-            formData.append('idusuario', me.usuario[0].idusuario);
-            axios.post(this.$server_url+'archivo', formData)
-            // axios.post('http://127.0.0.1:8000/api/archivo', formData)
-                .then(function (response) {
-                    // me.getContenido();
 
-                        let pasarNombreArchivo = document.getElementById("nombreArchivo");
-                        pasarNombreArchivo.value = response.data.nombreArchivo;
+            var fileImgPreg = [];
+            fileImgPreg = document.getElementById("archivo_tarea").files[0];
 
-                        let pasarExtensionArchivo = document.getElementById("extensionArchivo");
-                        pasarExtensionArchivo.value = response.data.extensionArchivo;
-
-                        let pasarcodigoArchivo = document.getElementById("codigoArchivo");
-                        pasarcodigoArchivo.value = response.data.codigoArchivo;
-
-
-                    me.file = '';
-                    // me.$refs.dropzone.removeAllFiles();
-                    me.$vs.loading.close()
-                })
-                .catch(function (error) {
-                    if (error.response.status == 422) {
-                        me.errors = error.response.data.errors;
-                        me.$vs.loading.close()
-                    }
-                })
-        },
-
-        async guardar() {
-            let me = this
-            me.$vs.loading({
-                color: '#046AE7'
-            })
-            let formData = new FormData();
-
-            let archivosEnviarNombre = document.getElementById("nombreArchivo").value;
-            let archivosEnviarExtension = document.getElementById("extensionArchivo").value;
-            let archivosEnviarCodigo = document.getElementById("codigoArchivo").value;
-            formData.append('archivo', archivosEnviarNombre);
-            formData.append('extension', archivosEnviarExtension);
-            formData.append('codigo', archivosEnviarCodigo);
-            if(localStorage.getItem("realizar") == "actividad"){
-            formData.append('actividad', "yes");
+            if(!fileImgPreg){
+              me.$vs.notify({
+                  color: 'warning',
+                  title: 'Seleccione un archivo antes de enviar su tarea.',
+              })
+              return
             }
 
+            me.$vs.loading()
+            let formData = new FormData();
+            formData.append('archivo', fileImgPreg);
             formData.append('idusuario', me.usuario[0].idusuario);
             formData.append('descripcion', me.descripcion);
             formData.append('idtarea', localStorage.getItem('idtarea'));
 
-
-            axios.post(this.$server_url+'respuesta', formData)
-
-                .then(function (response) {
-                    // me.getContenido();
-                    me.file = '';
-                    me.$refs.dropzone.removeAllFiles();
-                    me.$vs.loading.close()
-                    me.$router.push('/tareas/estudiante');
-                })
-                .catch(function (error) {
-                    if (error.response.status == 422) {
-                        me.errors = error.response.data.errors;
-                        me.$vs.loading.close()
-                    }
-                })
-        },
-
-
-
-            async getContenido() {
-            let me = this;
-            me.$vs.loading({
-                color: '#046AE7'
-            })
-            me.$http.get(this.$server_url+'archivo?idusuario=', + me.usuario[0].idusuario)
-            // var url = "http://127.0.0.1:8000/api/archivo?idusuario=" + me.usuario[0].idusuario;
-            // axios.get(url)
+            axios.post(this.$server_url+'guardar_tarea', formData)
             .then(function (response) {
-                    var respuesta = response.data;
-                    me.listaContenido = response.data;
-                    me.$vs.loading.close()
-                })
-                .catch(function (error) {
-                    me.$vs.loading.close()
-                });
+                me.$vs.loading.close()
+                me.$router.push('/tareas/estudiante');
+            })
+            .catch(function (error) {
+                me.$vs.loading.close()
+            })
         },
+
     },
 }
 </script>
+
+<style>
+.inputfile{
+    border: 1px solid rgb(190, 190, 190);
+    width: 100%;
+    border-radius: 5px;
+    padding: 5px;
+    height: 37px;
+}
+</style>

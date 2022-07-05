@@ -17,6 +17,7 @@ export default {
         formData.append('id', 0);
         formData.append('idusuario', event.idusuario);
         formData.append('title', event.title);
+        formData.append('img_portada', event.img_portada);
         formData.append('label', event.label);
         formData.append('classes', event.classes);
         formData.append('startDate', event.startDate);
@@ -74,6 +75,7 @@ export default {
         formData.append('id', event.id);
         formData.append('idusuario', event.idusuario);
         formData.append('title', event.title);
+        formData.append('img_portada', event.img_portada);
         formData.append('label', event.label);
         formData.append('classes', event.classes);
         formData.append('startDate', event.startDate);
@@ -113,6 +115,7 @@ export default {
         formData.append('id', event.id);
         formData.append('idusuario', event.idusuario);
         formData.append('title', event.title);
+        formData.append('img_portada', event.img_portada);
         formData.append('label', event.label);
         formData.append('classes', event.classes);
         formData.append('startDate', event.startDate);

@@ -50,17 +50,8 @@
     <vx-card :title="'Tareas de la sección: ' + seccion">
       <vs-table search max-items="10" pagination :data="tareas">
         <template slot="header">
-          <vs-button
-            type="gradient"
-            color="primary"
-            @click="
-              id_tarea = 0;
-              archivo_old = 0;
-              editarActivo = false;
-              popupTareas = true;
-            "
-            >Agregar tarea</vs-button
-          >
+          <vs-button class="m-1" type="border" color="dark" @click="$router.go(-1)" >← Volver</vs-button >
+          <vs-button class="m-1" type="gradient" color="primary" @click=" id_tarea = 0; archivo_old = 0; editarActivo = false; popupTareas = true; " >Agregar tarea</vs-button >
         </template>
         <template slot="thead">
           <vs-th>Tarea</vs-th>
@@ -157,7 +148,9 @@
               </vs-td>
 
               <vs-td :data="data[indextr].estudiante">
-                {{ data[indextr].estudiante }}
+                {{ data[indextr].estudiante }} <br>
+                CI: {{ data[indextr].cedula }} <br>
+                {{ data[indextr].email }}
               </vs-td>
 
               <vs-td>
@@ -403,16 +396,6 @@ export default {
 
     editCalificacion() {
       let me = this;
-      if (me.calificacion.nota.length >= 3) {
-        me.$vs.notify({
-          text: "Maximo 3 caracteres por favor",
-          color: "primary",
-          iconPack: "feather",
-          icon: "icon-alert-triangle",
-        });
-        return false;
-      }
-
       if (me.calificacion.nota == "") {
         me.$vs.notify({
           text: "Campo nota obligatorio",
@@ -514,8 +497,8 @@ export default {
 
 
     exportToExcel () {
-        let headerTitle = ['Estudiante', 'Fecha', 'Observacion', 'Nota', 'Comentario'];
-        let headerVal = ['estudiante', 'fecha_create', 'descripcion', 'nota', 'comentario'];
+        let headerTitle = ['Estudiante', 'Cedula', 'Email', 'Fecha', 'Observacion', 'Nota', 'Comentario'];
+        let headerVal = ['estudiante','cedula','email', 'fecha_create', 'descripcion', 'nota', 'comentario'];
 
 
         import('@/vendor/Export2Excel').then(excel => {

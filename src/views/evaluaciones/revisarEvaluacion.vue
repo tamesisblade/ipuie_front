@@ -59,7 +59,7 @@
                             </div>
 
                             <!-----PREGUNTAS ESCRITAS---->
-                            
+
                             <div v-if="item.id_tipo_pregunta===2 || item.id_tipo_pregunta===6">
                                 <div align="right" class="mb-3" v-if="usuario[0].id_group == 1 && previsualizar_eval!=1">
                                     <vs-input type="number" v-model="calificacionManual" style="display: inline-block; width: 80px;" />
@@ -97,15 +97,20 @@
             </vs-alert>
         </div>
 
-        <div align="center" v-if="previsualizar_eval!=1 && preguntasPendientesRevision.length>0">
+        <div align="center" v-if="previsualizar_eval!=1 && preguntasPendientesRevision.length>0 && abiertas_calificadas==false">
             <vs-alert color="warning" title="Aviso" active="true" class="mb-4">
                 Existen preguntas pendientes de revisión por el docente.
             </vs-alert>
             <div class="btn-group mb-6">
-                <vs-button v-for="(itemrev, indexrev) in preguntasPendientesRevision" :key="indexrev" @click="vertodo=false; currentx=(preguntasPendientesRevision[indexrev]+1); verPreguntaSelec(preguntasPendientesRevision[indexrev]+1)" color="warning" type="border" class="m-1">
+                <vs-button class="p-1 text-xl" v-for="(itemrev, indexrev) in preguntasPendientesRevision" :key="indexrev" color="warning" type="border">
                     {{ preguntasPendientesRevision[indexrev]+1 }}
                 </vs-button>
             </div>
+        </div>
+        <div align="center" v-if="abiertas_calificadas==true">
+            <vs-alert color="success" title="Aviso" active="true" class="mb-4">
+                Las preguntas abiertas ya fueron calificadas por el docente.
+            </vs-alert>
         </div>
 
         <div v-if="evaluaciones[0]===undefined"></div>
@@ -139,13 +144,14 @@
         <div align="center">
             <vs-button v-if="volverActivo===false" color="dark" type="border" class="mt-6 m-1" @click="mostrarTodo()">Ver todo</vs-button>
 
+            <vs-button color="success" type="border" class="mt-6" @click="$router.go(-1)" ><b>← Volver</b></vs-button>
 
             <!-- <vs-button v-if="volverActivo===false" color="warning" type="border" class="mt-6 m-1" @click="$router.push('/evaluacion_imprimir')">&nbsp;&nbsp;&nbsp;&nbsp;PDF&nbsp;&nbsp;&nbsp;&nbsp;</vs-button> -->
 
 
-            <vs-button v-if="usuario.id_group === 4" color="success" type="border" class="mt-6" @click="$router.go(-1)"><b>← Volver</b></vs-button>
+            <!-- <vs-button v-if="usuario.id_group === 4" color="success" type="border" class="mt-6" @click="$router.go(-1)"><b>← Volver</b></vs-button>
 
-            <vs-button v-else color="success" type="border" class="mt-6 m-1" @click="$router.go(-1)"><b>← Volver</b></vs-button>
+            <vs-button v-else color="success" type="border" class="mt-6 m-1" @click="$router.go(-1)"><b>← Volver</b></vs-button> -->
         </div>
 
     </vx-card>
@@ -220,6 +226,7 @@ export default {
             calificacionManual: 0,
             grupoSelectedVal: 1,
             preguntasPendientesRevision: [],
+            abiertas_calificadas: false
         }
     },
     components: {
@@ -276,15 +283,15 @@ export default {
                                 me.$http.get(me.$server_url+'getRespuestas/' + id_evalRevisar)
                                 .then(function (response) {
                                     var pregOpcion = response.data.items;
-                                    if (pregOpcion === undefined) {
-                                        me.$vs.notify({
-                                            text: 'Esta evaluación aun no tiene preguntas asignadas',
-                                            color: 'warning',
-                                            iconPack: 'feather'
-                                        })
-                                        me.$vs.loading.close()
-                                        return
-                                    }
+                                    // if (pregOpcion === undefined) {
+                                    //     me.$vs.notify({
+                                    //         text: 'Esta evaluación aun no tiene preguntas asignadas',
+                                    //         color: 'warning',
+                                    //         iconPack: 'feather'
+                                    //     })
+                                    //     me.$vs.loading.close()
+                                    //     return
+                                    // }
 
                                     if (previsualizar_eval == 1) {
                                         me.verPreguntasEvaluacionGrupos();
@@ -328,6 +335,9 @@ export default {
                     me.volverActivo = true
                 } else {
                     me.volverActivo = false
+                    if( res.data[0].created_at != res.data[0].updated_at ) {
+                      me.abiertas_calificadas = true
+                    }
                     me.calificacionObtenida = (res.data[0].calificacion).toFixed(2)
                     localStorage.calificacionImprimir = me.calificacionObtenida +'/'+ me.evaluaciones[0].puntos
                 }

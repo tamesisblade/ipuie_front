@@ -44,10 +44,15 @@
             <span>Teléfono</span>
         </div>
         <div class="vx-col sm:w-2/3 w-full">
-            <vs-input type="number" class="w-full" icon-pack="feather" icon="icon-smartphone" icon-no-border v-model="usuario.telefono" />
+            <v-select style="width: 50%; margin-right:2px; display: inline-block;" :options="ciudades" :reduce="ciudades => ciudades" label="name_es" v-model="usuario.ciudad"></v-select>
+
+            <vs-input style="height: 20px; width: 45%; display: inline-block;" type="number" icon-pack="feather" icon="icon-smartphone" icon-no-border v-model="usuario.telefono" />
+
+            <span class="text-danger text-sm">{{ errors.ciudad }}</span>
+
         </div>
     </div>
-    <div class="vx-row mb-6">
+    <!-- <div class="vx-row mb-6">
         <div class="vx-col sm:w-1/3 w-full">
             <span>Ciudad</span>
         </div>
@@ -55,7 +60,7 @@
             <v-select :options="ciudades" :reduce="ciudades => ciudades" label="label" v-model="usuario.ciudad"></v-select>
             <span class="text-danger text-sm">{{ errors.ciudad }}</span>
         </div>
-    </div>
+    </div> -->
     <div class="vx-row mb-6">
         <div class="vx-col sm:w-1/3 w-full">
             <span>Tipo Usuario</span>
@@ -70,7 +75,9 @@
             <span>Contraseña</span>
         </div>
         <div class="vx-col sm:w-2/3 w-full">
-            <vs-input type="password" class="w-full" icon-pack="feather" icon="icon-lock" icon-no-border v-model="usuario.password" />
+            <vs-input class="mr-2" style="width: 80%; display: inline-block;" type="password" icon-pack="feather" icon="icon-lock" icon-no-border v-model="usuario.password" />
+            <vs-button @click="ver_password" style="width: 10%; display: inline-block;" radius color="primary" size="large" type="flat" icon-pack="feather" icon="icon-eye" class="mb-2"></vs-button>
+            <div> {{pass_view}} </div>
             <span class="text-danger text-sm">{{ errors.password }}</span>
         </div>
     </div>
@@ -159,7 +166,7 @@
                     <vs-td>
                         {{tr.solicitud}} <br>
                         Forma pago: {{tr.forma_pago}} <br>
-                        <a :href="'http://127.0.0.1:8000/images/comprobantes/'+tr.comprobante" target="_blank">
+                        <a :href="'https://server.ipuiecotocollao.com/images/comprobantes/'+tr.comprobante" target="_blank">
                           {{tr.comprobante}}
                         </a>
                     </vs-td>
@@ -191,11 +198,13 @@ import Vue from 'vue'
 import axios from 'axios'
 import "vue-select/dist/vue-select.css";
 import vSelect from "vue-select";
+import prefijos from "./countries.json"
 Vue.use(axios)
 Vue.component("v-select", vSelect);
 export default {
     data() {
         return {
+            pass_view: '',
             usuarios: [],
             popupEditarUsuario: false,
             email: "",
@@ -219,19 +228,20 @@ export default {
                 id_group: '',
                 ciudad: '',
             },
-            ciudades: [
-              {id: 'Quito', label: 'Quito'},
-              {id: 'Guayaquil', label: 'Guayaquil'},
-              {id: 'Cuenca', label: 'Cuenca'},
-              {id: 'Ambato', label: 'Ambato'},
-              {id: 'Loja', label: 'Loja'},
-              {id: 'Ibarra', label: 'Ibarra'},
-              {id: 'Manta', label: 'Manta'},
-              {id: 'Puyo', label: 'Puyo'},
-              {id: 'Machala', label: 'Machala'},
-              {id: 'Esmeraldas', label: 'Esmeraldas'},
-              {id: 'Tena', label: 'Tena'},
-            ],
+            ciudades: prefijos.countries,
+            // ciudades: [
+            //   {id: 'Quito', label: 'Quito'},
+            //   {id: 'Guayaquil', label: 'Guayaquil'},
+            //   {id: 'Cuenca', label: 'Cuenca'},
+            //   {id: 'Ambato', label: 'Ambato'},
+            //   {id: 'Loja', label: 'Loja'},
+            //   {id: 'Ibarra', label: 'Ibarra'},
+            //   {id: 'Manta', label: 'Manta'},
+            //   {id: 'Puyo', label: 'Puyo'},
+            //   {id: 'Machala', label: 'Machala'},
+            //   {id: 'Esmeraldas', label: 'Esmeraldas'},
+            //   {id: 'Tena', label: 'Tena'},
+            // ],
 
             tipo_usuarios: [
               {id: 1, label: 'Administrador'},
@@ -250,7 +260,7 @@ export default {
     methods: {
         async getUsuarios() {
             let me = this;
-            axios.get('http://127.0.0.1:8000/api/usuarios')
+            axios.get('https://server.ipuiecotocollao.com/api/usuarios')
             .then(function (response) {
                 me.usuarios = response.data;
             })
@@ -259,7 +269,7 @@ export default {
         async solicitudes_usuarios() {
             let me = this;
             me.$vs.loading()
-            axios.get('http://127.0.0.1:8000/api/solicitudes_usuarios')
+            axios.get('https://server.ipuiecotocollao.com/api/solicitudes_usuarios')
             .then(function (response) {
                 me.solicitudes = response.data;
                 me.$vs.loading.close()
@@ -281,11 +291,11 @@ export default {
             formData.append('apellidos', item.apellidos)
             formData.append('email', item.email)
             formData.append('name_usuario', item.email)
-            formData.append('ciudad', item.ciudad.id)
+            formData.append('ciudad', item.ciudad.name_es)
             formData.append('telefono', item.telefono)
             formData.append('id_group', item.id_group.id)
             formData.append('password', item.password)
-            axios.post("http://127.0.0.1:8000/api/crearUsuario", formData)
+            axios.post("https://server.ipuiecotocollao.com/api/crearUsuario", formData)
                 .then(function (response) {
                     me.popupEditarUsuario=false
                     me.usuarios.push(response.data)
@@ -352,10 +362,10 @@ export default {
             formData.append('email', item.email)
             formData.append('telefono', item.telefono)
             formData.append('name_usuario', item.email)
-            formData.append('ciudad', item.ciudad)
+            formData.append('ciudad', item.ciudad.name_es)
             formData.append('id_group', item.id_group)
 
-            axios.post("http://127.0.0.1:8000/api/editarUsuario", formData)
+            axios.post("https://server.ipuiecotocollao.com/api/editarUsuario", formData)
                 .then(function (response) {
                     me.popupEditarUsuario=false
                     me.getUsuarios()
@@ -406,7 +416,7 @@ export default {
         },
         eliminarUsuario(){
             let me = this
-            axios.get("http://127.0.0.1:8000/api/eliminarUsuario/"+me.idusuarioSelec)
+            axios.get("https://server.ipuiecotocollao.com/api/eliminarUsuario/"+me.idusuarioSelec)
                 .then(function (response) {
                     me.getUsuarios()
                 })
@@ -419,7 +429,7 @@ export default {
             formData.append('id_estudiante', item.id_estudiante)
             formData.append('id_curso', item.id_curso)
             formData.append('estado', estado)
-            axios.post("http://127.0.0.1:8000/api/procesar_solicitud", formData)
+            axios.post("https://server.ipuiecotocollao.com/api/procesar_solicitud", formData)
             .then(function (response) {
                 me.solicitudes_usuarios()
                 me.$vs.notify({
@@ -428,6 +438,13 @@ export default {
                 })
             })
         },
+        ver_password(){
+          if( this.pass_view == '' ){
+            this.pass_view = this.usuario.password
+          }else{
+            this.pass_view = ''
+          }
+        }
     },
 }
 </script>

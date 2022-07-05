@@ -90,6 +90,7 @@
         accept-text= "Guardar"
         :cancel-text="label_cancel"
         @accept="addEvent"
+        @cancel="removeEvent"
         :active.sync="activePromptAddEvent">
 
         <div class="calendar__label-container flex mb-6">
@@ -104,6 +105,9 @@
                 </vs-dropdown-menu>
             </vs-dropdown>
         </div>
+
+        <div style="font-size: 12px; color: gray;" class="mb-1">Imagen de portada</div>
+        <input type="file" name="file_notic" id="file_notic" class="inputfile mb-6">
 
         <vs-input class="w-full mb-3" label-placeholder="Título del evento *" v-model="title"></vs-input>
         <div class="vx-row mb-3">
@@ -185,6 +189,7 @@ export default {
       hora_fin: '',
       institucion_id:'',
       counterDanger: false,
+      img_old: '',
     }
   },
   computed: {
@@ -235,11 +240,17 @@ export default {
         icon:'icon-alert-triangle'})
         return
       }
+
+      let fileImgPreg
+      fileImgPreg = document.getElementById("file_notic").files[0];
+
       const obj = {
         idusuario: this.usuario[0].idusuario,
         id: this.id,
         title: this.title,
         startDate: this.startDate_send,
+        img_portada: fileImgPreg,
+        img_old: this.img_old,
         endDate: this.endDate_send,
         classes: 'event-'+this.labelLocal.color,
         label: this.labelLocal.text,
@@ -279,8 +290,6 @@ export default {
       this.addNewEventDialog(date)
     },
     openEditEvent (event) {
-
-
       const e = this.$store.getters['calendar/getEvent'](event.id)
 
       this.id = e.id
@@ -293,12 +302,19 @@ export default {
       this.endDate_send = this.endDate
       this.hora_inicio = e.hora_inicio
       this.hora_fin = e.hora_fin
+      this.img_portada = e.img_portada
+      this.img_old = e.img_portada
       this.label_cancel = 'Remover'
       this.activePromptAddEvent = true
     },
     removeEvent () {
       if( this.id == 0 ){return}
       this.$store.dispatch('calendar/removeEvent', this.id)
+      this.$vs.notify({
+        text:'Evento eliminado',
+        color:'warning',
+        iconPack: 'feather',
+        icon:'icon-alert-triangle'})
     },
     eventDragged (event, date) {
       const e = this.$store.getters['calendar/getEvent'](event.id)

@@ -3,7 +3,7 @@
 <div>
 
 <vx-card>
-    <vs-button color="primary" type="border" class="m-1" @click="$router.go(-1)"><b>← Volver</b></vs-button>
+    <vs-button color="primary" type="border" class="m-1" @click="volver()"><b>← Volver</b></vs-button>
 
     <vs-tabs alignment="fixed">
       <vs-tab label="Evaluaciones Pendientes" @click="verEvalPend()">
@@ -18,7 +18,7 @@
                         Duración: {{item.duracion}} minutos<br>
                         Puntos: {{item.puntos}}<br>
                         Observaciones: {{item.descripcion}}
-                    
+
                     </template>
                     <vs-button @click="openConfirm(item);" color="success" class="m-1">Resolver</vs-button>
                 </vs-list-item>
@@ -30,7 +30,7 @@
 
         <vs-tab label="Evaluaciones Completadas" @click="verEvalComplet()">
             <div v-if="evaluaciones.length===0" class="mt-6">No tiene evaluaciones resueltas</div>
-            <div v-else align="right">Click en la calificación para ver la evaluación resuelta.</div>
+            <div v-else align="right"><b>Click en la calificación para ver la evaluación resuelta.</b></div>
             <vs-list :key="index" v-for="(item, index) in evaluaciones" class="mt-6">
                 <vs-list-header color="#3BA0FF" v-bind:title="'Evaluación '+(index + 1)"></vs-list-header>
 
@@ -41,7 +41,16 @@
                         Observaciones: {{item.descripcion}}
                     </template>
 
-                    <vs-button color="success" type="border" class="m-1" @click="irRevision(item)">{{item.calificacion}} - Ver</vs-button>
+                    <vs-button  @click="irRevision(item)" v-if="item.calificacion<=7" size="small" color="danger" class="text-lg mb-2 px-2 py-1">{{item.calificacion}}/10 - Insuficiente</vs-button>
+                    <vs-button  @click="irRevision(item)" v-if="item.calificacion>7 && item.calificacion<=8" size="small" color="warning" class="text-lg mb-2 px-2 py-1">{{item.calificacion}}/10 - Puedes hacerlo mejor</vs-button>
+                    <vs-button  @click="irRevision(item)" v-if="item.calificacion>8 && item.calificacion<=9" size="small" color="primary" class="text-lg mb-2 px-2 py-1">{{item.calificacion}}/10 - Muy bien</vs-button>
+                    <vs-button  @click="irRevision(item)" v-if="item.calificacion>9" size="small" color="success" class="text-lg mb-2 px-2 py-1">{{item.calificacion}}/10 - Excelente</vs-button>
+
+                    <div class="text-sm" v-if="item.created_at == item.updated_at">
+                      Preguntas abiertas aun no se califican. De ser el caso.
+                    </div>
+                    <div class="text-sm" v-else> Calificación final </div>
+
                 </vs-list-item>
             </vs-list>
         </vs-tab>
@@ -151,11 +160,14 @@ export default {
                 this.$vs.loading.close()
             })
         },
-      
+
         irRevision(item){
             localStorage.setItem('id_evalRevisar', item.id);
             localStorage.setItem('grupo_estudiante', item.grupo);
             this.$router.push('/revisarevaluacion')
+        },
+        volver(){
+          this.$router.push('/detalle_curso/'+localStorage.id_curso)
         }
     },
 }

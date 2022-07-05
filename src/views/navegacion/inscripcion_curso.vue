@@ -8,15 +8,15 @@
                     <div class="px-8 py-5 login-tabs-container">
 
                         <div class="vx-row mb-3" align="left">
-                          <div class="vx-col sm:w-1/3 w-full mb-6">
+                          <div class="vx-col sm:w-1/2 w-full mb-6">
                             <span>Forma de pago</span>
                             <v-select class="w-full mr-3" :options="formas_pago" :reduce="formas_pago => formas_pago" label="label" v-model="forma_pago"></v-select>
                           </div>
-                          <div class="vx-col sm:w-1/3 w-full mb-6">
+                          <!-- <div class="vx-col sm:w-1/3 w-full mb-6">
                             <span>Valor</span>
                             <vs-input class="w-full" v-model="valor" />
-                          </div>
-                          <div class="vx-col sm:w-1/3 w-full mb-6">
+                          </div> -->
+                          <div class="vx-col sm:w-1/2 w-full mb-6">
                             <span>Comprobante</span>
                             <input type="file" name="file1" id="file1" class="w-full inputfile">
                           </div>
@@ -86,7 +86,7 @@ export default {
             formData.append('forma_pago', me.forma_pago.label)
             formData.append('valor', me.valor)
             formData.append('estado', 2)
-            axios.post("http://127.0.0.1:8000/api/inscripcion_curso", formData)
+            axios.post("https://server.ipuiecotocollao.com/api/inscripcion_curso", formData)
             .then(function (response) {
               if( response.data == '0' ){
                 me.$vs.notify({

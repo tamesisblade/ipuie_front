@@ -7,7 +7,7 @@
         v-bind:title="evaluaciones[0].nombreasignatura"
         title-color="primary"
       >
-        {{ usuario.nombres }} {{ usuario.apellidos }} - {{ usuario.cedula
+        {{ usuario[0].nombres }} {{ usuario[0].apellidos }} - {{ usuario[0].cedula
         }}<br />
         {{
           "Inicia: " +
@@ -124,7 +124,7 @@
             ><br />
 
             <vs-button
-              v-if="usuario.id_group === 4"
+              v-if="usuario.id_group != 1"
               color="success"
               type="border"
               class="mt-6"
@@ -250,7 +250,6 @@ export default {
     this.usuario = JSON.parse(localStorage.getItem("usuario"));
 
     if (this.usuario) {
-      this.verificarCurso();
       this.estudiante = this.usuario[0].idusuario;
       this.nombre_estudiante = this.usuario[0].nombres;
       this.apellido_estudiante = this.usuario[0].apellidos;
@@ -466,7 +465,7 @@ export default {
       localStorage.setItem('cantidadPreguntas',this.preguntas.items.length)
       console.log('rr',this.preguntas.items)
       console.log('ff', this.respuestasAcum)
-    
+
       var pregsRecorrer = this.preguntas.items;
       var opcionesSeleccionadas = [];
       var opcionesSeleccionadasV = [];
@@ -482,12 +481,12 @@ export default {
           pregsRecorrer[j].id_tipo_pregunta === 1 ||
           pregsRecorrer[j].id_tipo_pregunta === 3 ||
           pregsRecorrer[j].id_tipo_pregunta === 5
-        ) 
+        )
         {
           if (
             pregsRecorrer[j].id_tipo_pregunta === 3 ||
             pregsRecorrer[j].id_tipo_pregunta === 5
-             ) 
+             )
           {
               opcionesSeleccionadas = $(
                   "input:radio[name=" + pregsRecorrer[j].id + "]:checked"
@@ -595,7 +594,7 @@ export default {
 
       this.enviarEvaluacion();
     },
-   
+
     guardarRespuesta(evaluacion, pregunta, estudiante, respuestas, puntaje) {
       let formData = new FormData();
       formData.append("evaluacion", evaluacion);
@@ -616,9 +615,14 @@ export default {
       var urlV = urlBack.split("/");
       me.$vs.loading();
       let formData = new FormData();
+
+      let calif_valid = 0;
+      if(me.calificacion > 0 ){
+        calif_valid = me.calificacion.toFixed(2)
+      }
       formData.append("estudiante", me.estudiante);
       formData.append("evaluacion", me.id_evalRevisar);
-      formData.append("calificacion", me.calificacion.toFixed(2));
+      formData.append("calificacion", calif_valid);
       formData.append("grupo", me.grupo_estudiante);
       formData.append('puntos',localStorage.puntos)
       formData.append('cantidadPreguntas',localStorage.cantidadPreguntas)
@@ -720,36 +724,6 @@ export default {
         .post(this.$server_url + "getRespuestasAcum", formData)
         .then((res) => {
           this.respuestasAcum = res.data;
-        });
-    },
-    verificarCurso() {
-      let me = this;
-      let formData = new FormData();
-      formData.append("codigo", me.vectorLink[1]);
-      formData.append("idusuario", me.usuario.idusuario);
-      this.$http
-        .post(this.$server_url + "verificarCursoEstudiante", formData)
-        .then(function (res) {
-          if (res.data != "") {
-          } else {
-            me.addClase();
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-    addClase() {
-      let me = this;
-      let formData = new FormData();
-      formData.append("codigo", me.vectorLink[1]);
-      formData.append("idusuario", me.usuario.idusuario);
-
-      this.$http
-        .post(this.$server_url + "addClase", formData)
-        .then(function (res) {})
-        .catch(function (error) {
-          console.log(error);
         });
     },
   },

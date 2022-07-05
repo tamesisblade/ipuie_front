@@ -1,16 +1,16 @@
 <template>
-<div class="px-5">
+<div class="px-1">
 
     <div class="vx-row">
 
-      <div class="vx-col sm:w-3/4 w-full" style="min-width: 200px;">
+      <div class="vx-col w-full lg:w-3/4">
         <vx-card class="mb-6 px-5" card-background="black" content-color="#fff">
             <div style="font-size: 22px;" class="mb-2"><b> {{curso.titulo}} </b></div>
             <div class="mb-2">
                 {{curso.subtitulo}}
             </div>
             <div class="mb-2">
-                Creado por: {{curso.capacitador}}
+                Creado por: {{curso.nombres}} {{curso.apellidos}}
             </div>
             <div class="mb-2">
                 Fecha de creación: {{curso.created_at}}
@@ -43,12 +43,21 @@
         <vs-collapse-item :key="index" v-for="(item, index) in secciones">
             <div slot="header">
               <b>{{item.titulo}}</b> &nbsp;&nbsp;
-              <div class="float-right" v-if="usuario[0]">
-                <vs-button class="float-right" v-if="curso_habilitado!=0 || usuario[0].id_group == 1" type="line" size="small" color="success" @click="irTareas(item)">Ver Tareas</vs-button>
-                <vs-button class="float-right" v-if="curso_habilitado!=0 || usuario[0].id_group == 1" type="line" size="small" color="dark" @click="irEvaluaciones(item)">Ver Evaluaciones</vs-button>
+              <div class="float-right btn_seccion" v-if="usuario[0]">
+                <vs-button v-if="curso_habilitado!=0 || usuario[0].id_group == 1" type="line" size="small" color="success" @click="irTareas(item)">Ver Tareas</vs-button>
+                <vs-button v-if="curso_habilitado!=0 || usuario[0].id_group == 1" type="line" size="small" color="dark" @click="irEvaluaciones(item)">Ver Evaluaciones</vs-button>
               </div>
             </div>
-            <div v-if="curso_habilitado==1" v-html="item.contenido"></div>
+            <div v-if="curso_habilitado==1" class="mb-4">
+                <div class="w-full mb-4 btn_tareas_eval" v-if="usuario[0]" style="display: none;">
+                    <vs-button class="w-full mb-5 p-0" color="success" type="flat">Para una mejor experiencia visualice el contenido de forma horizontal.</vs-button>
+                  <vs-button v-if="curso_habilitado!=0 || usuario[0].id_group == 1" type="line" size="small" color="success" @click="irTareas(item)">Ver Tareas</vs-button>
+                  <vs-button v-if="curso_habilitado!=0 || usuario[0].id_group == 1" type="line" size="small" color="dark" @click="irEvaluaciones(item)">Ver Evaluaciones</vs-button>
+                </div>
+
+                <a class=" flex items-center" :href="$server_url_file+'recursos/secciones/'+item.recurso" target="_blank">Clic aqui para descargar el recurso de esta sección. <vs-avatar color="primary" icon-pack="feather" icon="icon-download" /></a>
+            </div>
+            <div v-if="curso_habilitado==1" v-html="item.contenido" class="detalle_scrollmenu"></div>
         </vs-collapse-item>
         </vs-collapse>
 
@@ -56,10 +65,13 @@
       </div>
 
 
-      <div class="vx-col sm:w-1/4 w-full" style="min-width: 200px;">
+      <div class="vx-col w-full lg:w-1/4">
         <vx-card>
-            <div slot="no-body" style="margin: 0% !important;">
-                <img :src="this.$server_images+'cursos/'+curso.img_portada" alt="content-img" class="responsive card-img-top">
+
+            <vs-button class="mb-6 w-full" v-if="curso_habilitado != 0" color="#9ecc38" gradient-color-secondary="#3EC9D6" type="gradient">Progreso del curso</vs-button>
+
+            <div slot="no-body" style="margin: 0% !important;" v-if="curso_habilitado==0">
+                <img :src="this.$server_images+'cursos/'+curso.img_portada" alt="content-img" class="responsive card-img-top" style="max-height: 250px;">
             </div>
 
             <div v-if="curso_habilitado==0">
@@ -69,7 +81,7 @@
               <vs-button class="mb-6 w-full" type="filled" color="primary" @click="irInscripcion()">Inscribirse</vs-button>
             </div>
 
-            <div class="mb-base w-full">
+            <div class="mb-base w-full" v-if="curso_habilitado==0">
                 <b>Este curso incluye:</b> <br>
                 Vídeos bajo demanda <br>
                 {{secciones.length}} secciones <br>
@@ -77,6 +89,48 @@
                 Acceso de por vida <br>
                 Acceso en dispositivos móviles y TV <br>
                 Certificado de finalización <br>
+            </div>
+            <div class="mb-base w-full" v-else align="center">
+                <!-- <div :key="index_p" v-for="(item_p, index_p) in progreso_curso" class="mb-6">
+                  <vs-divider color="primary">{{item_p.seccion.titulo}}</vs-divider>
+                  <div align="justify">
+                    Evaluaciones completadas: <b>{{item_p.cant_evaluaciones_est}} de {{item_p.cant_evaluaciones_seccion}}</b> <br>
+
+                    Tareas completadas: <b>{{item_p.cant_tareas_est}} de {{item_p.cant_tareas_seccion}}</b> <br>
+                  </div>
+                </div> -->
+
+                <div align="justify" class="w-full mb-base">
+                    Evaluaciones completadas: <b class="float-right">{{est_eval}} de {{tot_eval}}</b> <br>
+
+                    Tareas completadas: <b class="float-right">{{est_tareas}} de {{tot_tareas}}</b> <br>
+                </div>
+
+
+                {{porcentaje_progreso}}%
+                <div class="w-full mb-base" align="justify">
+                  <vs-progress v-if="porcentaje_progreso<=25" :height="12" :percent="porcentaje_progreso" color="danger"></vs-progress>
+                  <vs-progress v-if="porcentaje_progreso>25 && porcentaje_progreso<=50" :height="12" :percent="porcentaje_progreso" color="warning"></vs-progress>
+                  <vs-progress v-if="porcentaje_progreso>50 && porcentaje_progreso<=75" :height="12" :percent="porcentaje_progreso" color="primary"></vs-progress>
+                  <vs-progress v-if="porcentaje_progreso>75" :height="12" :percent="porcentaje_progreso" color="success"></vs-progress>
+                </div>
+
+                <div class="w-full flex flex-wrap justify-center gap-5">
+                  <vx-tooltip color="primary" text="Descargar reporte de evaluaciones">
+                    <vs-button @click="get_reporte_eval()" class="p-0" size="large" radius color="primary" type="border" icon-pack="feather" icon="icon-list"></vs-button>
+                  </vx-tooltip>
+
+                  <vx-tooltip color="dark" text="Descargar reporte de tareas">
+                    <vs-button @click="get_reporte_tareas()" class="p-0" size="large" radius color="dark" type="border" icon-pack="feather" icon="icon-activity"></vs-button>
+                  </vx-tooltip>
+
+                  <!-- <vx-tooltip v-if="porcentaje_progreso == 100" color="success" text="Descargar certificado"> -->
+                  <vx-tooltip color="success" text="Descargar certificado">
+                    <vs-button @click="descargar_certificado" class="p-0" size="large" radius color="success" type="border" icon-pack="feather" icon="icon-award"></vs-button>
+                  </vx-tooltip>
+
+                </div>
+
             </div>
 
             <div class="mb-base w-full" align="center">
@@ -94,7 +148,9 @@
 </div>
 </template>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+import $ from "jquery";
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
 import VueDocPreview from 'vue-doc-preview'
@@ -116,6 +172,10 @@ export default {
             secciones: [],
             curso: {},
             curso_habilitado: 0,
+            progreso_curso: [],
+            porcentaje_progreso: 0,
+            tot_eval:0, est_eval:0, tot_tareas:0, est_tareas:0,
+            calificaciones_estudiantes: []
         }
     },
     created() {
@@ -129,6 +189,7 @@ export default {
         localStorage.setItem('id_curso',this.id_curso)
         this.getCurso()
         this.validaCursoEstudiante()
+        this.progreso_curso_usuario()
     },
     methods: {
         getCurso(){
@@ -138,6 +199,11 @@ export default {
             .then(function (response) {
                 me.secciones = response.data.items.secciones
                 me.curso = response.data.items.curso[0]
+
+                setInterval(function () {
+                  $('p[data-f-id="pbf"]').css('display', 'none');
+                }, 3000);
+
                 me.$vs.loading.close()
             })
             .catch(function (error) { me.$vs.loading.close() })
@@ -149,6 +215,27 @@ export default {
               axios.get(this.$server_url+'curso_estudiante/'+me.id_curso+'/'+me.usuario[0].idusuario)
               .then(function (response) {
                   me.curso_habilitado = response.data
+              })
+            }
+
+        },
+        progreso_curso_usuario(){
+            let me = this
+
+            if( me.usuario.length > 0 ){
+              axios.get(this.$server_url+'progreso_curso_usuario/'+me.usuario[0].idusuario+'/'+me.id_curso)
+              .then(function (res) {
+                  me.progreso_curso = res.data.response
+
+                  $.each(me.progreso_curso,function(key, value){
+                    me.tot_eval += value.cant_evaluaciones_seccion
+                    me.est_eval += value.cant_evaluaciones_est
+
+                    me.tot_tareas += value.cant_tareas_seccion
+                    me.est_tareas += value.cant_tareas_est
+                  })
+
+                  me.porcentaje_progreso = res.data.porcentaje_progreso.toFixed(2)
               })
             }
 
@@ -177,6 +264,58 @@ export default {
             }else{
                 me.$router.push('/evaluaciones')
             }
+        },
+        get_reporte_eval() {
+            let me = this
+            axios.get(this.$server_url+'reporte_curso_evaluaciones/'+me.id_curso)
+            .then(function (res) {
+                me.calificaciones_estudiantes = res.data
+                me.exportExcel('Evaluación')
+            })
+        },
+        get_reporte_tareas() {
+            let me = this
+            axios.get(this.$server_url+'reporte_curso_tareas/'+me.id_curso)
+            .then(function (res) {
+                me.calificaciones_estudiantes = res.data
+                me.exportExcel('Tarea')
+            })
+        },
+        exportExcel (tipo) {
+          let me = this
+            let headerTitle = ['Nombres', 'Apellidos', 'Cédula', 'Email'];
+            let headerVal = ['nombres', 'apellidos', 'cedula', 'email'];
+
+            for( let i=0; i < me.calificaciones_estudiantes.cantidad; i++){
+                headerTitle.push(tipo+ " " + (i+1))
+                headerVal.push(i)
+            }
+            let titulo_excel = 'Reporte de evaluaciones curso ' + me.curso.titulo
+            if( tipo == 'Tarea' ){
+              titulo_excel = 'Reporte de tareas curso ' + me.curso.titulo
+            }
+            import('@/vendor/Export2Excel').then(excel => {
+                const list = me.calificaciones_estudiantes.data
+                const data = this.formatJson(headerVal, list)
+                excel.export_json_to_excel({
+                    header: headerTitle,
+                    data,
+                    filename: titulo_excel,
+                    bookType: 'xlsx'
+                })
+            })
+        },
+        formatJson(filterVal, jsonData) {
+            try {
+              return jsonData.map(v => filterVal.map(j => {
+                  return v[j]
+              }))
+            } catch (error) {
+                console.log({error})
+            }
+        },
+        descargar_certificado(){
+          window.open('/certificado_curso', '_blank')
         }
     },
 }
@@ -186,4 +325,19 @@ export default {
 .uploading-image {
     display: flex;
 }
+
+@media only screen and (max-width: 775px) {
+  .btn_seccion {
+    display: none !important;
+  }
+  .btn_tareas_eval {
+    display: block !important;
+  }
+
+  .detalle_scrollmenu {
+    overflow: auto !important;
+    white-space: nowrap !important;
+  }
+}
+
 </style>

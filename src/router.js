@@ -136,6 +136,28 @@ const router = new Router({
                         import('./views/navegacion/creacion_noticia.vue')
                 },
 
+
+                //BLOGS
+
+                {
+                    path: '/blogs',
+                    name: 'blogs',
+                    component: () =>
+                        import('./views/navegacion/blogs.vue')
+                },
+                {
+                    path: '/detalle_blog/:id_blog',
+                    name: 'detalle_blog',
+                    component: () =>
+                        import('./views/navegacion/detalle_blog.vue')
+                },
+                {
+                    path: '/creacion_blog/:id_blog',
+                    name: 'creacion_blog',
+                    component: () =>
+                        import('./views/navegacion/creacion_blog.vue')
+                },
+
                 //CALENDARIO
                 {
                   path: '/calendario',
@@ -143,6 +165,20 @@ const router = new Router({
                   component: () =>
                       import('./views/admin/calendario.vue')
                 },
+                {
+                  path: '/calendario_google',
+                  name: 'calendario_google',
+                  component: () =>
+                      import('./views/navegacion/calendario_google.vue')
+                },
+                {
+                  path: '/eventos',
+                  name: 'eventos',
+                  component: () =>
+                      import('./views/navegacion/eventos.vue')
+                },
+
+                /////ACERCA DE
                 {
                   path: '/acerca_de',
                   name: 'acerca_de',
@@ -224,7 +260,13 @@ const router = new Router({
         {
             path: '*',
             redirect: '/pages/error-404'
-        }
+        },
+        {
+            path: '/certificado_curso',
+            name: 'certificado_curso',
+            component: () =>
+                import('./views/navegacion/certificado_curso.vue')
+        },
     ],
 })
 

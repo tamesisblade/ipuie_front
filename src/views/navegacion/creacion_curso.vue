@@ -4,16 +4,20 @@
     <vs-popup fullscreen title="Sección" :active.sync="popupSeccion">
         <div class="py-8 pt-3">
 
-            <vs-input label="Titulo de la sección" v-model="seccion.titulo" class="w-full mb-6" />
-            <quill-editor v-model="seccion.contenido" class="mb-4"></quill-editor>
 
-            <vs-button type="gradient" color="primary" style="float: right;"  @click="popupSeccion=false; guardarCurso(0)">Guardar sección</vs-button>
+            <div style="font-size: 12px; color: gray;" class="mb-1">Recurso de la sección</div>
+            <input type="file" name="file2" id="file2" class="inputfile mb-6">
+
+            <vs-input label="Titulo de la sección" v-model="seccion.titulo" class="w-full mb-6" />
+            <froala id="edit" :tag="'textarea'" :config="config" v-model="seccion.contenido"></froala>
+
+            <vs-button type="gradient" color="primary" style="float: right;"  @click="guardarCurso(0)">Guardar sección</vs-button>
         </div>
     </vs-popup>
 
     <form-wizard color="rgba(var(--vs-primary), 1)" :title="null" :subtitle="null" finishButtonText="Finalizar"  @on-complete="guardarCurso(1)">
 
-      <tab-content title="Paso 1" class="mb-5">
+      <tab-content title="Paso 1" class="mb-5" :before-change="validar_paso1">
           <!-- tab 1 content -->
           <div class="vx-row">
               <div class="vx-col md:w-1/2 w-full mt-5">
@@ -51,7 +55,7 @@
       </tab-content>
 
       <!-- tab 2 content -->
-      <tab-content title="Paso 2" class="mb-5">
+      <tab-content title="Paso 2" class="mb-5" :before-change="validar_paso2">
           <div class="vx-row mb-4">
               <vs-textarea label="Lo que aprenderá el estudiante" placeholder="Ejemplo: crear variables, modificar cadenas, etc..." v-model="curso.aprender" />
           </div>
@@ -67,7 +71,7 @@
       <tab-content title="Paso 3" class="mb-5">
             <vs-table search max-items="10" pagination :data="secciones">
                 <template slot="header">
-                    <vs-button type="gradient" color="primary" @click="seccion={}; popupSeccion=true">Agregar sección</vs-button>
+                    <vs-button type="gradient" color="primary" @click="seccion={}; seccion.contenido=''; popupSeccion=true">Agregar sección</vs-button>
                 </template>
                 <template slot="thead">
                     <vs-th>#</vs-th>
@@ -85,7 +89,7 @@
                         <vs-td>
                             <div class="flex">
                                 <vx-tooltip text="Editar sección">
-                                    <vs-button radius type="line" size="large" icon-pack="feather" icon="icon-edit" class="m-1" color="primary" @click="seccion = tr; popupSeccion=true"></vs-button>
+                                    <vs-button radius type="line" size="large" icon-pack="feather" icon="icon-edit" class="m-1" color="primary" @click="recurso_old = tr.recurso; seccion = tr; popupSeccion=true"></vs-button>
                                 </vx-tooltip>
                                 <vx-tooltip text="Eliminar sección">
                                     <vs-button radius type="line" size="large" icon-pack="feather" icon="icon-trash" class="m-1" color="danger" @click="seccion = tr; openConfirmSeccion()"></vs-button>
@@ -110,13 +114,8 @@ import Vue from 'vue'
 import axios from 'axios'
 import {FormWizard, TabContent} from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
-
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
-
-import { quillEditor } from 'vue-quill-editor'
 import Prism from 'vue-prism-component'
+import VueFroala from 'vue-froala-wysiwyg';
 
 Vue.use(axios)
 export default {
@@ -124,8 +123,8 @@ export default {
         'v-select': vSelect,
         FormWizard,
         TabContent,
-        quillEditor,
-        Prism
+        Prism,
+        VueFroala
     },
     data() {
         return {
@@ -136,6 +135,35 @@ export default {
             popupSeccion: false,
             id_curso: '',
             img_old: '',
+            recurso_old: '',
+
+            config: {
+              imageUploadRemoteUrls: false,
+              events: {
+                initialized: function () {
+                  console.log('initialized')
+                },
+                "image.beforeUpload": function(files) {
+                  var editor = this;
+                    if (files.length) {
+                      // Create a File Reader.
+                      var reader = new FileReader();
+                      // Set the reader to insert images when they are loaded.
+                      reader.onload = function(e) {
+                        var result = e.target.result;
+                        editor.image.insert(result, null, null, editor.image.get());
+                      };
+                      // Read image as base64.
+                      reader.readAsDataURL(files[0]);
+                    }
+                    editor.popups.hideAll();
+                    // Stop default upload chain.
+                    return false;
+                }
+
+              }
+            },
+
         }
     },
     created() {
@@ -158,7 +186,7 @@ export default {
             let me = this
 
             me.$vs.loading()
-            axios.get('http://127.0.0.1:8000/api/cursos/'+me.id_curso)
+            axios.get('https://server.ipuiecotocollao.com/api/cursos/'+me.id_curso)
             .then(function (response) {
                 me.secciones = response.data.items.secciones
                 me.curso = response.data.items.curso[0]
@@ -166,6 +194,53 @@ export default {
                 me.$vs.loading.close()
             })
             .catch(function (error) { me.$vs.loading.close() })
+
+        },
+        validar_paso1(){
+          let fileImgPreg = document.getElementById("file1").files[0]
+
+          if( this.curso.titulo == "" || this.curso.subtitulo == "" || this.curso.cant_horas == "" ){
+              this.$vs.notify({
+              text:'Complete todos los campos antes de continuar.', color:'warning', iconPack: 'feather', icon:'icon-alert-triangle'})
+
+              return new Promise((resolve, reject) => {
+                reject("correct all values");
+              })
+
+          }else{
+            if( this.id_curso == 0){
+                if( !fileImgPreg ){
+                  this.$vs.notify({
+                  text:'seleccione una imagen.', color:'warning', iconPack: 'feather', icon:'icon-alert-triangle'})
+                  return new Promise((resolve, reject) => {
+                    reject("correct all values");
+                  })
+                }else{
+                  return new Promise((resolve, reject) => {
+                    resolve(true)
+                  })
+                }
+            }else{
+              return new Promise((resolve, reject) => {
+                resolve(true)
+              })
+            }
+          }
+        },
+        validar_paso2(){
+
+          if( this.curso.aprender == '' || this.curso.requisitos == '' || this.curso.descripcion == '' ){
+              this.$vs.notify({
+              text:'Complete todos los campos antes de continuar.', color:'warning', iconPack: 'feather', icon:'icon-alert-triangle'})
+
+              return new Promise((resolve, reject) => {
+                reject("correct all values");
+              })
+          }else{
+            return new Promise((resolve, reject) => {
+              resolve(true)
+            })
+          }
 
         },
         guardarCurso(finaliza){
@@ -191,7 +266,7 @@ export default {
 
             formData.append('id_curso', me.id_curso);
 
-            axios.post('http://127.0.0.1:8000/api/cursos', formData)
+            axios.post('https://server.ipuiecotocollao.com/api/cursos', formData)
             .then(function (response) {
                 me.id_curso = response.data.id_curso
                 me.$vs.loading.close()
@@ -210,14 +285,26 @@ export default {
 
             if( me.seccion.id_seccion === undefined ){ me.seccion.id_seccion = 0 }
 
+
+            let fileImgPreg2 = document.getElementById("file2").files[0];
+
+            if( !fileImgPreg2 || me.seccion.titulo == '' || me.seccion.contenido == '' ){
+              me.$vs.notify({
+              text:'Todos los campos son obligatorios para poder crear una sección', color:'warning', iconPack: 'feather', icon:'icon-alert-triangle'})
+              return;
+            }
+
             let formData = new FormData();
             formData.append('titulo', me.seccion.titulo);
             formData.append('contenido', me.seccion.contenido);
             formData.append('id_seccion', me.seccion.id_seccion);
             formData.append('id_curso', me.id_curso);
+            formData.append('recurso', fileImgPreg2);
+            formData.append('recurso_old', me.recurso_old);
 
-            axios.post('http://127.0.0.1:8000/api/guardar_seccion', formData)
+            axios.post('https://server.ipuiecotocollao.com/api/guardar_seccion', formData)
             .then(function (response) {
+                me.popupSeccion=false;
                 me.getCurso()
                 me.popupSeccion = false
                 me.$vs.loading.close()
@@ -239,7 +326,7 @@ export default {
         acceptAlertSeccion() {
             let me = this
 
-            axios.get('http://127.0.0.1:8000/api/elimiar_seccion/' + me.seccion.id_seccion)
+            axios.get('https://server.ipuiecotocollao.com/api/elimiar_seccion/' + me.seccion.id_seccion)
             .then(function (res) {
                 me.$vs.notify({
                     color: 'danger',

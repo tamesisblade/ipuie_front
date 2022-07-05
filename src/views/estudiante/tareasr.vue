@@ -18,8 +18,6 @@
                             {{data[indextr].tarea}}
                       </a>
 
-
-
                     </vs-td>
                     <vs-td :data="data[indextr].observaciones">
                         {{data[indextr].observaciones}}
@@ -32,7 +30,11 @@
                         {{data[indextr].comentario}}
                     </vs-td>
                     <vs-td :data="data[indextr].nota">
-                        {{data[indextr].nota}}
+                        <b class="text-lg">{{data[indextr].nota}} </b> &nbsp;&nbsp;
+                        <vs-button v-if="data[indextr].nota>0 && data[indextr].nota<=7" size="small" color="danger" class="text-lg px-2 py-1">Insuficiente..</vs-button>
+                        <vs-button v-if="data[indextr].nota>7 && data[indextr].nota<=8" size="small" color="warning" class="text-lg px-2 py-1">Puedes hacerlo mejor</vs-button>
+                        <vs-button v-if="data[indextr].nota>8 && data[indextr].nota<=9" size="small" color="primary" class="text-lg px-2 py-1">Muy bien</vs-button>
+                        <vs-button v-if="data[indextr].nota>9" size="small" color="success" class="text-lg px-2 py-1">Excelente</vs-button>
                     </vs-td>
                 </vs-tr>
             </template>

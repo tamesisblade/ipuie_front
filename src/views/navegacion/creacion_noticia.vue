@@ -1,13 +1,14 @@
 <template>
-<div class="px-12">
-    <vx-card>
+<div>
+    <vx-card class="mb-6">
 
-        <vs-input label="Titulo de la sección" v-model="noticia.titulo" class="w-full mb-6" />
-        <vs-input label="Titulo de la sección" v-model="noticia.subtitulo" class="w-full mb-6" />
+        <vs-input label="Titulo de la noticia" v-model="noticia.titulo" class="w-full mb-6" />
+        <vs-input label="Descripción de la noticia" v-model="noticia.subtitulo" class="w-full mb-6" />
 
         <div style="font-size: 12px; color: gray;" class="mb-1">Imagen de portada</div>
         <input type="file" name="file_notic" id="file_notic" class="inputfile mb-6">
 
+        <span style="color: #1CD7CC; ">Subir contenido multimedia como imágenes mediante URL para mejorar la experiencia de usuario.</span>
         <froala id="edit" :tag="'textarea'" :config="config" v-model="noticia.contenido"></froala>
 
         <div align="right">
@@ -48,10 +49,29 @@ export default {
             id_noticia: '',
             img_old: '',
             config: {
+              imageUploadRemoteUrls: false,
               events: {
                 initialized: function () {
                   console.log('initialized')
+                },
+                "image.beforeUpload": function(files) {
+                  var editor = this;
+                    if (files.length) {
+                      // Create a File Reader.
+                      var reader = new FileReader();
+                      // Set the reader to insert images when they are loaded.
+                      reader.onload = function(e) {
+                        var result = e.target.result;
+                        editor.image.insert(result, null, null, editor.image.get());
+                      };
+                      // Read image as base64.
+                      reader.readAsDataURL(files[0]);
+                    }
+                    editor.popups.hideAll();
+                    // Stop default upload chain.
+                    return false;
                 }
+
               }
             },
             model: 'Edit Your Content Here!'
@@ -74,7 +94,7 @@ export default {
             let me = this
 
             me.$vs.loading()
-            axios.get('http://127.0.0.1:8000/api/noticias/'+me.id_noticia)
+            axios.get('https://server.ipuiecotocollao.com/api/noticias/'+me.id_noticia)
             .then(function (response) {
                 me.comentario = response.data.items.comentario
                 me.noticia = response.data.items.noticia[0]
@@ -100,7 +120,7 @@ export default {
 
             formData.append('id_noticia', me.id_noticia);
 
-            axios.post('http://127.0.0.1:8000/api/noticias', formData)
+            axios.post('https://server.ipuiecotocollao.com/api/noticias', formData)
             .then(function (response) {
                 me.id_noticia = response.data.id_noticia
                 me.$vs.loading.close()
@@ -108,7 +128,11 @@ export default {
                 text:'Noticia guardada correctamente.', color:'success', iconPack: 'feather', icon:'icon-check'})
                 me.$router.go(-1)
             })
-            .catch(function (error) { me.$vs.loading.close() })
+            .catch(function (error) {
+              me.$vs.loading.close()
+               me.$vs.notify({
+                text:'Contenido de la noticia demasiado grande. RECOMENDACIÓN: Suba imagenes como URL', color:'danger', iconPack: 'feather', icon:'icon-alert-triangle'})
+            })
         },
 
 

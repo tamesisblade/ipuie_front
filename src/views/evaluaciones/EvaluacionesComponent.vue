@@ -254,8 +254,9 @@
                 <template slot-scope="{data}">
                 <vs-tr :key="indextr" v-for="(tr, indextr) in data">
                     <vs-td :data="tr">
-                        {{ tr.Estudiante }}
-
+                        {{ tr.Estudiante }} <br>
+                        CI: {{ tr.Cedula }} <br>
+                        {{ tr.Correo }}
                     </vs-td>
                     <vs-td>
                          <div :key="index1" v-for="(item, index1) in tr.ids">
@@ -339,7 +340,7 @@
             </div>
 
             <div class="vx-col sm:w-1/2 w-full">
-                <vs-input type="number" class="inputx w-full mb-6" label="Puntos" v-model="evaluacion.puntos"/>
+                <vs-input type="number" disabled class="inputx w-full mb-6" label="Evaluación sobre 10 puntos" v-model="evaluacion.puntos"/>
             </div>
 
             <div class="vx-col sm:w-1/2 w-full">
@@ -567,7 +568,7 @@ export default {
                 fecha_inicio: '',
                 fecha_fin: '',
                 estado: '',
-                puntos: '',
+                puntos: 10,
                 duracion: '',
             },
             preguntas: [], //preguntas disponibles para cada evaluacion
@@ -858,7 +859,7 @@ export default {
             this.evaluacion.fecha_inicio = '';
             this.evaluacion.fecha_fin = '';
             this.evaluacion.estado = '';
-            this.evaluacion.puntos = '';
+            this.evaluacion.puntos = 10;
             this.preguntas = [];
             this.preguntasEvaluaciones = [];
             this.evaluacion.id = '';
@@ -1150,6 +1151,7 @@ export default {
                         cal.evaluacion_id = element.calificaciones[0].id
                         cal.idusuario = element.usuario_idusuario
                         cal.Cedula = element.cedula
+                        cal.Correo = element.email
                         cal.Estudiante = element.nombres + " " + element.apellidos
                         cal.calificacion = element.calificaciones[0].calificacion
                         cal.calificaciones = new Object();
@@ -1340,8 +1342,8 @@ export default {
             document.body.removeChild(aux);
         },
         exportToExcel () {
-            let headerTitle = ['Cédula', 'Estudiante'];
-            let headerVal = ['Cedula', 'Estudiante'];
+            let headerTitle = ['Cédula', 'Correo', 'Estudiante'];
+            let headerVal = ['Cedula', 'Correo', 'Estudiante'];
 
             for (let index = 0; index < this.alumnos[0].total.length; index++) {
                 headerTitle.push("Evaluación" + index)
