@@ -1,6 +1,6 @@
 <template>
 
-<div class="w-full parallax" :style="'background-image: url(https://server.ipuiecotocollao.com/images/carrousel/'+parallax.imagen+');'">
+<div class="w-full parallax" :style="'background-image: url(http://127.0.0.1:8000/images/carrousel/'+parallax.imagen+');'">
   <div class="w-full vx-row p-12">
     <div class="vx-col w-full lg:w-3/4 sm:w-full mb-base px-8">
         <div :style="'font-size: 30px; color: '+parallax.color+';'" class="mb-base">
@@ -19,7 +19,7 @@
         <!-- swiper -->
             <swiper :options="swiperOption" :dir="$vs.rtl ? 'rtl' : 'ltr'" :key="$vs.rtl">
                 <swiper-slide :key="index" v-for="(item, index) in lados_cubo">
-                  <img class="responsive" :src="'https://server.ipuiecotocollao.com/images/carrousel/'+item.imagen" alt="banner">
+                  <img class="responsive" :src="'http://127.0.0.1:8000/images/carrousel/'+item.imagen" alt="banner">
                 </swiper-slide>
                 <div class="swiper-pagination" slot="pagination"></div>
             </swiper>
@@ -77,7 +77,7 @@ export default {
       getParallax(){
         let me = this
         me.$vs.loading()
-        axios.get('https://server.ipuiecotocollao.com/api/get_parallax')
+        axios.get('http://127.0.0.1:8000/api/get_parallax')
         .then(function (response) {
             me.parallax = response.data[0]
             me.$vs.loading.close()
@@ -88,7 +88,7 @@ export default {
         let me = this
 
         me.$vs.loading()
-        axios.get('https://server.ipuiecotocollao.com/api/get_lados_cubo')
+        axios.get('http://127.0.0.1:8000/api/get_lados_cubo')
         .then(function (response) {
             me.lados_cubo = response.data
             me.$vs.loading.close()

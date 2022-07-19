@@ -49,7 +49,7 @@ export default {
         getFondo(){
           let me = this
           me.$vs.loading()
-          axios.get('https://server.ipuiecotocollao.com/api/get_fondo')
+          axios.get('http://127.0.0.1:8000/api/get_fondo')
           .then(function (response) {
               me.img_fondo = response.data[0].imagen
               me.$vs.loading.close()

@@ -1,19 +1,18 @@
 <template>
-<div>
-    <vx-card class="mb-6">
+<div class="mb-6 sm:px-3">
 
-        <vs-input label="Titulo de la noticia" v-model="noticia.titulo" class="w-full mb-6" />
-        <vs-input label="Descripción de la noticia" v-model="noticia.subtitulo" class="w-full mb-6" />
+    <vx-card>
+
+        <vs-input label="Titulo del documento" v-model="titulo" class="w-full mb-6" />
+
+        <froala id="edit" :tag="'textarea'" :config="config" v-model="descripcion"></froala>
 
         <div style="font-size: 12px; color: gray;" class="mb-1">Imagen de portada</div>
-        <input type="file" name="file_notic" id="file_notic" class="inputfile mb-6">
-
-        <span style="color: #1CD7CC; ">Subir contenido multimedia como imágenes mediante URL para mejorar la experiencia de usuario.</span>
-        <froala id="edit" :tag="'textarea'" :config="config" v-model="noticia.contenido"></froala>
+        <input type="file" name="file_doc" id="file_doc" class="inputfile mb-6">
 
         <div align="right">
-            <vs-button type="border" color="dark" class="m-2" @click="$router.go(-1)">regresar</vs-button>
-            <vs-button type="gradient" color="primary" class="m-2" @click="popupSeccion=false; guardarNoticia()">Guardar noticia</vs-button>
+            <vs-button type="border" color="dark" class="m-2" @click="$router.go(-1)">Regresar</vs-button>
+            <vs-button type="gradient" color="primary" class="m-2" @click="popupSeccion=false; guardarDocumento()">Guardar documento</vs-button>
         </div>
 
     </vx-card>
@@ -43,10 +42,10 @@ export default {
     data() {
         return {
             usuario: [],
-            noticia: { titulo: '', subtitulo: '', contenido: '<br><br><br><br><br>', img_portada: ''},
-            noticias: [],
+            titulo: '', descripcion: '', img_portada: '',
+            documentos_ministeriales: [],
             popupSeccion: false,
-            id_noticia: '',
+            id_documento: 0,
             img_old: '',
             config: {
               imageUploadRemoteUrls: false,
@@ -74,7 +73,9 @@ export default {
 
               }
             },
-            model: 'Edit Your Content Here!'
+            model: 'Edit Your Content Here!',
+            nombre_categoria: '',
+            modal_categorias: false,
         }
     },
     created() {
@@ -84,57 +85,49 @@ export default {
         }
     },
     mounted() {
-        this.id_noticia = this.$route.params.id_noticia
-        if( this.id_noticia != 0 ){
-         this.getNoticia()
+        this.id_documento = this.$route.params.id_documento
+        if( this.id_documento != 0 ){
+         this.getDocumento()
         }
     },
     methods: {
-        getNoticia(){
+        getDocumento(){
             let me = this
 
             me.$vs.loading()
-            axios.get('http://127.0.0.1:8000/api/noticias/'+me.id_noticia)
+            axios.get('http://127.0.0.1:8000/api/documentos_ministeriales/'+me.id_documento)
             .then(function (response) {
-                me.comentario = response.data.items.comentario
-                me.noticia = response.data.items.noticia[0]
-                me.img_old = response.data.items.noticia[0].img_portada
+                me.titulo = response.data[0].titulo
+                me.descripcion = response.data[0].descripcion
+                me.img_old = response.data[0].imagen
                 me.$vs.loading.close()
             })
             .catch(function (error) { me.$vs.loading.close() })
 
         },
-        guardarNoticia(){
+        guardarDocumento(){
             let me = this
             me.$vs.loading()
             let fileImgPreg
-            fileImgPreg = document.getElementById("file_notic").files[0];
+            fileImgPreg = document.getElementById("file_doc").files[0];
 
             let formData = new FormData();
-            formData.append('titulo', me.noticia.titulo);
-            formData.append('subtitulo', me.noticia.subtitulo);
-            formData.append('contenido', me.noticia.contenido);
+            formData.append('id_ministeriales', me.id_documento);
+            formData.append('titulo', me.titulo);
+            formData.append('descripcion', me.descripcion);
             formData.append('img_portada', fileImgPreg);
-            formData.append('idusuario', me.usuario[0].idusuario);
+            formData.append('id_usuario', me.usuario[0].idusuario);
             formData.append('img_old', me.img_old);
 
-            formData.append('id_noticia', me.id_noticia);
-
-            axios.post('http://127.0.0.1:8000/api/noticias', formData)
+            axios.post('http://127.0.0.1:8000/api/documentos_ministeriales', formData)
             .then(function (response) {
-                me.id_noticia = response.data.id_noticia
                 me.$vs.loading.close()
                 me.$vs.notify({
-                text:'Noticia guardada correctamente.', color:'success', iconPack: 'feather', icon:'icon-check'})
+                text:'Documento ministerial guardado correctamente.', color:'success', iconPack: 'feather', icon:'icon-check'})
                 me.$router.go(-1)
             })
-            .catch(function (error) {
-              me.$vs.loading.close()
-               me.$vs.notify({
-                text:'Contenido de la noticia demasiado grande. RECOMENDACIÓN: Suba imagenes como URL', color:'danger', iconPack: 'feather', icon:'icon-alert-triangle'})
-            })
+            .catch(function (error) { me.$vs.loading.close() })
         },
-
 
     },
 }

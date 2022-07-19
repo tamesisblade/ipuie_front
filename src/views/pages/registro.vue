@@ -154,7 +154,7 @@ export default {
             formData.append('telefono', item.telefono)
             formData.append('id_group', 2)
 
-            axios.post("https://server.ipuiecotocollao.com/api/register", formData)
+            axios.post("http://127.0.0.1:8000/api/register", formData)
                 .then(function (response) {
                     localStorage.tk = response.data.token
                     localStorage.setItem('usuario', JSON.stringify(response.data.datos));

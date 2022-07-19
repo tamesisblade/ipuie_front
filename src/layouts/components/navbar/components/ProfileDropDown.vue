@@ -3,8 +3,8 @@
 
     <div v-if="usuario[0]" class="the-navbar__user-meta flex items-center">
 
-        <div class="text-right leading-tight hidden sm:block" v-if="usuario[0]">
-            <p class="font-semibold">{{ usuario[0].nombres }}</p>
+        <div class="text-right leading-tight hidden sm:block text-gray" v-if="usuario[0]" style="color: gray !important;">
+            <p class="font-semibold text-gray">{{ usuario[0].nombres }}</p>
             <small v-if="usuario[0].id_group == 1" >Administrador</small>
             <small v-if="usuario[0].id_group == 4" >Estudiante</small>
             <small v-if="usuario[0].id_group == 5" >PostVenta</small>
@@ -15,7 +15,7 @@
 
             <div class="con-img ml-3">
                 <img v-if="usuario[0].foto_user == 'default.png' " key="onlineImg" :src="activeUserInfo.photoURL" alt="user-img" width="40" height="40" class="rounded-full shadow-md cursor-pointer block" />
-                <img v-else key="onlineImg" :src="'https://server.ipuiecotocollao.com/images/'+usuario[0].foto_user" alt="user-img" width="40" height="40" class="rounded-full shadow-md cursor-pointer block" />
+                <img v-else :src="'http://127.0.0.1:8000/images/'+usuario[0].foto_user" alt="user-img" width="40" height="40" class="rounded-full shadow-md cursor-pointer block" />
             </div>
 
             <vs-dropdown-menu class="vx-navbar-dropdown">
@@ -34,16 +34,16 @@
             </vs-dropdown-menu>
         </vs-dropdown>
     </div>
-    <div v-else class="the-navbar__user-meta flex items-center">
+    <div v-else class="the-navbar__user-meta flex items-center" style="color: gray !important;">
 
-        <div class="text-right leading-tight hidden sm:block">
-            <p class="font-semibold">Invitado</p>
+        <div class="text-right leading-tight hidden sm:block text-gray">
+            <p class="font-semibold text-gray">Invitado</p>
             <!-- <small>Invitado</small> -->
         </div>
 
         <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
             <div class="con-img ml-3">
-                <img key="onlineImg" :src="'https://server.ipuiecotocollao.com/images/perfil_usuario.png'" alt="user-img" width="40" height="40" class="rounded-full shadow-md cursor-pointer block" />
+                <img key="onlineImg" :src="'http://127.0.0.1:8000/images/perfil_usuario.png'" alt="user-img" width="40" height="40" class="rounded-full shadow-md cursor-pointer block" />
             </div>
 
             <vs-dropdown-menu class="vx-navbar-dropdown">

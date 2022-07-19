@@ -134,6 +134,9 @@
 
 
         <vs-textarea  counter="250" label="Mensaje" :counter-danger.sync="counterDanger" name="event-url" class="w-full mb-3 mt-3" v-model="url" />
+
+        <vs-input label="Link" name="event-link" class="w-full mb-3 mt-3" v-model="link" />
+
     </vs-prompt>
 
 
@@ -175,6 +178,7 @@ export default {
       langHe: he,
       langEn: en,
       url: '',
+      link: '',
       calendarView: 'month',
       activePromptAddEvent: false,
       label_cancel: 'Cancelar',
@@ -255,6 +259,7 @@ export default {
         classes: 'event-'+this.labelLocal.color,
         label: this.labelLocal.text,
         url: this.url,
+        link: this.link,
         hora_inicio: this.hora_inicio.substring(0,5),
         hora_fin: this.hora_fin.substring(0,5),
       }
@@ -269,7 +274,7 @@ export default {
       this.showDate = this.$refs.calendar.getIncrementedPeriod(val)
     },
     clearFields () {
-      this.title = this.endDate = this.url = ''
+      this.title = this.endDate = this.url = this.link = ''
       this.id = 0
       this.labelLocal = {text: 'Baja', color: 'success'}
       this.label_cancel = 'Cancelar'
@@ -297,6 +302,7 @@ export default {
       this.startDate = e.startDate
       this.endDate = e.endDate
       this.url = e.url
+      this.link = e.link
       this.labelLocal = {text: e.label, color: e.classes.split('-')[1]}
       this.startDate_send = this.startDate
       this.endDate_send = this.endDate

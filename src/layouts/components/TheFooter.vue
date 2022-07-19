@@ -1,5 +1,5 @@
 <template>
-    <div style="background-color: #1C2833; color: #F1C40F;">
+    <div style="background-color: #1C2833; color: #F1C40F;" id="footer_ipuie">
 
       <formfooter/>
       <footer class="the-footer flex-wrap justify-between">

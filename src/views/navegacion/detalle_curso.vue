@@ -1,10 +1,10 @@
 <template>
 <div class="px-1">
 
-    <div class="vx-row">
+    <div class="vx-row mb-base">
 
       <div class="vx-col w-full lg:w-3/4">
-        <vx-card class="mb-6 px-5" card-background="black" content-color="#fff">
+        <vx-card v-if="curso" class="mb-6 px-5" card-background="black" content-color="#fff">
             <div style="font-size: 22px;" class="mb-2"><b> {{curso.titulo}} </b></div>
             <div class="mb-2">
                 {{curso.subtitulo}}
@@ -65,7 +65,7 @@
       </div>
 
 
-      <div class="vx-col w-full lg:w-1/4">
+      <div class="vx-col w-full lg:w-1/4" style="position: fixed; right: 0;">
         <vx-card>
 
             <vs-button class="mb-6 w-full" v-if="curso_habilitado != 0" color="#9ecc38" gradient-color-secondary="#3EC9D6" type="gradient">Progreso del curso</vs-button>
@@ -116,18 +116,41 @@
                 </div>
 
                 <div class="w-full flex flex-wrap justify-center gap-5">
-                  <vx-tooltip color="primary" text="Descargar reporte de evaluaciones">
+                  <vx-tooltip v-if="usuario[0].id_group == 1 || usuario[0].idusuario == curso.capacitador" color="primary" text="Descargar reporte de evaluaciones">
                     <vs-button @click="get_reporte_eval()" class="p-0" size="large" radius color="primary" type="border" icon-pack="feather" icon="icon-list"></vs-button>
                   </vx-tooltip>
 
-                  <vx-tooltip color="dark" text="Descargar reporte de tareas">
+                  <vx-tooltip v-if="usuario[0].id_group == 1 || usuario[0].idusuario == curso.capacitador" color="dark" text="Descargar reporte de tareas">
                     <vs-button @click="get_reporte_tareas()" class="p-0" size="large" radius color="dark" type="border" icon-pack="feather" icon="icon-activity"></vs-button>
                   </vx-tooltip>
 
                   <!-- <vx-tooltip v-if="porcentaje_progreso == 100" color="success" text="Descargar certificado"> -->
-                  <vx-tooltip color="success" text="Descargar certificado">
+                  <vx-tooltip v-if="porcentaje_progreso >= -70" color="success" text="Descargar certificado">
                     <vs-button @click="descargar_certificado" class="p-0" size="large" radius color="success" type="border" icon-pack="feather" icon="icon-award"></vs-button>
                   </vx-tooltip>
+                  <vx-tooltip v-else color="warning" text="Podrá descargar el certificado cuando complete más del 70%">
+                    <vs-button class="p-0" size="large" radius color="warning" type="border" icon-pack="feather" icon="icon-award"></vs-button>
+                  </vx-tooltip>
+
+                  <vue-html2pdf 
+                    :show-layout="false"
+                    :float-layout="true"
+                    :enable-download="true"
+                    :preview-modal="false"
+                    :paginate-elements-by-height="1000"
+                    filename="certificado_curso"
+                    :pdf-quality="2"
+                    :manual-pagination="false"
+                    pdf-format="a4"
+                    :pdf-margin="0"
+                    pdf-orientation="landscape"
+                    pdf-content-width="1150px"
+                    ref="html2Pdf"
+                  >
+                    <section slot="pdf-content">
+                      <ContentToPrint />
+                    </section>
+                  </vue-html2pdf>
 
                 </div>
 
@@ -158,12 +181,18 @@ import Vue from 'vue'
 import axios from 'axios'
 import vue2Dropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
+
+import VueHtml2pdf from "vue-html2pdf";
+import ContentToPrint from "./contenido_certificado";
+
 Vue.use(axios)
 export default {
     components: {
         'v-select': vSelect,
         vueDropzone: vue2Dropzone,
-        VueDocPreview
+        VueDocPreview,
+        VueHtml2pdf,
+        ContentToPrint,
     },
     data() {
         return {
@@ -315,13 +344,21 @@ export default {
             }
         },
         descargar_certificado(){
-          window.open('/certificado_curso', '_blank')
+          let me = this
+          localStorage.setItem('curso_certificado', me.curso.titulo)
+          localStorage.setItem('cant_horas', me.curso.cant_horas)
+          setTimeout(function(){
+              me.$refs.html2Pdf.generatePdf();
+          }, 500);
         }
     },
 }
 </script>
 
 <style>
+#footer_ipuie{
+  display: none;
+}
 .uploading-image {
     display: flex;
 }

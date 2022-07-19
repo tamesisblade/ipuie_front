@@ -25,6 +25,7 @@ export default {
         formData.append('hora_inicio', event.hora_inicio);
         formData.append('hora_fin', event.hora_fin);
         formData.append('url', event.url);
+        formData.append('link', event.link);
 
     return new Promise((resolve, reject) => {
       axios.post(server+'eventos', formData)
@@ -83,6 +84,7 @@ export default {
         formData.append('hora_inicio', event.hora_inicio);
         formData.append('hora_fin', event.hora_fin);
         formData.append('url', event.url);
+        formData.append('link', event.link);
 
     return new Promise((resolve, reject) => {
       axios.post(server+'eventos', formData)
@@ -123,6 +125,7 @@ export default {
         formData.append('hora_inicio', event.hora_inicio);
         formData.append('hora_fin', event.hora_fin);
         formData.append('url', event.url);
+        formData.append('link', event.link);
     return new Promise((resolve, reject) => {
       axios.post(server+'save_agenda_docente', formData)
         .then((response) => {

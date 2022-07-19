@@ -1,33 +1,49 @@
 <template>
-<div style="height: 800px; background-image: url(https://server.ipuiecotocollao.com/images/certificados/certificado_cursos.jpg)">
-  <h1>CERTIFICADO</h1>
-  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-  <h1>asdsadsa</h1>
-</div>
+  <div id="app">
+    <vs-button @click="generatePDF()" >Generar PDF</vs-button>
+
+    <vue-html2pdf
+      :show-layout="false"
+      :float-layout="true"
+      :enable-download="true"
+      :preview-modal="true"
+      :paginate-elements-by-height="1000"
+      filename="nightprogrammerpdf"
+      :pdf-quality="2"
+      :manual-pagination="false"
+      pdf-format="a4"
+      :pdf-margin="0"
+      pdf-orientation="landscape"
+      pdf-content-width="1150px"
+      ref="html2Pdf"
+    >
+      <section slot="pdf-content">
+        <ContentToPrint />
+      </section>
+    </vue-html2pdf>
+    <div>
+      <ContentToPrint />
+    </div>
+  </div>
 </template>
 
 <script>
-import Vue from 'vue'
-import axios from 'axios'
-Vue.use(axios)
+import VueHtml2pdf from "vue-html2pdf";
+import ContentToPrint from "./contenido_certificado";
+
 export default {
-    components: {
-
+  name: "App",
+  methods: {
+    hasGenerated() {
+      alert("PDF generated successfully!");
     },
-    data() {
-        return {
-            // usuario: []
-
-        }
+    generatePDF() {
+      this.$refs.html2Pdf.generatePdf();
     },
-    created() {
-        this.usuario = JSON.parse(localStorage.getItem('usuario'));
-    },
-    mounted() {
-
-    },
-    methods: {
-
-    },
-}
+  },
+  components: {
+    VueHtml2pdf,
+    ContentToPrint,
+  },
+};
 </script>

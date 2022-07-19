@@ -186,7 +186,7 @@ export default {
             let me = this
 
             me.$vs.loading()
-            axios.get('https://server.ipuiecotocollao.com/api/cursos/'+me.id_curso)
+            axios.get('http://127.0.0.1:8000/api/cursos/'+me.id_curso)
             .then(function (response) {
                 me.secciones = response.data.items.secciones
                 me.curso = response.data.items.curso[0]
@@ -266,7 +266,7 @@ export default {
 
             formData.append('id_curso', me.id_curso);
 
-            axios.post('https://server.ipuiecotocollao.com/api/cursos', formData)
+            axios.post('http://127.0.0.1:8000/api/cursos', formData)
             .then(function (response) {
                 me.id_curso = response.data.id_curso
                 me.$vs.loading.close()
@@ -302,7 +302,7 @@ export default {
             formData.append('recurso', fileImgPreg2);
             formData.append('recurso_old', me.recurso_old);
 
-            axios.post('https://server.ipuiecotocollao.com/api/guardar_seccion', formData)
+            axios.post('http://127.0.0.1:8000/api/guardar_seccion', formData)
             .then(function (response) {
                 me.popupSeccion=false;
                 me.getCurso()
@@ -326,7 +326,7 @@ export default {
         acceptAlertSeccion() {
             let me = this
 
-            axios.get('https://server.ipuiecotocollao.com/api/elimiar_seccion/' + me.seccion.id_seccion)
+            axios.get('http://127.0.0.1:8000/api/elimiar_seccion/' + me.seccion.id_seccion)
             .then(function (res) {
                 me.$vs.notify({
                     color: 'danger',

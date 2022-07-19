@@ -158,6 +158,20 @@ const router = new Router({
                         import('./views/navegacion/creacion_blog.vue')
                 },
 
+                // DOCUMENTOS MINISTERIALES
+                {
+                    path: '/documentos_ministeriales',
+                    name: 'documentos_ministeriales',
+                    component: () =>
+                        import('./views/navegacion/documentos_ministeriales.vue')
+                },
+                {
+                    path: '/creacion_documentos_ministeriales/:id_documento',
+                    name: 'creacion_documentos_ministeriales',
+                    component: () =>
+                        import('./views/navegacion/creacion_documentos_ministeriales.vue')
+                },
+
                 //CALENDARIO
                 {
                   path: '/calendario',
