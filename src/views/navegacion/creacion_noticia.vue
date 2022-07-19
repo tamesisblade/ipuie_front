@@ -94,7 +94,7 @@ export default {
             let me = this
 
             me.$vs.loading()
-            axios.get('http://127.0.0.1:8000/api/noticias/'+me.id_noticia)
+            axios.get('https://server.ipuiecotocollao.com/api/noticias/'+me.id_noticia)
             .then(function (response) {
                 me.comentario = response.data.items.comentario
                 me.noticia = response.data.items.noticia[0]
@@ -120,7 +120,7 @@ export default {
 
             formData.append('id_noticia', me.id_noticia);
 
-            axios.post('http://127.0.0.1:8000/api/noticias', formData)
+            axios.post('https://server.ipuiecotocollao.com/api/noticias', formData)
             .then(function (response) {
                 me.id_noticia = response.data.id_noticia
                 me.$vs.loading.close()

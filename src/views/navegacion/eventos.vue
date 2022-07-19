@@ -69,7 +69,9 @@
                 
                 <vs-button style="font-size: 12px; padding: 5px; display: inline-block; width: 45%;" class="m-1" size="small" type="line" color="#b9b9b9" @click="identificacion=''; nombres=''; apellidos=''; email=''; telefono=''; genero=''; id_evento = item.id; popupInscripcion = true;">Inscribirse</vs-button>
 
-                <vs-button v-if="usuario[0].id_group == 1" style="font-size: 12px; padding: 5px; display: inline-block; width: 100%;" class="mt-3" size="small" type="filled" color="dark" @click="verInscritos(item.id)">Ver inscritos</vs-button>
+                <div v-if="usuario[0]">
+                    <vs-button v-if="usuario[0].id_group == 1" style="font-size: 12px; padding: 5px; display: inline-block; width: 100%;" class="mt-3" size="small" type="filled" color="dark" @click="verInscritos(item.id)">Ver inscritos</vs-button>
+                </div>
 
             </div>
 
@@ -131,7 +133,7 @@ export default {
         getEventos(){
             let me = this
             me.$vs.loading()
-            axios.get('http://127.0.0.1:8000/api/eventos')
+            axios.get('https://server.ipuiecotocollao.com/api/eventos')
             .then(function (res) {
                 me.eventos = res.data
                 me.$vs.loading.close()
@@ -150,7 +152,7 @@ export default {
         acceptAlertEvento() {
             let me = this
 
-            axios.get('http://127.0.0.1:8000/api/elimiar_evento/' + me.id_evento)
+            axios.get('https://server.ipuiecotocollao.com/api/elimiar_evento/' + me.id_evento)
             .then(function (res) {
                 me.$vs.notify({
                     color: 'danger',
@@ -180,7 +182,7 @@ export default {
             formData.append('email', me.email);
             formData.append('telefono', me.telefono);
             formData.append('genero', me.genero);
-            axios.post('http://127.0.0.1:8000/api/inscripcion_evento', formData)
+            axios.post('https://server.ipuiecotocollao.com/api/inscripcion_evento', formData)
             .then(function (res) {
                 me.popupInscripcion = false
                 me.$vs.notify({
@@ -197,7 +199,7 @@ export default {
         verInscritos(id_evento){
             let me = this
             me.$vs.loading()
-            axios.get('http://127.0.0.1:8000/api/ver_inscritos/' + id_evento)
+            axios.get('https://server.ipuiecotocollao.com/api/ver_inscritos/' + id_evento)
             .then(function (res) {
                 me.$vs.loading.close()
                 me.inscritos = res.data

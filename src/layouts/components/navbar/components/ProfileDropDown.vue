@@ -15,7 +15,7 @@
 
             <div class="con-img ml-3">
                 <img v-if="usuario[0].foto_user == 'default.png' " key="onlineImg" :src="activeUserInfo.photoURL" alt="user-img" width="40" height="40" class="rounded-full shadow-md cursor-pointer block" />
-                <img v-else :src="'http://127.0.0.1:8000/images/'+usuario[0].foto_user" alt="user-img" width="40" height="40" class="rounded-full shadow-md cursor-pointer block" />
+                <img v-else :src="'https://server.ipuiecotocollao.com/images/'+usuario[0].foto_user" alt="user-img" width="40" height="40" class="rounded-full shadow-md cursor-pointer block" />
             </div>
 
             <vs-dropdown-menu class="vx-navbar-dropdown">
@@ -43,7 +43,7 @@
 
         <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
             <div class="con-img ml-3">
-                <img key="onlineImg" :src="'http://127.0.0.1:8000/images/perfil_usuario.png'" alt="user-img" width="40" height="40" class="rounded-full shadow-md cursor-pointer block" />
+                <img key="onlineImg" :src="'https://server.ipuiecotocollao.com/images/perfil_usuario.png'" alt="user-img" width="40" height="40" class="rounded-full shadow-md cursor-pointer block" />
             </div>
 
             <vs-dropdown-menu class="vx-navbar-dropdown">

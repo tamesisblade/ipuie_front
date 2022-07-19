@@ -3,7 +3,7 @@
     <div>
         <swiper :options="swiperOption" :dir="$vs.rtl ? 'rtl' : 'ltr'" :key="$vs.rtl">
             <swiper-slide :key="index" v-for="(item, index) in carruseles">
-                <img class="responsive_carrousel" :src="'http://127.0.0.1:8000/images/carrousel/'+item.imagen">
+                <img class="responsive_carrousel" :src="'https://server.ipuiecotocollao.com/images/carrousel/'+item.imagen">
 
                 <div :style="'position: relative; top: -450px; margin-bottom: -350px;'" class="px-12">
                     <div class="mb-base" :style="'width: 100%; min-width: 350px; font-size: 35px; color: '+item.color_texto+';'"> {{item.titulo}} </div>
@@ -77,7 +77,7 @@ export default {
           let me = this
 
           me.$vs.loading()
-          axios.get('http://127.0.0.1:8000/api/carruseles')
+          axios.get('https://server.ipuiecotocollao.com/api/carruseles')
           .then(function (response) {
               me.carruseles = response.data
               me.$vs.loading.close()

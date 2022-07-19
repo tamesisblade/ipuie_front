@@ -166,7 +166,7 @@
                     <vs-td>
                         {{tr.solicitud}} <br>
                         Forma pago: {{tr.forma_pago}} <br>
-                        <a :href="'http://127.0.0.1:8000/images/comprobantes/'+tr.comprobante" target="_blank">
+                        <a :href="'https://server.ipuiecotocollao.com/images/comprobantes/'+tr.comprobante" target="_blank">
                           {{tr.comprobante}}
                         </a>
                     </vs-td>
@@ -260,7 +260,7 @@ export default {
     methods: {
         async getUsuarios() {
             let me = this;
-            axios.get('http://127.0.0.1:8000/api/usuarios')
+            axios.get('https://server.ipuiecotocollao.com/api/usuarios')
             .then(function (response) {
                 me.usuarios = response.data;
             })
@@ -269,7 +269,7 @@ export default {
         async solicitudes_usuarios() {
             let me = this;
             me.$vs.loading()
-            axios.get('http://127.0.0.1:8000/api/solicitudes_usuarios')
+            axios.get('https://server.ipuiecotocollao.com/api/solicitudes_usuarios')
             .then(function (response) {
                 me.solicitudes = response.data;
                 me.$vs.loading.close()
@@ -295,7 +295,7 @@ export default {
             formData.append('telefono', item.telefono)
             formData.append('id_group', item.id_group.id)
             formData.append('password', item.password)
-            axios.post("http://127.0.0.1:8000/api/crearUsuario", formData)
+            axios.post("https://server.ipuiecotocollao.com/api/crearUsuario", formData)
                 .then(function (response) {
                     me.popupEditarUsuario=false
                     me.usuarios.push(response.data)
@@ -365,7 +365,7 @@ export default {
             formData.append('ciudad', item.ciudad.name_es)
             formData.append('id_group', item.id_group)
 
-            axios.post("http://127.0.0.1:8000/api/editarUsuario", formData)
+            axios.post("https://server.ipuiecotocollao.com/api/editarUsuario", formData)
                 .then(function (response) {
                     me.popupEditarUsuario=false
                     me.getUsuarios()
@@ -416,7 +416,7 @@ export default {
         },
         eliminarUsuario(){
             let me = this
-            axios.get("http://127.0.0.1:8000/api/eliminarUsuario/"+me.idusuarioSelec)
+            axios.get("https://server.ipuiecotocollao.com/api/eliminarUsuario/"+me.idusuarioSelec)
                 .then(function (response) {
                     me.getUsuarios()
                 })
@@ -429,7 +429,7 @@ export default {
             formData.append('id_estudiante', item.id_estudiante)
             formData.append('id_curso', item.id_curso)
             formData.append('estado', estado)
-            axios.post("http://127.0.0.1:8000/api/procesar_solicitud", formData)
+            axios.post("https://server.ipuiecotocollao.com/api/procesar_solicitud", formData)
             .then(function (response) {
                 me.solicitudes_usuarios()
                 me.$vs.notify({

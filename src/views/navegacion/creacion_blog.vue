@@ -119,7 +119,7 @@ export default {
             let me = this
 
             me.$vs.loading()
-            axios.get('http://127.0.0.1:8000/api/get_categorias')
+            axios.get('https://server.ipuiecotocollao.com/api/get_categorias')
             .then(function (response) {
                 me.categorias = response.data
                 me.$vs.loading.close()
@@ -131,7 +131,7 @@ export default {
             let me = this
 
             me.$vs.loading()
-            axios.get('http://127.0.0.1:8000/api/blogs/'+me.id_blog)
+            axios.get('https://server.ipuiecotocollao.com/api/blogs/'+me.id_blog)
             .then(function (response) {
                 me.comentario = response.data.items.comentario
                 me.blog = response.data.items.blog[0]
@@ -159,7 +159,7 @@ export default {
 
             formData.append('id_blog', me.id_blog);
 
-            axios.post('http://127.0.0.1:8000/api/blogs', formData)
+            axios.post('https://server.ipuiecotocollao.com/api/blogs', formData)
             .then(function (response) {
                 me.id_blog = response.data.id_blog
                 me.$vs.loading.close()
@@ -177,7 +177,7 @@ export default {
             formData.append('nombre_categoria', me.nombre_categoria);
             formData.append('id_usuario', me.usuario[0].idusuario);
 
-            axios.post('http://127.0.0.1:8000/api/guardar_categoria', formData)
+            axios.post('https://server.ipuiecotocollao.com/api/guardar_categoria', formData)
             .then(function (response) {
                 me.$vs.loading.close()
                 me.$vs.notify({

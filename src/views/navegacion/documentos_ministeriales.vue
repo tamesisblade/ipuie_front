@@ -1,7 +1,9 @@
 <template>
 <div class="pt-5 px-3" align="center">
     
-    <vs-button radius color="primary" type="gradient" size="large" icon-pack="feather" icon="icon-plus" v-if="usuario[0].id_group == 1" style="position: absolute; top: 0; right: 0;" @click="$router.push('/creacion_documentos_ministeriales/0')"></vs-button>
+    <div v-if="usuario[0]" style="position: absolute; top: 0; right: 0;">
+        <vs-button radius color="primary" type="gradient" size="large" icon-pack="feather" icon="icon-plus" v-if="usuario[0].id_group == 1" @click="$router.push('/creacion_documentos_ministeriales/0')"></vs-button>
+    </div>
 
     <div v-if="documentos.length > 0">
 
@@ -9,7 +11,7 @@
 
         <div class="vx-row mb-6 w-full" v-if="index%2==0">
         <div class="vx-col sm:w-1/3 w-full">
-            <img :src="'http://127.0.0.1:8000/images/ministeriales/' + item.imagen" style="width: 100%; max-width: 450px; border-radius: 10px;">
+            <img :src="'https://server.ipuiecotocollao.com/images/ministeriales/' + item.imagen" style="width: 100%; max-width: 450px; border-radius: 10px;">
         </div>
 
         <div class="vx-col sm:w-2/3 w-full">
@@ -18,8 +20,6 @@
 
             <div class="pl-8 py-5 content_text_documento" style="width: 65%; display: inline-block;" align="justify">
                 <div class="w-full flex justify-center">
-                    <vs-button class="m-2 float-right" style="font-size: 12px; padding: 5px;" size="small" type="line" color="primary" @click="$router.push('/detalle_documento/'+item.id_documento)">Ver documento completo</vs-button>
-
                     <div v-if="usuario[0]">
                         <vs-button v-if="usuario[0].id_group == 1" class="m-2" size="small" style="font-size: 12px;" type="line" color="dark" @click="$router.push('/creacion_documentos_ministeriales/'+item.id_ministeriales)">Editar documento</vs-button>
                         <vs-button v-if="usuario[0].id_group == 1" class="m-2" size="small" style="font-size: 12px;" type="line" color="danger" @click="id_documento = item.id_ministeriales; img_documento = item.imagen; openConfirmBlog();">Borrar documento</vs-button>
@@ -48,7 +48,7 @@
             </div>
         </div>
         <div class="vx-col sm:w-1/3 w-full">
-            <img :src="'http://127.0.0.1:8000/images/ministeriales/' + item.imagen" style="width: 100%; max-width: 450px; border-radius: 10px;">
+            <img :src="'https://server.ipuiecotocollao.com/images/ministeriales/' + item.imagen" style="width: 100%; max-width: 450px; border-radius: 10px;">
         </div>
         <vs-divider class="divider_doc" style="display: none"></vs-divider>
         </div>
@@ -96,7 +96,7 @@ export default {
         getDocumentos(){
             let me = this
             me.$vs.loading()
-            axios.get('http://127.0.0.1:8000/api/documentos_ministeriales')
+            axios.get('https://server.ipuiecotocollao.com/api/documentos_ministeriales')
             .then(function (res) {
                 me.documentos = res.data
                 me.$vs.loading.close()
@@ -115,7 +115,7 @@ export default {
         acceptAlertDocumento() {
             let me = this
 
-            axios.get('http://127.0.0.1:8000/api/eliminarDocumento/' + me.id_documento+'/'+me.img_documento)
+            axios.get('https://server.ipuiecotocollao.com/api/eliminarDocumento/' + me.id_documento+'/'+me.img_documento)
             .then(function (res) {
                 me.$vs.notify({
                     color: 'warning',

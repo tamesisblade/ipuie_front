@@ -99,7 +99,7 @@ export default {
       let me = this;
       me.$vs.loading();
       axios
-        .get("http://127.0.0.1:8000/api/get_acerca/1")
+        .get("https://server.ipuiecotocollao.com/api/get_acerca/1")
         .then(function (res) {
           me.contenido = res.data[0].contenido;
           me.cod_mapa = res.data[0].cod_mapa;
@@ -119,7 +119,7 @@ export default {
       formData.append("cod_mapa", me.cod_mapa);
       axios
         .post(
-          "http://127.0.0.1:8000/api/save_get_acerca",
+          "https://server.ipuiecotocollao.com/api/save_get_acerca",
           formData
         )
         .then(function (res) {

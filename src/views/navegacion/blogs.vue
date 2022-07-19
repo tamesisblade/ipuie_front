@@ -13,7 +13,7 @@
       <div class="vx-row mb-6" :key="index" v-for="(item, index) in blogs" style="background-color: white; border-radius: 10px; min-height: 200px;">
 
         <div class="content_img_blog" align="center" slot="no-body" style="width: 20%; min-width: 200px; display: inline-block;">
-            <img :src="'http://127.0.0.1:8000/images/blogs/' + item.img_portada" style="height: 200px; width: 200px; border-radius: 100%;">
+            <img :src="'https://server.ipuiecotocollao.com/images/blogs/' + item.img_portada" style="height: 200px; width: 200px; border-radius: 100%;">
         </div>
 
         <div class="pl-8 py-5 content_text_blog" style="width: 65%; display: inline-block;" align="justify">
@@ -82,7 +82,7 @@ export default {
         getCategorias(){
             let me = this
             me.$vs.loading()
-            axios.get('http://127.0.0.1:8000/api/get_categorias')
+            axios.get('https://server.ipuiecotocollao.com/api/get_categorias')
             .then(function (response) {
                 me.categorias = response.data
                 me.$vs.loading.close()
@@ -92,7 +92,7 @@ export default {
         filtro_categoria(){
           let me = this
             me.$vs.loading()
-            axios.get('http://127.0.0.1:8000/api/get_blogs_categoria/'+me.categoria_selected.id_categoria)
+            axios.get('https://server.ipuiecotocollao.com/api/get_blogs_categoria/'+me.categoria_selected.id_categoria)
             .then(function (response) {
                 me.blogs = response.data
                 me.$vs.loading.close()
@@ -106,7 +106,7 @@ export default {
         getBlogs(){
             let me = this
             me.$vs.loading()
-            axios.get('http://127.0.0.1:8000/api/blogs')
+            axios.get('https://server.ipuiecotocollao.com/api/blogs')
             .then(function (res) {
                 me.blogs = res.data
                 me.$vs.loading.close()
@@ -125,7 +125,7 @@ export default {
         acceptAlertBlog() {
             let me = this
 
-            axios.get('http://127.0.0.1:8000/api/elimiar_blog/' + me.id_blog+'/'+me.img_blog)
+            axios.get('https://server.ipuiecotocollao.com/api/elimiar_blog/' + me.id_blog+'/'+me.img_blog)
             .then(function (res) {
                 me.$vs.notify({
                     color: 'warning',
@@ -148,7 +148,7 @@ export default {
         cofirm_eliminar_categoria() {
             let me = this
 
-            axios.get('http://127.0.0.1:8000/api/eliminar_categoria/' + me.categoria_selected.id_categoria)
+            axios.get('https://server.ipuiecotocollao.com/api/eliminar_categoria/' + me.categoria_selected.id_categoria)
             .then(function (res) {
                 me.$vs.notify({
                     color: 'warning',
