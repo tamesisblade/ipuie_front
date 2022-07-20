@@ -11,7 +11,7 @@
 
         <div class="vx-row mb-6 w-full" v-if="index%2==0">
         <div class="vx-col sm:w-1/3 w-full">
-            <img :src="'https://server.ipuiecotocollao.com/images/ministeriales/' + item.imagen" style="width: 100%; max-width: 450px; border-radius: 10px;">
+            <img :src="'http://127.0.0.1:8000/images/ministeriales/' + item.imagen" style="width: 100%; max-width: 450px; border-radius: 10px;">
         </div>
 
         <div class="vx-col sm:w-2/3 w-full">
@@ -48,7 +48,7 @@
             </div>
         </div>
         <div class="vx-col sm:w-1/3 w-full">
-            <img :src="'https://server.ipuiecotocollao.com/images/ministeriales/' + item.imagen" style="width: 100%; max-width: 450px; border-radius: 10px;">
+            <img :src="'http://127.0.0.1:8000/images/ministeriales/' + item.imagen" style="width: 100%; max-width: 450px; border-radius: 10px;">
         </div>
         <vs-divider class="divider_doc" style="display: none"></vs-divider>
         </div>
@@ -96,7 +96,7 @@ export default {
         getDocumentos(){
             let me = this
             me.$vs.loading()
-            axios.get('https://server.ipuiecotocollao.com/api/documentos_ministeriales')
+            axios.get('http://127.0.0.1:8000/api/documentos_ministeriales')
             .then(function (res) {
                 me.documentos = res.data
                 me.$vs.loading.close()
@@ -115,7 +115,7 @@ export default {
         acceptAlertDocumento() {
             let me = this
 
-            axios.get('https://server.ipuiecotocollao.com/api/eliminarDocumento/' + me.id_documento+'/'+me.img_documento)
+            axios.get('http://127.0.0.1:8000/api/eliminarDocumento/' + me.id_documento+'/'+me.img_documento)
             .then(function (res) {
                 me.$vs.notify({
                     color: 'warning',

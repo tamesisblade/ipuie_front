@@ -57,7 +57,7 @@ export default {
       let me = this;
       me.$vs.loading();
       axios
-        .get("https://server.ipuiecotocollao.com/api/get_acerca/2")
+        .get("http://127.0.0.1:8000/api/get_acerca/2")
         .then(function (res) {
           me.cod_calendario = res.data[0].cod_mapa;
           me.$vs.loading.close();
@@ -76,7 +76,7 @@ export default {
       formData.append("cod_mapa", me.cod_calendario);
       axios
         .post(
-          "https://server.ipuiecotocollao.com/api/save_get_acerca",
+          "http://127.0.0.1:8000/api/save_get_acerca",
           formData
         )
         .then(function (res) {

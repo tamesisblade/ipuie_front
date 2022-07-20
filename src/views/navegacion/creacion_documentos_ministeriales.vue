@@ -95,7 +95,7 @@ export default {
             let me = this
 
             me.$vs.loading()
-            axios.get('https://server.ipuiecotocollao.com/api/documentos_ministeriales/'+me.id_documento)
+            axios.get('http://127.0.0.1:8000/api/documentos_ministeriales/'+me.id_documento)
             .then(function (response) {
                 me.titulo = response.data[0].titulo
                 me.descripcion = response.data[0].descripcion
@@ -119,7 +119,7 @@ export default {
             formData.append('id_usuario', me.usuario[0].idusuario);
             formData.append('img_old', me.img_old);
 
-            axios.post('https://server.ipuiecotocollao.com/api/documentos_ministeriales', formData)
+            axios.post('http://127.0.0.1:8000/api/documentos_ministeriales', formData)
             .then(function (response) {
                 me.$vs.loading.close()
                 me.$vs.notify({

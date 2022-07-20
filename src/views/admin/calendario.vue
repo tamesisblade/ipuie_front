@@ -83,7 +83,7 @@
     </div>
 
     <!-- ADD EVENT -->
-    <vs-prompt
+    <vs-popup
       fullscrenn
         class="calendar-event-dialog"
         title="Evento"
@@ -135,9 +135,10 @@
 
         <vs-textarea  counter="250" label="Mensaje" :counter-danger.sync="counterDanger" name="event-url" class="w-full mb-3 mt-3" v-model="url" />
 
-        <vs-input label="Link" name="event-link" class="w-full mb-3 mt-3" v-model="link" />
+        <vs-input label="Link" name="event-link" class="w-full mb-5 mt-3" v-model="link" />
 
-    </vs-prompt>
+        <vs-button class="w-full" @click="addEvent">Guardar</vs-button>
+    </vs-popup>
 
 
   </div>

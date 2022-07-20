@@ -65,7 +65,7 @@
       </div>
 
 
-      <div class="vx-col w-full lg:w-1/4" style="position: fixed; right: 0;">
+      <div class="vx-col w-full lg:w-1/4 card_progress">
         <vx-card>
 
             <vs-button class="mb-6 w-full" v-if="curso_habilitado != 0" color="#9ecc38" gradient-color-secondary="#3EC9D6" type="gradient">Progreso del curso</vs-button>
@@ -374,6 +374,13 @@ export default {
   .detalle_scrollmenu {
     overflow: auto !important;
     white-space: nowrap !important;
+  }
+}
+
+@media (min-width: 990px) {
+  .card_progress{
+    position: fixed !important;
+    right: 0 !important;
   }
 }
 

@@ -10,7 +10,7 @@
         <div class="vx-col w-full lg:w-1/4 sm:w-1/2 mb-base" :key="index" v-for="(item, index) in noticias">
             <vx-card class="overlay-card overflow-hidden" style="cursor: pointer; height: 210px;" @click="$router.push('/detalle_noticia/'+item.id_noticia)">
                 <template slot="no-body">
-                    <img :src="'https://server.ipuiecotocollao.com/images/noticias/'+item.img_portada" alt="user-profile-cover" class="responsive" style="cursor: pointer; height: 210px;">
+                    <img :src="'http://127.0.0.1:8000/images/noticias/'+item.img_portada" alt="user-profile-cover" class="responsive" style="cursor: pointer; height: 210px;">
                     <div class="card-overlay text-white flex flex-col justify-between">
                         <h4 class="text-white mb-4">{{item.titulo}}</h4>
                         <p>{{item.subtitulo}}</p>
@@ -51,7 +51,7 @@ export default {
         getNoticias(){
             let me = this
             me.$vs.loading()
-            axios.get('https://server.ipuiecotocollao.com/api/noticias')
+            axios.get('http://127.0.0.1:8000/api/noticias')
             .then(function (res) {
                 me.noticias = res.data
                 me.$vs.loading.close()

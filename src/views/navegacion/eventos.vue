@@ -133,7 +133,7 @@ export default {
         getEventos(){
             let me = this
             me.$vs.loading()
-            axios.get('https://server.ipuiecotocollao.com/api/eventos')
+            axios.get('http://127.0.0.1:8000/api/eventos')
             .then(function (res) {
                 me.eventos = res.data
                 me.$vs.loading.close()
@@ -152,7 +152,7 @@ export default {
         acceptAlertEvento() {
             let me = this
 
-            axios.get('https://server.ipuiecotocollao.com/api/elimiar_evento/' + me.id_evento)
+            axios.get('http://127.0.0.1:8000/api/elimiar_evento/' + me.id_evento)
             .then(function (res) {
                 me.$vs.notify({
                     color: 'danger',
@@ -182,7 +182,7 @@ export default {
             formData.append('email', me.email);
             formData.append('telefono', me.telefono);
             formData.append('genero', me.genero);
-            axios.post('https://server.ipuiecotocollao.com/api/inscripcion_evento', formData)
+            axios.post('http://127.0.0.1:8000/api/inscripcion_evento', formData)
             .then(function (res) {
                 me.popupInscripcion = false
                 me.$vs.notify({
@@ -199,7 +199,7 @@ export default {
         verInscritos(id_evento){
             let me = this
             me.$vs.loading()
-            axios.get('https://server.ipuiecotocollao.com/api/ver_inscritos/' + id_evento)
+            axios.get('http://127.0.0.1:8000/api/ver_inscritos/' + id_evento)
             .then(function (res) {
                 me.$vs.loading.close()
                 me.inscritos = res.data

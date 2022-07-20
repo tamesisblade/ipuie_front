@@ -43,7 +43,7 @@ export default {
         getNoticia(){
             let me = this
             me.$vs.loading()
-            axios.get('https://server.ipuiecotocollao.com/api/noticias/'+me.id_noticia)
+            axios.get('http://127.0.0.1:8000/api/noticias/'+me.id_noticia)
             .then(function (res) {
                 me.noticia = res.data.items.noticia[0]
                 me.$vs.loading.close()

@@ -19,7 +19,7 @@
                         <div class="p-8 login-tabs-container">
 
                             <div class="vx-card__title mb-4">
-                                <img src="https://server.ipuiecotocollao.com/images/logo_ipuie.png" alt="login" class="img-responsive mx-auto">
+                                <img src="http://127.0.0.1:8000/images/logo_ipuie.png" alt="login" class="img-responsive mx-auto">
                             </div>
 
                             <div>
@@ -70,7 +70,7 @@ export default {
             let me = this;
             let formData = new FormData();
             formData.append('email', me.email);
-            axios.post('https://server.ipuiecotocollao.com/api/restaurar', formData)
+            axios.post('http://127.0.0.1:8000/api/restaurar', formData)
                 .then(function (response) {
                     me.respuesta = response.data
                     // localStorage.tk = response.data.tk;

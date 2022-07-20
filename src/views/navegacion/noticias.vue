@@ -7,7 +7,7 @@
 
     <div class="vx-row mb-6" :key="index" v-for="(item, index) in noticias" style="background-color: white; border-radius: 10px; min-height: 220px;">
         <div align="center" slot="no-body" style="width: 20%; min-width: 200px; display: inline-block;" class="content_img_noticia">
-            <img :src="'https://server.ipuiecotocollao.com/images/noticias/' + item.img_portada" style="height: 200px; width: 200px; border-radius: 100%;">
+            <img :src="'http://127.0.0.1:8000/images/noticias/' + item.img_portada" style="height: 200px; width: 200px; border-radius: 100%;">
         </div>
 
         <div class="content_noticia px-8 py-5" style="width: 75%; display: inline-block;" align="justify">
@@ -66,7 +66,7 @@ export default {
         getNoticias(){
             let me = this
             me.$vs.loading()
-            axios.get('https://server.ipuiecotocollao.com/api/noticias')
+            axios.get('http://127.0.0.1:8000/api/noticias')
             .then(function (res) {
                 me.noticias = res.data
                 me.$vs.loading.close()
@@ -85,7 +85,7 @@ export default {
         acceptAlertNoticia() {
             let me = this
 
-            axios.get('https://server.ipuiecotocollao.com/api/elimiar_noticia/' + me.id_noticia+'/'+me.img_noticia)
+            axios.get('http://127.0.0.1:8000/api/elimiar_noticia/' + me.id_noticia+'/'+me.img_noticia)
             .then(function (res) {
                 me.$vs.notify({
                     color: 'danger',

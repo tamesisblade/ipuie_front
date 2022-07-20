@@ -55,7 +55,7 @@ export default {
         getBlog(){
             let me = this
             me.$vs.loading()
-            axios.get('https://server.ipuiecotocollao.com/api/blogs/'+me.id_blog)
+            axios.get('http://127.0.0.1:8000/api/blogs/'+me.id_blog)
             .then(function (res) {
                 me.blog = res.data.items.blog[0]
 
@@ -74,7 +74,7 @@ export default {
             if( me.usuario[0] ){
               usuario = me.usuario[0].idusuario
             }
-            axios.get('https://server.ipuiecotocollao.com/api/guardar_valoracion_blog/'+me.id_blog+'/'+usuario+'/'+me.valoracion)
+            axios.get('http://127.0.0.1:8000/api/guardar_valoracion_blog/'+me.id_blog+'/'+usuario+'/'+me.valoracion)
             .then(function (res) {
                 me.$vs.loading.close()
                 me.$vs.notify({
